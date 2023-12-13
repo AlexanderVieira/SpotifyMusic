@@ -140,6 +140,41 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
         }
 
         [Trait("Categoria", "Usuario Bogus Testes")]
+        [Theory(DisplayName = "Novo Usuario Senha nulo/vazio retorna mensagem")]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Usuario_ValidarSenhaNuloVazio_DeveRetornarMensagem(string senhaInvalida)
+        {
+            //Arrange            
+            var usuario = UsuarioBuilder.Novo().ComSenha(senhaInvalida).Buid();
+
+            //Act
+            var result = usuario.EhValido();
+
+            //Assert            
+            Assert.False(result);
+            Assert.Contains(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Senha é obrigatório."));
+
+        }
+
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        [Theory(DisplayName = "Novo Usuario Data Nascimento nulo/vazio retorna mensagem")]        
+        [InlineData(null)]
+        public void Usuario_ValidarDataNascimentoNuloVazio_DeveRetornarMensagem(DateTime? dtNascimentoInvalida)
+        {
+            //Arrange            
+            var usuario = UsuarioBuilder.Novo().ComDataNascimento(dtNascimentoInvalida).Buid();
+
+            //Act
+            var result = usuario.EhValido();
+
+            //Assert            
+            Assert.False(result);
+            Assert.Contains(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Data de nascimento não informada."));
+
+        }
+
+        [Trait("Categoria", "Usuario Bogus Testes")]
         [Theory(DisplayName = "Novo Usuario Nome Nulo/Vazio retorna excecao")]
         [InlineData("")]
         [InlineData(null)]
@@ -168,7 +203,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
         }
 
         [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario Email Inválido retorna excecao")]
+        [Theory(DisplayName = "Novo Usuario Email inválido retorna excecao")]
         [InlineData("teste.gmail.com")]
         public void Usuario_ValidarEmailInvalido_DeveRetornarExcecao(string emailInvalido)
         {
@@ -195,7 +230,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
         }
 
         [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario CPF Invalido retorna excecao")]
+        [Theory(DisplayName = "Novo Usuario CPF inválido retorna excecao")]
         [InlineData("19100000001")]
         [InlineData("1910000000")]
         [InlineData("191000000000")]

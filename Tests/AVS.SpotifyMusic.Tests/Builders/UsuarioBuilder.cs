@@ -5,14 +5,13 @@ namespace AVS.SpotifyMusic.Tests.Builders
 {
     [Collection(nameof(UsuarioCollection))]
     public class UsuarioBuilder
-    {        
-        public Guid Id { get; private set; }
+    {   
         public string Nome { get; private set; }
         public string Email { get; private set; }
         public string Cpf { get; private set; }
         public bool Ativo { get; private set; }
         public string Foto { get; private set; }
-        public DateTime DtNascimento { get; set; }
+        public DateTime? DtNascimento { get; set; }
         public string Senha { get; set; }
 
         private readonly UsuarioFixtureTests _fixture;
@@ -72,7 +71,7 @@ namespace AVS.SpotifyMusic.Tests.Builders
             return this;
         }
 
-        public UsuarioBuilder ComDataNascimento(DateTime data)
+        public UsuarioBuilder ComDataNascimento(DateTime? data)
         {
             DtNascimento = data;
             return this;

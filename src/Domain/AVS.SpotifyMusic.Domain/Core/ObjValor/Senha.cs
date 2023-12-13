@@ -8,7 +8,7 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjValor
 
         public Senha(string valor)
         {
-            if (string.IsNullOrWhiteSpace(valor)) throw new DomainException("A senha deve ser informada");
+            //if (string.IsNullOrWhiteSpace(valor)) throw new DomainException("A senha deve ser informada");
             Valor = valor;
         }
     }
