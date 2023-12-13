@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation.Results;
 
 namespace AVS.SpotifyMusic.Domain.Core.ObjDomain
 {
@@ -11,6 +7,7 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjDomain
         public Guid Id { get; set; }
         public DateTime DtCriacao { get; set; }
         public DateTime DtAtualizacao { get; set; }
+        public ValidationResult? ValidationResult { get; set; }
 
         public Entity()
         {
@@ -47,6 +44,16 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjDomain
         public override string ToString()
         {
             return $"{GetType().Name} [Id={Id}]";
+        }
+
+        public virtual bool EhValido()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Validar() 
+        {  
+            throw new NotImplementedException(); 
         }
     }
 }

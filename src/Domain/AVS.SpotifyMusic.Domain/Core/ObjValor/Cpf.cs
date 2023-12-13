@@ -5,10 +5,10 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjValor
     public class Cpf
     {
         public const int TAM_MAXIMO = 11;
-        public string? Numero { get; set; }
+        public string Numero { get; set; }
         public Cpf(string numero)
         {
-            if (string.IsNullOrEmpty(numero)) throw new ArgumentException("Documento é obrigatório");
+            //if (string.IsNullOrEmpty(numero)) throw new ArgumentException("Documento é obrigatório");
             Numero = numero;
         }
 

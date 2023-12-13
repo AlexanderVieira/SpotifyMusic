@@ -10,7 +10,7 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjValor
 
         public Email(string address)
         {
-            if (string.IsNullOrEmpty(address)) throw new ArgumentException("E-mail é obrigatório");
+            //if (string.IsNullOrEmpty(address)) throw new ArgumentException("E-mail é obrigatório");
             Address = address;
         }
 

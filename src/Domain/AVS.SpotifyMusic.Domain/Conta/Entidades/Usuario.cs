@@ -1,6 +1,7 @@
 ﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Core.ObjValor;
 using AVS.SpotifyMusic.Domain.Transacao.Entidades;
+using FluentValidation;
 
 namespace AVS.SpotifyMusic.Domain.Conta.Entidades
 {
@@ -26,6 +27,75 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
             Foto = foto;
             Ativo = ativo;
             DtNascimento = dtNascimento;
+        }
+
+        public void Ativar()
+        {
+            Ativo = true;
+        }
+
+        public void Inativar()
+        {
+            Ativo = false;
+        }
+
+        public void AdicionarPlaylist(Playlist playlist)
+        {
+            Playlists.Add(playlist);
+        }
+
+        public void AtualizarPlaylist(List<Playlist> playlists)
+        {
+            Playlists.AddRange(playlists);
+        }
+
+        public void RemoverPlaylist(Playlist playlist)
+        {
+            Playlists.Remove(playlist);
+        }
+
+        public void RemoverPlaylists()
+        {
+            Playlists.Clear();
+        }
+
+        public override bool EhValido()
+        {
+            ValidationResult = new UsuarioValidator().Validate(this);
+            return ValidationResult.IsValid;
+        }
+
+        public override void Validar()
+        {
+            new UsuarioValidator().ValidateAndThrow(this);
+        }
+    }
+
+    public class UsuarioValidator : AbstractValidator<Usuario>
+    {
+        public UsuarioValidator()
+        {
+            RuleFor(x => x.Id)
+                .NotEqual(Guid.Empty)
+                .WithMessage("Id do usuário inválido.");
+
+            RuleFor(x => x.Nome)
+                .NotEmpty()
+                .WithMessage("Nome é obrigatório.")
+                .Length(2, 150)
+                .WithMessage("O Nome deve ter entre 2 a 150 caracteres.");
+
+            RuleFor(x => x.Cpf.Numero)
+                .NotEmpty()
+                .WithMessage("Documento é obrigatório.")
+                .Must(Cpf.ValidarCpf)
+                .WithMessage("Documento inválido.");
+
+            RuleFor(x => x.Email.Address)
+                .NotEmpty()
+                .WithMessage("E-mail é obrigatório.")
+                .Must(Email.ValidarEmail)
+                .WithMessage("E-mail inválido.");
         }
     }
 }
