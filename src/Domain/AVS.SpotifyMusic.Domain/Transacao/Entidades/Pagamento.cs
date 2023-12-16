@@ -1,6 +1,5 @@
 ﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Core.ObjValor;
-using AVS.SpotifyMusic.Domain.Core.Utils;
 using AVS.SpotifyMusic.Domain.Transacao.Enums;
 using FluentValidation;
 using FluentValidation.Results;
