@@ -12,8 +12,9 @@ namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
         public Merchant Merchant { get; private set; }
         public string Descricao { get; private set; }
         public StatusTransacao Situacao { get; private set; }
+        //public Pagamento? Pagamento { get; set; }
 
-        public Transacao(DateTime dtTransacao, decimal valor, string merchantName, string descricao, StatusTransacao situacao)
+        public Transacao(DateTime dtTransacao, decimal valor, string merchantName, StatusTransacao situacao, string descricao = "")
         {
             DtTransacao = dtTransacao;
             Valor = new Monetario(valor);

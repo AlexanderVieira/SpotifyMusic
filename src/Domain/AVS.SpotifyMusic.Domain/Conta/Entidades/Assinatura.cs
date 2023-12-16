@@ -13,5 +13,20 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
             Plano = plano;
             Ativo = ativo;
         }
+
+        public void Ativar()
+        {
+            Ativo = true;
+        }
+
+        public void Inativar()
+        {
+            Ativo = false;
+        }
+
+        public void AtualizarPlano(Plano plano) 
+        {
+            Plano = plano;
+        }
     }
 }

@@ -13,9 +13,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Infra", "4.Infra", "{96D4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Tests", "5.Tests", "{2A56E817-D014-4E9C-B764-2618069E0A73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.SpotifyMusic.Domain", "src\Domain\AVS.SpotifyMusic.Domain\AVS.SpotifyMusic.Domain.csproj", "{216580F8-AE1E-40D6-BA11-1764C20BB555}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.SpotifyMusic.Domain", "src\Domain\AVS.SpotifyMusic.Domain\AVS.SpotifyMusic.Domain.csproj", "{216580F8-AE1E-40D6-BA11-1764C20BB555}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVS.SpotifyMusic.Tests", "Tests\AVS.SpotifyMusic.Tests\AVS.SpotifyMusic.Tests.csproj", "{243568D5-3BBA-4091-BB28-87D674D16602}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVS.SpotifyMusic.Tests", "Tests\AVS.SpotifyMusic.Tests\AVS.SpotifyMusic.Tests.csproj", "{243568D5-3BBA-4091-BB28-87D674D16602}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2DF45635-80E9-45CB-B8C8-9C8ADD117B14}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

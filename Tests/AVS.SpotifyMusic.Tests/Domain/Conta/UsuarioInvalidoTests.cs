@@ -17,7 +17,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
         [Trait("Categoria", "Usuario Bogus Testes")]
         [Fact(DisplayName = "Novo Usuario Invalido")]        
-        public void Usuario_NovoUsuario_DeveEstarInvalido()
+        public void Usuario_CriarInstancia_DeveEstarInvalido()
         {
             //Arrange
             var usuario = _fixture.CriarUsuarioInvalido();

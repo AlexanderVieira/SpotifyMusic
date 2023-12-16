@@ -1,6 +1,8 @@
-﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
+﻿using AVS.SpotifyMusic.Domain.Conta.Factories;
+using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Core.ObjValor;
 using AVS.SpotifyMusic.Domain.Core.Utils;
+using AVS.SpotifyMusic.Domain.Streaming.Entidades;
 using AVS.SpotifyMusic.Domain.Transacao.Entidades;
 using FluentValidation;
 
@@ -28,6 +30,7 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
             Foto = foto;
             Ativo = ativo;
             DtNascimento = dtNascimento;
+            
         }
 
         public void Ativar()
@@ -60,6 +63,31 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
             Playlists.Clear();
         }
 
+        public void CriarAssinatura(Plano plano, bool ativo = true)
+        {
+            if(Assinaturas.Any()) Assinaturas.ForEach(a => { a.Inativar(); });
+            var assinatura = AssinaturaFatory.Criar(plano, ativo);
+            Assinaturas.Add(assinatura);
+        }
+
+        public void AtualizarPlano(Plano plano)
+        {
+            if (Assinaturas.Any()) 
+            { 
+                Assinatura? assinatura = Assinaturas.LastOrDefault(a => a.Ativo);
+                if (assinatura != null)
+                {
+                    assinatura.AtualizarPlano(plano);
+                    Assinaturas.Add(assinatura);
+                }
+            }
+        }
+
+        public void AdicionarCartao(Cartao cartao)
+        {
+            Cartoes.Add(cartao);
+        }
+
         public override bool EhValido()
         {
             ValidationResult = new UsuarioValidator().Validate(this);
@@ -78,7 +106,7 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
         {
             RuleFor(x => x.Id)
                 .NotEqual(Guid.Empty)
-                .WithMessage("Id do usuário inválido.");
+                .WithMessage("Identificador do usuário inválido.");
 
             RuleFor(x => x.Nome)
                 .NotEmpty()
@@ -108,8 +136,7 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
 
             RuleFor(x => x.DtNascimento)
                 .Custom((dtNascimento, context) =>
-                {
-                    //if (!string.IsNullOrWhiteSpace(dtNascimento.Value.Date.ToShortDateString()))
+                {                    
                     if (dtNascimento != null)
                     {
                         if (DateUtils.IsDataInformadaMaiorQueDataAtual(dtNascimento.Value.Date.ToShortDateString()))

@@ -12,6 +12,8 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjDomain
         public Entity()
         {
             Id = Guid.NewGuid();
+            ValidationResult = new ValidationResult();
+            DtCriacao = DateTime.Now;
         }
 
         public override bool Equals(object? obj)

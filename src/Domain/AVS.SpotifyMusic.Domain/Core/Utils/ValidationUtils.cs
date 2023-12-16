@@ -30,8 +30,7 @@ namespace AVS.SpotifyMusic.Domain.Core.Utils
 
         public static bool HasValidBirthDate(DateTime? date)
         {
-
-            //if (!string.IsNullOrWhiteSpace(date))
+            
             if (date != null)
             {
                 return true;
@@ -43,7 +42,7 @@ namespace AVS.SpotifyMusic.Domain.Core.Utils
 
         }
 
-        public static Email ValidateRequestEmail(string email)
+        public static Email? ValidateRequestEmail(string email)
         {
             if (!string.IsNullOrWhiteSpace(email))
             {
@@ -55,7 +54,7 @@ namespace AVS.SpotifyMusic.Domain.Core.Utils
             }
         }
 
-        public static Cpf ValidateRequestCpf(string cpf)
+        public static Cpf? ValidateRequestCpf(string cpf)
         {
             if (!string.IsNullOrWhiteSpace(cpf))
             {

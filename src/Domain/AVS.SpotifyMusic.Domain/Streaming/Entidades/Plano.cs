@@ -16,7 +16,8 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
             Nome = nome;
             Descricao = descricao;
             Valor = new Monetario(valor);
-            TipoPlano = tipoPlano;
-        }
+            TipoPlano = tipoPlano;            
+        }        
+        
     }
 }

@@ -5,14 +5,8 @@
         public decimal Valor { get; set; }        
 
         public Monetario(decimal valor)
-        {
-            if (valor < 0)
-            {
-                throw new ArgumentException("Valor monetário não pode ser negativo");                
-            }
-
+        {            
             Valor = valor;
-
         }
 
         public string Formatar()

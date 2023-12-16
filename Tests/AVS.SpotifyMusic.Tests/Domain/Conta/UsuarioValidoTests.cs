@@ -1,12 +1,14 @@
 ﻿using AVS.SpotifyMusic.Domain.Conta.Entidades;
+using AVS.SpotifyMusic.Domain.Streaming.Entidades;
+using AVS.SpotifyMusic.Domain.Streaming.Enums;
 using AVS.SpotifyMusic.Tests.Fixtures;
 
 namespace AVS.SpotifyMusic.Tests.Domain.Conta
 {
-    [Collection(nameof(UsuarioCollection))]
+    [Collection(nameof(UsuarioCollection))]    
     public class UsuarioValidoTests
     {
-        private readonly UsuarioFixtureTests _fixture;
+        private readonly UsuarioFixtureTests _fixture;        
 
         public UsuarioValidoTests(UsuarioFixtureTests fixture)
         {
@@ -15,7 +17,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
         [Fact(DisplayName = "Novo Usuario valido")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Criar_NovoUsuario_DeveEstarValido()
+        public void Usuario_CriarInstancia_DeveEstarValido()
         {
             //Arrange
             var usuario = _fixture.CriarUsuarioValido();
@@ -24,13 +26,13 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
             var result = usuario?.EhValido();
 
             //Assert
-            Assert.True(result.HasValue);
+            Assert.True(result);
             Assert.Equal(0, usuario?.ValidationResult?.Errors.Count);
         }
 
         [Fact(DisplayName = "Usuario Criar Playlist")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Criar_NovaPlaylist_DeveTerMaisDeUma()
+        public void Usuario_NovaPlaylist_DeveTerMaisDeUma()
         {
             //Arrange
             var usuario = _fixture.CriarUsuarioValido();
@@ -46,7 +48,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
         [Fact(DisplayName = "Usuario Atualizar Playlist")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Atualizar_Playlists_DeveTerTamanhoMaiorOuIgualUm()
+        public void Usuario_AtualizarPlaylists_DeveTerTamanhoMaiorOuIgualUm()
         {
             //Arrange
             var usuario = _fixture.CriarUsuarioValido();            
@@ -66,7 +68,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
         [Fact(DisplayName = "Usuario Remover Playlist")]
         [Trait("Categoria", "Usuario Bogus Testes")]
 
-        public void Remover_UmaPlaylist_DeveTerTamanhoIgualAoLenghtMenosUm()
+        public void Usuario_RemoverPlaylist_DeveTerTamanhoIgualAoLenghtMenosUm()
         {
             //Arrange
             var usuario = _fixture.CriarUsuarioValido();
@@ -86,7 +88,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
         [Fact(DisplayName = "Usuario Remover Todas Playlists")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Remover_Playlists_DeveTerTamanhoIgualZero()
+        public void Usuario_RemoverPlaylists_DeveTerTamanhoIgualZero()
         {
             //Arrange
             var usuario = _fixture.CriarUsuarioValido();
@@ -106,7 +108,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
         [Fact(DisplayName = "Usuario Ativo")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Ativar_NovoUsuario_DeveTerFlagIgualVerdadeiro()
+        public void Usuario_Ativar_DeveTerFlagIgualVerdadeiro()
         {
             //Arrange
             var usuario = _fixture.CriarUsuarioValido();
@@ -120,7 +122,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
         [Fact(DisplayName = "Usuario Inativo")]
         [Trait("Categoria", "Usuario Bogus Testes")]
-        public void Inativar_Usuario_DeveTerFlagIgualFalso()
+        public void Usuario_Inativar_DeveTerFlagIgualFalso()
         {
             //Arrange
             var usuario = _fixture.CriarUsuarioValido();
@@ -130,6 +132,60 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
             //Assert            
             Assert.False(usuario?.Ativo);
+        }
+
+        [Fact(DisplayName = "Usuario Criar Assinatura")]
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        public void Usuario_CriarAssinatura_ComSucesso()
+        {
+            //Arrange
+            var usuario = _fixture.CriarUsuarioValido();
+            var plano = new Plano("My Plano", "Plano gratuito", 0, TipoPlano.Basico);
+
+            //Act
+            usuario?.CriarAssinatura(plano);
+
+            //Assert            
+            Assert.True(usuario?.Assinaturas.Any(x => x.Ativo == true)); 
+        }
+
+        [Fact(DisplayName = "Usuario Atualizar Plano")]
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        public void Usuario_AtualizarPlano_ComSucesso()
+        {
+            //Arrange
+            var usuario = _fixture.CriarUsuarioValido(); 
+            usuario?.CriarAssinatura(new Plano("My Plano Basico",
+                                               "Plano que permite ouvir músicas favoritas",
+                                               0,
+                                               TipoPlano.Basico));
+
+            //Act
+            usuario?.AtualizarPlano(new Plano("My Plano Premium", 
+                                              "Plano que permite download das músicas favoritas", 
+                                              14.99M, 
+                                              TipoPlano.Premium));
+
+            //Assert            
+            Assert.True(usuario?.Assinaturas.Any(x => x.Plano.TipoPlano == TipoPlano.Premium));
+        }
+
+        [Fact(DisplayName = "Usuario Adicionar Cartão")]
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        public void Usuario_AdicionarCartao_ComSucesso()
+        {
+            //Arrange
+            var usuario = _fixture.CriarUsuarioValido();
+            usuario?.CriarAssinatura(new Plano("My Plano Basico",
+                                               "Plano que permite ouvir músicas favoritas",
+                                               0,
+                                               TipoPlano.Basico));
+
+            //Act
+            usuario?.AdicionarCartao(_fixture.CriarCartaoValido());
+
+            //Assert            
+            Assert.True(usuario?.Cartoes.Any());
         }
     }
 }
