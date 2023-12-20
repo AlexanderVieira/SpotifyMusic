@@ -1,9 +1,9 @@
-﻿using AVS.SpotifyMusic.Domain.Transacao.Entidades;
+﻿using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
 using AVS.SpotifyMusic.Tests.Builders;
 using AVS.SpotifyMusic.Tests.Fixtures;
 using FluentAssertions;
 
-namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
+namespace AVS.SpotifyMusic.Tests.Domain.Pagamentos
 {
     [Collection(nameof(CartaoCollection))]
     public class CartaoInvalidoTests

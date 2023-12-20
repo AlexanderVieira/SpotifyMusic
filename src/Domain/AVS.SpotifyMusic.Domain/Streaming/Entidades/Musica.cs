@@ -11,6 +11,10 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
         public Duracao Duracao { get; private set; }
         public List<Playlist> Playlists { get; private set; } = new List<Playlist>();
 
+        protected Musica()
+        {            
+        }
+
         public Musica(string nome, int duracao)
         {
             Nome = nome;

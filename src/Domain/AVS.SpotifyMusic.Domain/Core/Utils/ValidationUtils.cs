@@ -28,10 +28,10 @@ namespace AVS.SpotifyMusic.Domain.Core.Utils
             }
         }
 
-        public static bool HasValidBirthDate(DateTime? date)
+        public static bool HasValidBirthDate(DateTime date)
         {
             
-            if (date != null)
+            if (date.Date.ToLongDateString() != null)
             {
                 return true;
             }
@@ -40,6 +40,11 @@ namespace AVS.SpotifyMusic.Domain.Core.Utils
                 return false;
             }
 
+        }
+
+        public static bool BeAValidDate(DateTime date)
+        {
+            return !date.Equals(default(DateTime));
         }
 
         public static Email? ValidateRequestEmail(string email)

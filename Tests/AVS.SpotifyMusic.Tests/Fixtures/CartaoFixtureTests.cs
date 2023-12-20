@@ -1,4 +1,4 @@
-﻿using AVS.SpotifyMusic.Domain.Transacao.Entidades;
+﻿using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
 using Bogus;
 using Bogus.DataSets;
 

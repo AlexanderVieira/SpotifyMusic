@@ -6,7 +6,7 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjDomain
     {
         public Guid Id { get; set; }
         public DateTime DtCriacao { get; set; }
-        public DateTime DtAtualizacao { get; set; }
+        public DateTime? DtAtualizacao { get; set; }
         public ValidationResult? ValidationResult { get; set; }
 
         public Entity()

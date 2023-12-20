@@ -3,25 +3,34 @@ using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Core.ObjValor;
 using AVS.SpotifyMusic.Domain.Core.Utils;
 using AVS.SpotifyMusic.Domain.Streaming.Entidades;
-using AVS.SpotifyMusic.Domain.Transacao.Entidades;
+using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
 using FluentValidation;
+using AVS.SpotifyMusic.Domain.Core.Notificacoes;
 
 namespace AVS.SpotifyMusic.Domain.Conta.Entidades
 {
     public class Usuario : Entity
     {
+        private const string NOME_PLAYLIST = "Minha Playlist";
+        private int _numero = 0;
+
         public string Nome { get; private set; }
         public Email Email { get; private set; }
         public Cpf Cpf { get; private set; }
         public Senha Senha { get; private set; }
-        public string Foto { get; private set; }
+        public string? Foto { get; private set; }
         public bool Ativo { get; set; }
-        public DateTime? DtNascimento { get; private set; }
+        public DateTime DtNascimento { get; private set; }
         public List<Cartao> Cartoes { get; private set; } = new List<Cartao>();
         public List<Assinatura> Assinaturas { get; private set; } = new List<Assinatura>();
         public List<Playlist> Playlists { get; private set; } = new List<Playlist>();
+        public List<Notificacao> Notificacoes { get; private set; } = new List<Notificacao>();
 
-        public Usuario(string nome, string email, string cpf, string senha, string foto, bool ativo, DateTime? dtNascimento)
+        protected Usuario()
+        {            
+        }
+
+        public Usuario(string nome, string email, string cpf, string senha, bool ativo, DateTime dtNascimento, string? foto = null)
         {
             Nome = nome;
             Email = new Email(email);
@@ -33,6 +42,25 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
             
         }
 
+        public void CriarConta(Plano plano, Pagamento pagamento)
+        {   
+            AssinarPlano(plano, pagamento);
+            AdicionarCartao(pagamento.Cartao);
+            CriarPlaylist(titulo: $"{NOME_PLAYLIST} nº {++_numero}", descricao: "Preencha sua descrição", publico: false);
+        }
+
+        public void AssinarPlano(Plano plano, Pagamento pagamento) 
+        {
+            pagamento.CriarTransacao(pagamento.Cartao, pagamento.Transacao); //new Transacao(plano.Valor, new Merchant(plano.Nome).Nome, StatusTransacao.Pendente));
+            DesativarAssinaturaAtiva();
+            CriarAssinatura(plano);
+        }
+
+        public void DesativarAssinaturaAtiva()
+        {
+            if (Assinaturas.Any(x => x.Ativo)) Assinaturas.ForEach(a => { a.Inativar(); });           
+        }       
+
         public void Ativar()
         {
             Ativo = true;
@@ -41,6 +69,11 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
         public void Inativar()
         {
             Ativo = false;
+        }
+
+        public void CriarPlaylist(string titulo, string descricao, bool publico, string? foto = null)
+        {
+            AdicionarPlaylist(new Playlist(titulo, descricao, publico, this, foto));
         }
 
         public void AdicionarPlaylist(Playlist playlist)
@@ -64,10 +97,9 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
         }
 
         public void CriarAssinatura(Plano plano, bool ativo = true)
-        {
-            if(Assinaturas.Any()) Assinaturas.ForEach(a => { a.Inativar(); });
+        {            
             var assinatura = AssinaturaFatory.Criar(plano, ativo);
-            Assinaturas.Add(assinatura);
+            AdicionarAssinatura(assinatura);
         }
 
         public void AtualizarPlano(Plano plano)
@@ -78,14 +110,35 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
                 if (assinatura != null)
                 {
                     assinatura.AtualizarPlano(plano);
-                    Assinaturas.Add(assinatura);
+                    AdicionarAssinatura(assinatura);
                 }
             }
+        }
+
+        public void AdicionarAssinatura(Assinatura assinatura)
+        {
+            Assinaturas.Add(assinatura);
         }
 
         public void AdicionarCartao(Cartao cartao)
         {
             Cartoes.Add(cartao);
+        }
+
+        public void AdicionarNotificacao(Notificacao notificacao)
+        {
+            Notificacoes ??= new List<Notificacao>();
+            Notificacoes.Add(notificacao);
+        }
+
+        public void RemoveNotificacao(Notificacao notificacao)
+        {
+            Notificacoes?.Remove(notificacao);
+        }
+
+        public void LimparNotificacao()
+        {
+            Notificacoes?.Clear();
         }
 
         public override bool EhValido()
@@ -128,20 +181,36 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
 
             RuleFor(x => x.Senha.Valor)
                .NotEmpty()
-               .WithMessage("Senha é obrigatório.");            
+               .WithMessage("Senha é obrigatória.")
+               .MinimumLength(8)
+               .WithMessage("Senha precisa ter pelo menos 8 caracteres.")
+               .Must(Senha.ValidarFormato)
+               .WithMessage("Senha inválida.");
 
-            RuleFor(x => x.DtNascimento)
-                .Must(ValidationUtils.HasValidBirthDate)
-                .WithMessage("Data de nascimento não informada.");
+            RuleFor(x => x.Senha)
+                .Custom((senha, context) => 
+                { 
+                    if (Senha.CriptografarSenha(senha.Valor) == string.Empty) 
+                    { 
+                        context.AddFailure("Algo deu errado! A criptografia falhou."); 
+                    } 
+                });
+
+            RuleFor(x => x.DtNascimento)                
+                .Must(ValidationUtils.BeAValidDate)
+                .WithMessage("Data de nascimento não informada.")
+                .LessThan(DateTime.Now.AddYears(-18))
+                .WithMessage("Usuário menor que 18 anos.");
 
             RuleFor(x => x.DtNascimento)
                 .Custom((dtNascimento, context) =>
-                {                    
-                    if (dtNascimento != null)
+                {                                       
+                    if (dtNascimento.Date.ToLongDateString() != null)
                     {
-                        if (DateUtils.IsDataInformadaMaiorQueDataAtual(dtNascimento.Value.Date.ToShortDateString()))
+                        if (DateUtils.IsDataInformadaMaiorQueDataAtual(dtNascimento.Date.ToShortDateString()))
                             context.AddFailure("A data de nascimento informada não é válida.");
                     }
+
                 });
         }
     }

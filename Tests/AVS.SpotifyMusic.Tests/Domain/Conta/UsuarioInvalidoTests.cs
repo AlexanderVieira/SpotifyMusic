@@ -121,23 +121,23 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
         }
 
-        [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario Foto nulo/vazio retorna mensagem")]
-        [InlineData("")]
-        [InlineData(null)]
-        public void Usuario_ValidarFotoNuloVazio_DeveRetornarMensagem(string cpfInvalido)
-        {
-            //Arrange            
-            var usuario = UsuarioBuilder.Novo().ComFoto(cpfInvalido).Buid();
+        //[Trait("Categoria", "Usuario Bogus Testes")]
+        //[Theory(DisplayName = "Novo Usuario Foto nulo/vazio retorna mensagem")]
+        //[InlineData("")]
+        //[InlineData(null)]
+        //public void Usuario_ValidarFotoNuloVazio_DeveRetornarMensagem(string urlFotoInvalida)
+        //{
+        //    //Arrange            
+        //    var usuario = UsuarioBuilder.Novo().ComFoto(urlFotoInvalida).Buid();
 
-            //Act
-            var result = usuario.EhValido();
+        //    //Act
+        //    var result = usuario.EhValido();
 
-            //Assert            
-            Assert.True(result);
-            Assert.DoesNotContain(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Foto do usuário inválida."));
+        //    //Assert            
+        //    Assert.True(result);
+        //    Assert.DoesNotContain(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Foto do usuário inválida."));
 
-        }
+        //}
 
         [Trait("Categoria", "Usuario Bogus Testes")]
         [Theory(DisplayName = "Novo Usuario Senha nulo/vazio retorna mensagem")]
@@ -153,17 +153,73 @@ namespace AVS.SpotifyMusic.Tests.Domain.Conta
 
             //Assert            
             Assert.False(result);
-            Assert.Contains(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Senha é obrigatório."));
+            Assert.Contains(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Senha é obrigatória."));
 
         }
 
         [Trait("Categoria", "Usuario Bogus Testes")]
-        [Theory(DisplayName = "Novo Usuario Data Nascimento nulo/vazio retorna mensagem")]        
-        [InlineData(null)]
-        public void Usuario_ValidarDataNascimentoNuloVazio_DeveRetornarMensagem(DateTime? dtNascimentoInvalida)
+        [Theory(DisplayName = "Novo Usuario Senha Tamanho Inválido retorna mensagem")]
+        [InlineData("1234567")]
+        [InlineData("123")]
+        public void Usuario_ValidarTamanhoSenha_DeveRetornarMensagem(string senhaInvalida)
         {
             //Arrange            
-            var usuario = UsuarioBuilder.Novo().ComDataNascimento(dtNascimentoInvalida).Buid();
+            var usuario = UsuarioBuilder.Novo().ComSenha(senhaInvalida).Buid();
+
+            //Act
+            var result = usuario.EhValido();
+
+            //Assert            
+            Assert.False(result);
+            Assert.Contains(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Senha precisa ter pelo menos 8 caracteres."));
+
+        }
+
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        [Theory(DisplayName = "Novo Usuario Senha Formato Inválido retorna mensagem")]        
+        [InlineData("Th1s!")]
+        [InlineData("thisIsAPassword")]
+        [InlineData("thisisapassword#")]
+        [InlineData("THISISAPASSWORD123!")]
+        [InlineData("")]
+        public void Usuario_ValidarFormatoSenha_DeveRetornarMensagem(string senhaInvalida)
+        {
+            //Arrange            
+            var usuario = UsuarioBuilder.Novo().ComSenha(senhaInvalida).Buid();
+
+            //Act
+            var result = usuario.EhValido();
+
+            //Assert            
+            Assert.False(result);
+            Assert.Contains(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Senha inválida."));
+
+        }
+
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        [Theory(DisplayName = "Novo Usuario Data Nascimento menor que 18 anos retorna mensagem")]
+        [InlineData(30,11,2023)]
+        [InlineData(15,10,2009)]
+        public void Usuario_ValidarDataNascimento_DeveRetornarMensagem(int dia, int mes, int ano)
+        {
+            //Arrange            
+            var usuario = UsuarioBuilder.Novo().ComDataNascimento(new DateTime(ano,mes,dia)).Buid();
+
+            //Act
+            var result = usuario.EhValido();
+
+            //Assert            
+            Assert.False(result);
+            Assert.Contains(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Usuário menor que 18 anos."));
+
+        }
+
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        [Fact(DisplayName = "Novo Usuario Data Nascimento Não informada retorna mensagem")]       
+        public void Usuario_ValidarDataNascimentoNaoInformada_DeveRetornarMensagem()
+        {
+            //Arrange            
+            var usuario = UsuarioBuilder.Novo().ComDataNascimento(DateTime.MinValue).Buid();
 
             //Act
             var result = usuario.EhValido();

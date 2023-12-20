@@ -1,4 +1,5 @@
-﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
+﻿using AVS.SpotifyMusic.Domain.Conta.Entidades;
+using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Core.ObjValor;
 using AVS.SpotifyMusic.Domain.Streaming.Enums;
 using FluentValidation;
@@ -11,6 +12,12 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
         public string Descricao { get; private set; }
         public Monetario Valor { get; private set; }
         public TipoPlano TipoPlano { get; private set; }
+        public Assinatura Assinatura { get; set; }
+        public Guid AssinaturaId { get; set; }
+
+        protected Plano()
+        {            
+        }
 
         public Plano(string nome, string descricao, decimal valor, TipoPlano tipoPlano)
         {

@@ -1,8 +1,8 @@
-﻿using AVS.SpotifyMusic.Domain.Transacao.Entidades;
-using AVS.SpotifyMusic.Domain.Transacao.Enums;
+﻿using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
+using AVS.SpotifyMusic.Domain.Pagamentos.Enums;
 using FluentAssertions;
 
-namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
+namespace AVS.SpotifyMusic.Tests.Domain.Pagamentos
 {
     public class PagamentoValidoTests
     {
@@ -10,15 +10,15 @@ namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
         {
         }
 
-        [Fact(DisplayName = "Novo Pagamento")] 
+        [Fact(DisplayName = "Novo Pagamento Instaância Válida")] 
         [Trait("Categoria", "Pagamento Bogus Testes")]
         public void Pagamento_CriarInstancia_DeveEstarValido()
         {
             //Arrange
-            var pagamento = new SpotifyMusic.Domain.Transacao.Entidades.Pagamento(590.00M,
+            var pagamento = new Pagamento(590.00M,
                 StatusPagamento.Pago,
                 new Cartao("5464-1733-1700-6552", "Patrícia I Heloisa Viana", "05/26", "198", true, 5000.00M),
-                new Transacao(DateTime.Now, 590.00M, "Lojas Novo Mundo", StatusTransacao.Pago));
+                new Transacao(590.00M, "Lojas Novo Mundo", StatusTransacao.Pago));
 
             //Act
             var result = pagamento.EhValido();
@@ -32,10 +32,10 @@ namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
         public void Pagamento_ValidarLimiteTransacoesExcedido_DeveRetornarMensagem()
         {
             //Arrange
-            var pagamento = new SpotifyMusic.Domain.Transacao.Entidades.Pagamento(1290.00M,
+            var pagamento = new Pagamento(1290.00M,
                 StatusPagamento.Cancelado,
                 new Cartao("5464-1733-1700-6552", "Patrícia I Heloisa Viana", "05/26", "198", true, 2000.00M),
-                new Transacao(DateTime.Now, 1290.00M, "Lojas Novo Mundo", StatusTransacao.Recusado));
+                new Transacao(1290.00M, "Lojas Novo Mundo", StatusTransacao.Recusado));
 
             //Act            
             pagamento.ValidarLimiteTransacoesExecedido(4);
@@ -49,15 +49,15 @@ namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
         public void Pagamento_ValidarTransacaoRepetidaPorMerchant_DeveRetornarMensagem()
         {
             //Arrange
-            var pagamento = new SpotifyMusic.Domain.Transacao.Entidades.Pagamento(1290.00M,
+            var pagamento = new Pagamento(1290.00M,
                 StatusPagamento.Pago,
                 new Cartao("5464-1733-1700-6552", "Patrícia I Heloisa Viana", "05/26", "198", true, 2000.00M),
-                new Transacao(DateTime.Now, 1290.00M, "Lojas Novo Mundo", StatusTransacao.Pago));
+                new Transacao(1290.00M, "Lojas Novo Mundo", StatusTransacao.Pago));
 
             pagamento.CriarTransacao(pagamento.Cartao, pagamento.Transacao);            
 
             //Act            
-            pagamento.ValidarTransacaoRepetidaPorMerchant(pagamento.Cartao.Transacoes, new Transacao(DateTime.Now, 1290.00M, "Lojas Novo Mundo", StatusTransacao.Recusado));
+            pagamento.ValidarTransacaoRepetidaPorMerchant(pagamento.Cartao.Transacoes, new Transacao(1290.00M, "Lojas Novo Mundo", StatusTransacao.Recusado));
 
             //Assert            
             Assert.Contains(pagamento.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Transacao Duplicada para o mesmo cartão e o mesmo Comerciante."));
@@ -68,16 +68,15 @@ namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
         public void Pagamento_VerificarLimiteCartao_DeveRetornarMensagem()
         {
             //Arrange
-            var pagamento = new SpotifyMusic.Domain.Transacao.Entidades.Pagamento(1290.00M,
+            var pagamento = new Pagamento(1290.00M,
                 StatusPagamento.Pago,
                 new Cartao("5464-1733-1700-6552", "Patrícia I. Heloisa Viana", "05/26", "198", true, 2000.00M),
-                new Transacao(DateTime.Now, 1290.00M, "Lojas Novo Mundo", StatusTransacao.Pago));
+                new Transacao(1290.00M, "Lojas Novo Mundo", StatusTransacao.Pago));
 
-            pagamento.CriarTransacao(pagamento.Cartao, pagamento.Transacao);
-            //pagamento.CriarTransacao(pagamento.Cartao, new Transacao(DateTime.Now, 1290.00M, "Lojas Novo Mundo", StatusTransacao.Recusado));
+            pagamento.CriarTransacao(pagamento.Cartao, pagamento.Transacao);            
 
             //Act            
-            pagamento.VerificarLimiteCartao(pagamento.Cartao, new Transacao(DateTime.Now, 1290.00M, "Lojas Novo Mundo", StatusTransacao.Recusado));
+            pagamento.VerificarLimiteCartao(pagamento.Cartao, new Transacao(1290.00M, "Lojas Novo Mundo", StatusTransacao.Recusado));
 
             //Assert            
             Assert.Contains(pagamento.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Cartão não possui limite para esta transação."));

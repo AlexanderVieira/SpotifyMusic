@@ -7,10 +7,14 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
     {
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public string Foto { get; private set; }
+        public string? Foto { get; private set; }
         public List<Album> Albuns { get; private set; } = new List<Album>();
 
-        public Banda(string nome, string descricao, string foto)
+        protected Banda()
+        {            
+        }
+
+        public Banda(string nome, string descricao, string? foto = null)
         {
             Nome = nome;
             Descricao = descricao;

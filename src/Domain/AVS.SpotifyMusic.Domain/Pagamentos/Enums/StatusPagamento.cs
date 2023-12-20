@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AVS.SpotifyMusic.Domain.Transacao.Enums
+namespace AVS.SpotifyMusic.Domain.Pagamentos.Enums
 {
     public enum StatusPagamento
     {

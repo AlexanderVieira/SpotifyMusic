@@ -1,10 +1,10 @@
 ﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Core.ObjValor;
-using AVS.SpotifyMusic.Domain.Transacao.Enums;
+using AVS.SpotifyMusic.Domain.Pagamentos.Enums;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
+namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
 {
     public class Pagamento : Entity
     {
@@ -15,8 +15,12 @@ namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
         public Monetario Valor { get; private set; }
         public StatusPagamento Situacao { get; private set; }
         public Cartao Cartao { get; private set; }
-        public Transacao Transacao { get; private set; }
-        
+        public Transacao Transacao { get; private set; }        
+
+        protected Pagamento()
+        {            
+        }
+
         public Pagamento(decimal valor, StatusPagamento situacao, Cartao cartao, Transacao transacao)
         {
             Valor = new Monetario(valor);
@@ -67,7 +71,7 @@ namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
         public List<Transacao> ObterUltimasTransacoes(Cartao cartao)
         {
             var ultimasTransacoes = cartao.Transacoes
-                .Where(x => x.DtTransacao >= DateTime.Now.AddMinutes(INTERVALO_TRANSACAO)).ToList();
+                .Where(x => x.DtCriacao >= DateTime.Now.AddMinutes(INTERVALO_TRANSACAO)).ToList();
             return ultimasTransacoes;
         }
 

@@ -1,5 +1,6 @@
 ﻿using AVS.SpotifyMusic.Domain.Conta.Entidades;
-using AVS.SpotifyMusic.Domain.Transacao.Entidades;
+using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
+using AVS.SpotifyMusic.Tests.Extensions;
 using Bogus;
 using Bogus.DataSets;
 using Bogus.Extensions.Brazil;
@@ -33,10 +34,10 @@ namespace AVS.SpotifyMusic.Tests.Fixtures
                     f.Name.FullName(Name.Gender.Male), 
                     f.Internet.Email(f.Name.FirstName(Name.Gender.Male)).ToLower(),
                     f.Person.Cpf(),
-                    f.Internet.Password(),
-                    f.Internet.Avatar(),
+                    @"Abc$123456",//f.Internet.PasswordCustom(8,20),                    
                     ativo,
-                    f.Person.DateOfBirth
+                    f.Person.DateOfBirth,
+                    f.Internet.Avatar()
                     )).Generate(quantidade);
             return usuarios;
         }
@@ -49,10 +50,10 @@ namespace AVS.SpotifyMusic.Tests.Fixtures
                     string.Empty,
                     "teste.gmail.com",
                     string.Empty,
-                    f.Internet.Password(),
-                    f.Internet.Avatar(),
+                    @"Abc$123456", //f.Internet.PasswordCustom(8,20),                    
                     true,
-                    f.Person.DateOfBirth
+                    f.Person.DateOfBirth,
+                    f.Internet.Avatar()
                     )).Generate();
             return usuario;
         }

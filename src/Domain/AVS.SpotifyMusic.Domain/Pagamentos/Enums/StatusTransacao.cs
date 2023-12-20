@@ -1,4 +1,4 @@
-﻿namespace AVS.SpotifyMusic.Domain.Transacao.Enums
+﻿namespace AVS.SpotifyMusic.Domain.Pagamentos.Enums
 {
     public enum StatusTransacao
     {        

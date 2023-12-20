@@ -1,23 +1,29 @@
 ﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Core.ObjValor;
 using AVS.SpotifyMusic.Domain.Core.Utils;
-using AVS.SpotifyMusic.Domain.Transacao.Enums;
-using AVS.SpotifyMusic.Domain.Transacao.ObjValor;
+using AVS.SpotifyMusic.Domain.Pagamentos.Enums;
+using AVS.SpotifyMusic.Domain.Pagamentos.ObjValor;
 using FluentValidation;
 
-namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
+namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
 {
     public class Transacao : Entity
     {
-        public DateTime DtTransacao { get; private set; }
+        //public DateTime DtTransacao { get; private set; }
         public Monetario Valor { get; private set; }
         public Merchant Merchant { get; private set; }
         public string? Descricao { get; private set; }
-        public StatusTransacao Situacao { get; private set; }        
+        public StatusTransacao Situacao { get; private set; }
+        public Pagamento Pagamento { get; set; }
+        public Guid PagamentoId { get; set; }
 
-        public Transacao(DateTime dtTransacao, decimal valor, string merchantName, StatusTransacao situacao, string? descricao = null)
+        protected Transacao()
+        {            
+        }
+
+        public Transacao(decimal valor, string merchantName, StatusTransacao situacao, string? descricao = null)
         {
-            DtTransacao = dtTransacao;
+            //DtTransacao = DateTime.Now;
             Valor = new Monetario(valor);
             Merchant = new Merchant(merchantName);
             Descricao = descricao;
@@ -51,7 +57,9 @@ namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
 
             RuleFor(x => x.Merchant.Nome)
                .NotEmpty()
-               .WithMessage("Nome é obrigatório.");
+               .WithMessage("Merchant é obrigatório.")
+               .Length(6, 150)
+               .WithMessage("Merchant deve ter entre 6 a 150 caracteres.");
 
             RuleFor(x => x.Descricao)
                .Length(6, 150)
@@ -61,11 +69,11 @@ namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
                 .NotEmpty()
                 .WithMessage("Situação da transação é obrigatória.");
 
-            RuleFor(x => x.DtTransacao.ToShortDateString())
+            RuleFor(x => x.DtCriacao.ToShortDateString())
                 .NotEmpty()
                 .WithMessage("Data da transação é obrigatória.");
 
-            RuleFor(x => x.DtTransacao)
+            RuleFor(x => x.DtCriacao)
                 .Custom((dtTran, context) =>
                 {
                     if (dtTran.Date.ToShortDateString() != null)

@@ -1,9 +1,9 @@
-﻿using AVS.SpotifyMusic.Domain.Transacao.Entidades;
-using AVS.SpotifyMusic.Domain.Transacao.Enums;
+﻿using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
+using AVS.SpotifyMusic.Domain.Pagamentos.Enums;
 using AVS.SpotifyMusic.Tests.Fixtures;
 using FluentAssertions;
 
-namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
+namespace AVS.SpotifyMusic.Tests.Domain.Pagamentos
 {
     [Collection(nameof(CartaoCollection))]
     public class CartaoValidoTests
@@ -63,7 +63,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
         {
             //Arrange
             var cartao = _fixture.CriarCartaoValido();
-            var transacao = new Transacao(DateTime.Now, 99.00M, "Lojas Novo Mundo", StatusTransacao.Pago);
+            var transacao = new Transacao(99.00M, "Lojas Novo Mundo", StatusTransacao.Pago);
             var limiteEsperado = cartao.Limite - transacao.Valor;
             
             //Act
@@ -79,7 +79,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
         {
             //Arrange
             var cartao = _fixture.CriarCartaoValido();
-            var transacao = new Transacao(DateTime.Now, 500M, "Lojas Novo Mundo", StatusTransacao.Pago);
+            var transacao = new Transacao(500M, "Lojas Novo Mundo", StatusTransacao.Pago);
             
             //Act
             var temLimite = cartao?.TemLimite(transacao);
@@ -94,7 +94,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
         {
             //Arrange
             var cartao = _fixture.CriarCartaoValido();
-            var transacao = new Transacao(DateTime.Now, 15000.00M, "Lojas Novo Mundo", StatusTransacao.Pago);
+            var transacao = new Transacao(15000.00M, "Lojas Novo Mundo", StatusTransacao.Pago);
 
             //Act
             var temLimite = cartao?.TemLimite(transacao);
@@ -109,7 +109,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Pagamento
         {
             //Arrange
             var cartao = _fixture.CriarCartaoValido();
-            var transacao = new Transacao(DateTime.Now, 99.00M, "Lojas Novo Mundo", StatusTransacao.Pago);            
+            var transacao = new Transacao(99.00M, "Lojas Novo Mundo", StatusTransacao.Pago);            
             var tamanhoEsperado = cartao.Transacoes.Count + 1;
             
             //Act

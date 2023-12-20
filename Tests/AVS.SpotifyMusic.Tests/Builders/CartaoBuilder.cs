@@ -1,5 +1,5 @@
 ﻿using AVS.SpotifyMusic.Domain.Core.ObjValor;
-using AVS.SpotifyMusic.Domain.Transacao.Entidades;
+using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
 using AVS.SpotifyMusic.Tests.Fixtures;
 
 namespace AVS.SpotifyMusic.Tests.Builders

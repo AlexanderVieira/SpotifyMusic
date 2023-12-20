@@ -1,9 +1,8 @@
 ﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Core.ObjValor;
-using AVS.SpotifyMusic.Domain.Core.Utils;
 using FluentValidation;
 
-namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
+namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
 {
     public class Cartao : Entity
     {
@@ -13,7 +12,13 @@ namespace AVS.SpotifyMusic.Domain.Transacao.Entidades
         public string Cvv { get; private set; }
         public bool Ativo { get; private set; }
         public Monetario Limite { get; private set; }
+        public Pagamento Pagamento { get; set; }
+        public Guid PagamentoId { get; set; }
         public List<Transacao> Transacoes { get; private set; } = new List<Transacao>();
+
+        protected Cartao()
+        {            
+        }
 
         public Cartao(string numero, string nome, string expiracao, string cvv, bool ativo, decimal limite)
         {

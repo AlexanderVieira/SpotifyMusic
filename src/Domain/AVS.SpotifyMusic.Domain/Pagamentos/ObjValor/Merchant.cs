@@ -1,4 +1,4 @@
-﻿namespace AVS.SpotifyMusic.Domain.Transacao.ObjValor
+﻿namespace AVS.SpotifyMusic.Domain.Pagamentos.ObjValor
 {
     public record class Merchant
     {
