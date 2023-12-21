@@ -53,7 +53,8 @@ namespace AVS.SpotifyMusic.Infra.Data.Context
             
             optionsBuilder.UseLoggerFactory(LoggerFactory.Create(x => x.AddConsole()));
             optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\Desenv\\DataSources\\LocalDB\\spotifymusic.mdf;Initial Catalog=spotifymusic;Integrated Security=True;Connect Timeout=30;");
-
+            //optionsBuilder.UseSqlServer("Data Source=DESKTOP-GCGB03L\\SQLEXPRESS;Initial Catalog=spotifymusic;Integrated Security=True");
+            
             base.OnConfiguring(optionsBuilder);
         }
     }
