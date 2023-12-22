@@ -8,6 +8,7 @@
 
 ![](ModelagemRelacionalSpotifyMusic.png)
 
-- ### **COBERTURA DE CÓDIGO**
+## **COBERTURA DE CÓDIGO**
+- ### **Report Generator**
 
 ![](reportgenerator-spotifymusic.png)
