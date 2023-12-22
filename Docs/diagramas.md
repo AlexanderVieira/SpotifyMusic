@@ -1,14 +1,14 @@
 ## **MODELAGEM CONCEITUAL**
 - ### **Diagrama de Classe**
 
-![](Modelagem_Conceitual_SpotifyMusic.png)
+![](modelagem-conceitual.png)
 
 ## **MODELAGEM RELACIONAL**
 - ### **Diagrama de Classes**
 
-![](ModelagemRelacionalSpotifyMusic.png)
+![](modelagem-relacional.png)
 
 ## **COBERTURA DE CÓDIGO**
 - ### **Report Generator**
 
-![](reportgenerator-spotifymusic.png)
+![](reportgenerator.png)
