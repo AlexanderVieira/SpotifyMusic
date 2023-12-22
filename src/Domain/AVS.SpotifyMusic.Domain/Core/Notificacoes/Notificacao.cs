@@ -1,4 +1,4 @@
-﻿using AVS.SpotifyMusic.Domain.Conta.Entidades;
+﻿using AVS.SpotifyMusic.Domain.Contas.Entidades;
 using AVS.SpotifyMusic.Domain.Core.Enums;
 using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 

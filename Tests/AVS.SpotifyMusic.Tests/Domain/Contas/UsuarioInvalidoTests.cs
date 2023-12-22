@@ -3,7 +3,7 @@ using AVS.SpotifyMusic.Tests.Fixtures;
 using FluentAssertions;
 using FluentValidation;
 
-namespace AVS.SpotifyMusic.Tests.Domain.Conta
+namespace AVS.SpotifyMusic.Tests.Domain.Contas
 {
     [Collection(nameof(UsuarioCollection))]
     public class UsuarioInvalidoTests 

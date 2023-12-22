@@ -1,7 +1,7 @@
 ﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Streaming.Entidades;
 
-namespace AVS.SpotifyMusic.Domain.Conta.Entidades
+namespace AVS.SpotifyMusic.Domain.Contas.Entidades
 {
     public class Assinatura : Entity
     {

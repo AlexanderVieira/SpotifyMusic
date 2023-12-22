@@ -6,10 +6,11 @@ using AVS.SpotifyMusic.Domain.Streaming.Entidades;
 using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
 using FluentValidation;
 using AVS.SpotifyMusic.Domain.Core.Notificacoes;
+using AVS.SpotifyMusic.Domain.Core.Data;
 
-namespace AVS.SpotifyMusic.Domain.Conta.Entidades
+namespace AVS.SpotifyMusic.Domain.Contas.Entidades
 {
-    public class Usuario : Entity
+    public class Usuario : Entity, IAggregateRoot
     {
         private const string NOME_PLAYLIST = "Minha Playlist";
         private int _numero = 0;
@@ -26,7 +27,7 @@ namespace AVS.SpotifyMusic.Domain.Conta.Entidades
         public List<Playlist> Playlists { get; private set; } = new List<Playlist>();
         public List<Notificacao> Notificacoes { get; private set; } = new List<Notificacao>();
 
-        protected Usuario()
+        public Usuario()
         {            
         }
 

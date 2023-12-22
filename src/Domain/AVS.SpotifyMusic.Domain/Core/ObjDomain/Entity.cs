@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using AVS.SpotifyMusic.Domain.Core.Data;
+using FluentValidation.Results;
 
 namespace AVS.SpotifyMusic.Domain.Core.ObjDomain
 {

@@ -1,4 +1,4 @@
-﻿using AVS.SpotifyMusic.Domain.Conta.Entidades;
+﻿using AVS.SpotifyMusic.Domain.Contas.Entidades;
 using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
 using AVS.SpotifyMusic.Domain.Pagamentos.Enums;
 using AVS.SpotifyMusic.Domain.Streaming.Entidades;
@@ -6,7 +6,7 @@ using AVS.SpotifyMusic.Domain.Streaming.Enums;
 using AVS.SpotifyMusic.Tests.Builders;
 using AVS.SpotifyMusic.Tests.Fixtures;
 
-namespace AVS.SpotifyMusic.Tests.Domain.Conta
+namespace AVS.SpotifyMusic.Tests.Domain.Contas
 {
     [Collection(nameof(UsuarioCollection))]    
     public class UsuarioValidoTests
