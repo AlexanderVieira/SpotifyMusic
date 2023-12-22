@@ -1,7 +1,8 @@
-﻿using AVS.SpotifyMusic.Domain.Core.Data;
+﻿using AVS.SpotifyMusic.Domain.Contas.Interfaces.Services;
+using AVS.SpotifyMusic.Domain.Core.Data;
 using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 
-namespace AVS.SpotifyMusic.Domain.Contas.Interfaces.Services
+namespace AVS.SpotifyMusic.Domain.Contas.Services
 {
     public class BaseService<TEntity> : IService<TEntity> where TEntity : Entity, IAggregateRoot
     {
