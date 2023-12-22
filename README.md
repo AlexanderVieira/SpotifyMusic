@@ -81,7 +81,7 @@ SpotifyMusic/
 │    │                     └── ValueObjects/
 │    └── Infra/           
 │    │     │       
-│    │     └── XPTO.Data/
+│    │     └── AVS.SpotifyMusic.Infra.Data/
 │    │            └── Context/    
 │    │            └── Mapping/
 │    │            └── Migrations/

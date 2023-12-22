@@ -119,25 +119,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             Assert.False(result);
             Assert.Contains(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Documento inválido."));
 
-        }
-
-        //[Trait("Categoria", "Usuario Bogus Testes")]
-        //[Theory(DisplayName = "Novo Usuario Foto nulo/vazio retorna mensagem")]
-        //[InlineData("")]
-        //[InlineData(null)]
-        //public void Usuario_ValidarFotoNuloVazio_DeveRetornarMensagem(string urlFotoInvalida)
-        //{
-        //    //Arrange            
-        //    var usuario = UsuarioBuilder.Novo().ComFoto(urlFotoInvalida).Buid();
-
-        //    //Act
-        //    var result = usuario.EhValido();
-
-        //    //Assert            
-        //    Assert.True(result);
-        //    Assert.DoesNotContain(usuario?.ValidationResult?.Errors, f => f.ErrorMessage.Contains("Foto do usuário inválida."));
-
-        //}
+        }       
 
         [Trait("Categoria", "Usuario Bogus Testes")]
         [Theory(DisplayName = "Novo Usuario Senha nulo/vazio retorna mensagem")]

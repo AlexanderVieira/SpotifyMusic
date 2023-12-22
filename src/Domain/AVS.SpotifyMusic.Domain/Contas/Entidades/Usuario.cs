@@ -52,7 +52,7 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
 
         public void AssinarPlano(Plano plano, Pagamento pagamento) 
         {
-            pagamento.CriarTransacao(pagamento.Cartao, pagamento.Transacao); //new Transacao(plano.Valor, new Merchant(plano.Nome).Nome, StatusTransacao.Pendente));
+            pagamento.CriarTransacao(pagamento.Cartao, pagamento.Transacao);
             DesativarAssinaturaAtiva();
             CriarAssinatura(plano);
         }
@@ -196,6 +196,10 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
                         context.AddFailure("Algo deu errado! A criptografia falhou."); 
                     } 
                 });
+
+            RuleFor(x => x.Foto)               
+               .MaximumLength(81578)
+               .WithMessage("Limite para o comprimento da cadeia de caracteres de consulta excedido.");
 
             RuleFor(x => x.DtNascimento)                
                 .Must(ValidationUtils.BeAValidDate)

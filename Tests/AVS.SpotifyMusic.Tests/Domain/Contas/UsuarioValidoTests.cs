@@ -5,6 +5,7 @@ using AVS.SpotifyMusic.Domain.Streaming.Entidades;
 using AVS.SpotifyMusic.Domain.Streaming.Enums;
 using AVS.SpotifyMusic.Tests.Builders;
 using AVS.SpotifyMusic.Tests.Fixtures;
+using FluentAssertions;
 
 namespace AVS.SpotifyMusic.Tests.Domain.Contas
 {
@@ -18,7 +19,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             _fixture = fixture;
         }
 
-        [Fact(DisplayName = "Novo Usuario valido")]
+        [Fact(DisplayName = "Novo Usuario Válido com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_CriarInstancia_DeveEstarValido()
         {
@@ -31,6 +32,40 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             //Assert
             Assert.True(result);
             Assert.Equal(0, usuario?.ValidationResult?.Errors.Count);
+        }
+
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        [Fact(DisplayName = "Novo Usuario Foto Limite comprimento URL com sucesso")]        
+        public void Usuario_ValidarFotoLimiteComprimentoUrl_ComSucesso()
+        {
+            //Arrange                        
+            var usuario = _fixture.CriarUsuarioValido();
+
+            //Act
+            var result = usuario.EhValido();
+
+            //Assert            
+            Assert.True(result);
+            result.Should().Be(usuario.Foto.Length > 0 && usuario.Foto.Length <= 8178);
+
+        }
+
+        [Trait("Categoria", "Usuario Bogus Testes")]
+        [Fact(DisplayName = "Novo Usuario Nome com sucesso")]
+        public void Usuario_ValidarNome_ComSucesso()
+        {
+            //Arrange                        
+            var usuario = _fixture.CriarUsuarioValido();
+
+            //Act
+            var result = usuario.EhValido();
+
+            //Assert            
+            Assert.True(result);
+            Assert.NotEmpty(usuario.Nome);
+            Assert.NotNull(usuario.Nome);
+            result.Should().NotBe(usuario.Nome == null || usuario.Nome == string.Empty);
+
         }
 
         [Trait("Categoria", "Usuario Bogus Testes")]
@@ -56,7 +91,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
 
         }
 
-        [Fact(DisplayName = "Usuario Criar Playlist")]
+        [Fact(DisplayName = "Usuario Criar Playlist com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_CriarPlaylist_ComSucesso()
         {
@@ -71,7 +106,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
            
         }
 
-        [Fact(DisplayName = "Usuario Atualizar Playlist")]
+        [Fact(DisplayName = "Usuario Atualizar Playlist com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_AtualizarPlaylists_DeveTerTamanhoMaiorOuIgualUm()
         {
@@ -90,7 +125,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             Assert.True(usuario.Playlists.Any());
         }
 
-        [Fact(DisplayName = "Usuario Remover Playlist")]
+        [Fact(DisplayName = "Usuario Remover Playlist com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
 
         public void Usuario_RemoverPlaylist_DeveTerTamanhoIgualAoLenghtMenosUm()
@@ -111,7 +146,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             Assert.Equal(countExpected, usuario.Playlists.Count);
         }
 
-        [Fact(DisplayName = "Usuario Remover Todas Playlists")]
+        [Fact(DisplayName = "Usuario Remover Todas Playlists com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_RemoverPlaylists_DeveTerTamanhoIgualZero()
         {
@@ -131,7 +166,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             Assert.True(usuario.Playlists.Count == 0);
         }
 
-        [Fact(DisplayName = "Usuario Ativo")]
+        [Fact(DisplayName = "Usuario Ativo com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_Ativar_DeveTerFlagIgualVerdadeiro()
         {
@@ -145,7 +180,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             Assert.True(usuario?.Ativo);
         }
 
-        [Fact(DisplayName = "Usuario Inativo")]
+        [Fact(DisplayName = "Usuario Inativo com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_Inativar_DeveTerFlagIgualFalso()
         {
@@ -159,7 +194,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             Assert.False(usuario?.Ativo);
         }
 
-        [Fact(DisplayName = "Usuario Criar Assinatura")]
+        [Fact(DisplayName = "Usuario Criar Assinatura com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_CriarAssinatura_ComSucesso()
         {
@@ -174,7 +209,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             Assert.True(usuario?.Assinaturas.Any(x => x.Ativo == true)); 
         }
 
-        [Fact(DisplayName = "Usuario Desativar Assinatura Ativa")]
+        [Fact(DisplayName = "Usuario Desativar Assinatura Ativa com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_DesativarAssinaturaAtiva_ComSucesso()
         {
@@ -192,7 +227,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             Assert.False(usuario?.Assinaturas.Any(x => x.Ativo));
         }
 
-        [Fact(DisplayName = "Usuario Assinar Plano com sucesso")]
+        [Fact(DisplayName = "Usuario Assinar Plano com sucesso com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_AssinarPlano_ComSucesso()
         {
@@ -218,7 +253,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
         }
 
 
-        [Fact(DisplayName = "Usuario Atualizar Plano")]
+        [Fact(DisplayName = "Usuario Atualizar Plano com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_AtualizarPlano_ComSucesso()
         {
@@ -267,7 +302,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
         }
 
 
-        [Fact(DisplayName = "Usuario Adicionar Cartão")]
+        [Fact(DisplayName = "Usuario Adicionar Cartão com sucesso")]
         [Trait("Categoria", "Usuario Bogus Testes")]
         public void Usuario_AdicionarCartao_ComSucesso()
         {
