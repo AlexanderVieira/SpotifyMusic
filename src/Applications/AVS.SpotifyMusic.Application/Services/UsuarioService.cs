@@ -1,10 +1,10 @@
-﻿using AVS.SpotifyMusic.Domain.Contas.Entidades;
+﻿using AVS.SpotifyMusic.Application.Contas.Interfaces.Services;
+using AVS.SpotifyMusic.Domain.Contas.Entidades;
 using AVS.SpotifyMusic.Domain.Contas.Interfaces.Repositories;
-using AVS.SpotifyMusic.Domain.Contas.Interfaces.Services;
 
-namespace AVS.SpotifyMusic.Domain.Contas.Services
+namespace AVS.SpotifyMusic.Application.Contas.Services
 {
-    public class UsuarioService : BaseService<Usuario>, IUsuarioService
+	public class UsuarioService : BaseService<Usuario>, IUsuarioService
     {
         
         private readonly IUsuarioRepository _usuarioRepository;
@@ -14,20 +14,24 @@ namespace AVS.SpotifyMusic.Domain.Contas.Services
             _usuarioRepository = usuarioRepository;
         }       
 
-        public async void Ativar(Guid usuarioId)
-        {
-            var usuario = await _usuarioRepository.ObterPorId(usuarioId);            
-            usuario.Ativar();
-            await _usuarioRepository.Atualizar(usuario);
-            var result = await _usuarioRepository.UnitOfWork.Commit();
-        }
-
-        public async void Inativar(Guid usuarioId)
+        public async Task<bool> Ativar(Guid usuarioId)
         {
             var usuario = await _usuarioRepository.ObterPorId(usuarioId);
+			if (usuario == null) return false;
+			usuario.Ativar();
+            await _usuarioRepository.Atualizar(usuario);
+            var result = await _usuarioRepository.UnitOfWork.Commit();
+            return result;
+        }
+
+        public async Task<bool> Inativar(Guid usuarioId)
+        {
+            var usuario = await _usuarioRepository.ObterPorId(usuarioId);
+            if (usuario == null) return false;
             usuario.Inativar();
             await _usuarioRepository.Atualizar(usuario);
             var result = await _usuarioRepository.UnitOfWork.Commit();
+            return result;
         }
     }
 }

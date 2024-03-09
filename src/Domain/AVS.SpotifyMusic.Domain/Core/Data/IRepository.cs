@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace AVS.SpotifyMusic.Domain.Core.Data
 {
-    public interface IRepository<TEntity> : IDisposable where TEntity : Entity, IAggregateRoot
+    public interface IRepository<TEntity> : IDisposable where TEntity : class, IAggregateRoot
     {
         IUnitOfWork UnitOfWork { get; }
         Task<IEnumerable<TEntity>> BuscarTodosPorCriterio(Expression<Func<TEntity, bool>> predicado);

@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.25" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\..\Applications\AVS.SpotifyMusic.Application\AVS.SpotifyMusic.Application.csproj" />
+    <ProjectReference Include="..\..\Infra\Data\AVS.SpotifyMusic.Infra.Data\AVS.SpotifyMusic.Infra.Data.csproj" />
   </ItemGroup>
 
 </Project>

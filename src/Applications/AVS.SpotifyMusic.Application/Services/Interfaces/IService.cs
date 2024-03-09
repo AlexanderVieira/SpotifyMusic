@@ -2,7 +2,7 @@
 using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using System.Linq.Expressions;
 
-namespace AVS.SpotifyMusic.Domain.Contas.Interfaces.Services
+namespace AVS.SpotifyMusic.Application.Contas.Interfaces.Services
 {
     public interface IService<TEntity> where TEntity : Entity, IAggregateRoot
     {
@@ -10,8 +10,8 @@ namespace AVS.SpotifyMusic.Domain.Contas.Interfaces.Services
         Task<TEntity> BuscarPorCriterio(Expression<Func<TEntity, bool>> predicado);
         Task<IEnumerable<TEntity>> ObterTodos();
         Task<TEntity> ObterPorId(Guid id);
-        Task Salvar(TEntity entity);
-        Task Atualizar(TEntity entity);
-        Task Remover(Guid id);
+        Task<bool> Salvar(TEntity entity);
+        Task<bool> Atualizar(TEntity entity);
+        Task<bool> Remover(Guid id);
     }
 }

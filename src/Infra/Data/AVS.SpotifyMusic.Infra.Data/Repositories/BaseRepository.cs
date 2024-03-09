@@ -8,7 +8,7 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
     public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot, new()
     {
         private readonly SpotifyMusicContext _context;
-        private bool _disposedValue;
+        
 
         public IUnitOfWork UnitOfWork => _context;
         public DbSet<TEntity> Query { get; set; }
@@ -26,7 +26,8 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
 
         public async Task<TEntity> BuscarPorCriterio(Expression<Func<TEntity, bool>> predicado)
         {
-            return await Query.FirstOrDefaultAsync(predicado);
+            var result = await Query.Where(predicado).FirstOrDefaultAsync();
+            return result;
         }
 
         public async Task<IEnumerable<TEntity>> ObterTodos()
@@ -58,26 +59,8 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _context.Dispose();           
         }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    Query = null;
-                    _context.Dispose();
-                }
-                _disposedValue = true;
-            }
-        }
-
-        ~BaseRepository()
-        {
-            Dispose(false);
-        }
+       
     }
 }

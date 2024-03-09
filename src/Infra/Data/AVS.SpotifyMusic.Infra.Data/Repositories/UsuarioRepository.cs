@@ -5,21 +5,12 @@ using AVS.SpotifyMusic.Domain.Contas.Interfaces.Repositories;
 
 namespace AVS.SpotifyMusic.Infra.Data.Repositories
 {
-    public class UsuarioRepository : BaseRepository<Usuario>, IUsuarioRepository  //<Usuario> where TEntity : Entity, IAggregateRoot
+    public class UsuarioRepository : BaseRepository<Usuario>, IUsuarioRepository
     {
         public UsuarioRepository(SpotifyMusicContext context) : base(context)
         {
         }
-
-        //public void Ativar(Usuario usuario)
-        //{            
-        //    Query.Update(usuario);
-        //}
-
-        //public void Inativar(Usuario usuario)
-        //{            
-        //    Query.Update(usuario);
-        //}
+        
     }
     
 }
