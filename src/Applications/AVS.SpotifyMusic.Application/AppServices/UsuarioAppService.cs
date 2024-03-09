@@ -58,7 +58,7 @@ namespace AVS.SpotifyMusic.Application.AppServices
 		}
 
 		public async Task<bool> Criar(UsuarioDto usuarioDto)
-		{
+		{			
 			var usuario = _mapper.Map<Usuario>(usuarioDto);
 			var response = await _usuarioService.Salvar(usuario);
 			return response;

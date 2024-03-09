@@ -61,5 +61,6 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
             var result = await _repository.UnitOfWork.Commit();
             return result;
         }
+
     }
 }
