@@ -9,7 +9,7 @@ namespace AVS.SpotifyMusic.Application.Contas.DTOs
 {
 	public class AssinaturaDto
 	{
-		public bool Ativo { get; private set; }
-		public PlanoDto Plano { get; private set; }
+		public bool Ativo { get; set; }
+		public PlanoDto Plano { get; set; }
 	}
 }

@@ -46,7 +46,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
 
 		[HttpPost]
 		[Route("usuario-criar")]
-		public async Task<IActionResult> Criar(UsuarioDto request)
+		public async Task<IActionResult> Criar(UsuarioRequest request)
 		{
 			var response = await _usuarioAppService.Criar(request);			
 			if (response == false) return BadRequest();

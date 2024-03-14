@@ -1,6 +1,7 @@
 ﻿using AVS.SpotifyMusic.Application.Contas.Interfaces.Services;
 using AVS.SpotifyMusic.Domain.Contas.Entidades;
 using AVS.SpotifyMusic.Domain.Contas.Interfaces.Repositories;
+using System.Linq.Expressions;
 
 namespace AVS.SpotifyMusic.Application.Contas.Services
 {
@@ -24,6 +25,12 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
             return result;
         }
 
+        public async Task<bool> Existe(Expression<Func<Usuario, bool>> expression)
+        {
+            var result = await _usuarioRepository.Existe(expression);
+            return result;
+        }
+
         public async Task<bool> Inativar(Guid usuarioId)
         {
             var usuario = await _usuarioRepository.ObterPorId(usuarioId);
@@ -33,5 +40,6 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
             var result = await _usuarioRepository.UnitOfWork.Commit();
             return result;
         }
+
     }
 }

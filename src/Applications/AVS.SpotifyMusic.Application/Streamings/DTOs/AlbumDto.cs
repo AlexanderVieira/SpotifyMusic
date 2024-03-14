@@ -2,9 +2,9 @@
 {
 	public class AlbumDto
 	{
-		public string Titulo { get; private set; }
-		public string Descricao { get; private set; }
-		public string? Foto { get; private set; }
-		public List<MusicaDto> Musicas { get; private set; } = new List<MusicaDto>();
+		public string Titulo { get; set; }
+		public string Descricao { get; set; }
+		public string? Foto { get; set; }
+		public List<MusicaDto> Musicas { get; set; } = new List<MusicaDto>();
 	}
 }

@@ -2,11 +2,16 @@
 using AVS.SpotifyMusic.Application.Contas.DTOs;
 using AVS.SpotifyMusic.Domain.Contas.Entidades;
 using AVS.SpotifyMusic.Application.Contas.Interfaces.Services;
+using AVS.SpotifyMusic.Domain.Core.ObjDomain;
+using AVS.SpotifyMusic.Domain.Streaming.Entidades;
+using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
+using AVS.SpotifyMusic.Domain.Pagamentos.Enums;
+using AVS.SpotifyMusic.Domain.Streaming.Enums;
 
 
 namespace AVS.SpotifyMusic.Application.AppServices
 {
-	public class UsuarioAppService // : BaseAppService<UsuarioDto>
+	public class UsuarioAppService
 	{
 		private readonly IUsuarioService _usuarioService;
 		private readonly IMapper _mapper;
@@ -57,9 +62,23 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			return response;
 		}
 
-		public async Task<bool> Criar(UsuarioDto usuarioDto)
+		public async Task<bool> Criar(UsuarioRequest request)
 		{
-			var usuario = _mapper.Map<Usuario>(usuarioDto);
+			if (await UsuarioExiste(request.Email))
+				throw new DomainException("Usuário já existe na base de dados.");
+
+			var tipoPlano = request.Assinatura.Plano.TipoPlano;
+			var plano = SelecionarPlano(tipoPlano);			
+
+			var cartao = _mapper.Map<Cartao>(request.Cartao);
+			var pagamento = new Pagamento(plano.Valor, 
+										  StatusPagamento.Processando, 
+										  cartao, 
+										  new Transacao(plano.Valor, "Merchant Teste", StatusTransacao.Pendente));
+			cartao.Pagamento = pagamento;
+            var usuario = _mapper.Map<Usuario>(request);
+			usuario.CriarConta(plano, cartao.Pagamento);
+
 			var response = await _usuarioService.Salvar(usuario);
 			return response;
 		}
@@ -76,6 +95,24 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			var response = await _usuarioService.Remover(id);
 			return response;
 		}
+
+		private async Task<bool> UsuarioExiste(string filtro)
+		{
+			var result = await _usuarioService.Existe(u => u.Email.Address.ToLower().Equals(filtro.ToLower()));
+			return result;
+        }
+
+		private Plano SelecionarPlano(int tipoPlano)
+		{
+
+            return tipoPlano switch
+            {
+                (int)TipoPlano.Basico => new Plano("Básico", "Plano gratuito", 0.0M, TipoPlano.Basico),
+                (int)TipoPlano.Familia => new Plano("Familia", "Baixar Musicas", 9.90M, TipoPlano.Familia),
+                (int)TipoPlano.Premium => new Plano("Premium", "Outros Beneficios", 14.90M, TipoPlano.Premium),
+                _ => null,
+            };
+        }
 
 	}
 }

@@ -2,6 +2,8 @@ using AVS.SpotifyMusic.Application.AppServices;
 using AVS.SpotifyMusic.Application.Contas.AutoMapper;
 using AVS.SpotifyMusic.Application.Contas.Interfaces.Services;
 using AVS.SpotifyMusic.Application.Contas.Services;
+using AVS.SpotifyMusic.Application.Pagamentos.AutoMapper;
+using AVS.SpotifyMusic.Application.Streamings.AutoMapper;
 using AVS.SpotifyMusic.Domain.Contas.Interfaces.Repositories;
 using AVS.SpotifyMusic.Domain.Core.Data;
 using AVS.SpotifyMusic.Infra.Data.Context;
@@ -30,10 +32,12 @@ namespace AVS.SpotifyMusic.Api
 
 			builder.Services.AddScoped<SpotifyMusicContext>();
 
-			builder.Services.AddAutoMapper(typeof(ContaMappingProfile).Assembly);
+			builder.Services.AddAutoMapper(typeof(ContasMappingProfile).Assembly);
+            builder.Services.AddAutoMapper(typeof(PagamentosMappingProfile).Assembly);
+            builder.Services.AddAutoMapper(typeof(StreamingsMappingProfile).Assembly);
 
-			//Repositories
-			builder.Services.AddScoped(typeof(BaseRepository<>));
+            //Repositories
+            builder.Services.AddScoped(typeof(BaseRepository<>));
 			builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 			
 			//Services

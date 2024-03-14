@@ -4,8 +4,8 @@ namespace AVS.SpotifyMusic.Application.Streamings.DTOs
 {
 	public class MusicaDto
 	{
-		public string Nome { get; private set; }
-		public int Duracao { get; private set; }
-		public List<PlaylistDto> Playlists { get; private set; } = new List<PlaylistDto>();
+		public string Nome { get; set; }
+		public int Duracao { get; set; }
+		public List<PlaylistDto> Playlists { get; set; } = new List<PlaylistDto>();
 	}
 }

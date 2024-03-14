@@ -2,9 +2,9 @@
 {
 	public class BandaDto
 	{
-		public string Nome { get; private set; }
-		public string Descricao { get; private set; }
-		public string? Foto { get; private set; }
-		public List<AlbumDto> Albuns { get; private set; } = new List<AlbumDto>();
+		public string Nome { get; set; }
+		public string Descricao { get; set; }
+		public string? Foto { get; set; }
+		public List<AlbumDto> Albuns { get; set; } = new List<AlbumDto>();
 	}
 }
