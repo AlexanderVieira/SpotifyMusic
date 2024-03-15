@@ -93,7 +93,7 @@ namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
                          
         }
 
-        public void ValidarTransacaoRepetidaPorMerchant(List<Transacao> ultimasTransacoes, Transacao transacao)
+        public void ValidarTransacaoRepetidaPorMerchant(ICollection<Transacao> ultimasTransacoes, Transacao transacao)
         {
             var resultado = ultimasTransacoes.Where(x => 
                             x.Merchant.Nome.ToUpper() == transacao.Merchant.Nome.ToUpper() && 

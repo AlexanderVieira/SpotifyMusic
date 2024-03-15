@@ -18,7 +18,15 @@ namespace AVS.SpotifyMusic.Infra.Data.Repositories
 
         public async Task<Usuario> BuscarPorCriterioDetalhado(Expression<Func<Usuario, bool>> expression)
         {
-            var result = await _context.Usuarios.FirstOrDefaultAsync(expression);
+            var result = await _context.Usuarios
+                .Include(u => u.Cartoes)
+                .ThenInclude(c => c.Pagamento)
+                .ThenInclude(p => p.Transacao)
+                .Include(u => u.Assinaturas)
+                .ThenInclude(a => a.Plano)
+                .Include(u => u.Playlists)
+                .ThenInclude(p => p.Musicas)
+                .FirstOrDefaultAsync(expression);
             return result;
         }
 
@@ -28,8 +36,26 @@ namespace AVS.SpotifyMusic.Infra.Data.Repositories
             return result;
         }
 
+        public async Task<IEnumerable<UsuarioConsultaAnonima>> BuscarTodosConsultaProjetada()
+        {
+            // Consulta projetada
+            var result = await Query.Select(u =>
+                                         new UsuarioConsultaAnonima
+                                         {
+                                             Id = u.Id,
+                                             Nome = u.Nome,
+                                             Email = u.Email.Address,
+                                             Foto = u.Foto
+
+                                         }).ToListAsync();
+
+            return result;
+
+        }
+
         public async Task<IEnumerable<UsuarioConsultaAnonima>> BuscarPorCriterioConsultaProjetada(Expression<Func<Usuario, bool>> expression)
         {
+            // Consulta projetada
             var result = await Query.Where(expression)
                                       .Select(u =>
                                          new UsuarioConsultaAnonima 

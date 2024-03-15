@@ -9,6 +9,7 @@ namespace AVS.SpotifyMusic.Domain.Contas.Interfaces.Repositories
     {
         Task<bool> Existe(Expression<Func<Usuario, bool>> expression);
         Task<Usuario> BuscarPorCriterioDetalhado(Expression<Func<Usuario, bool>> expression);
+        Task<IEnumerable<UsuarioConsultaAnonima>> BuscarTodosConsultaProjetada();
         Task<IEnumerable<UsuarioConsultaAnonima>> BuscarPorCriterioConsultaProjetada(Expression<Func<Usuario, bool>> expression);
 
     }

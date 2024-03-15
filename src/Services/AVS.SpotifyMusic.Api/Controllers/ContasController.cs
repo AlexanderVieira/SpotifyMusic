@@ -14,13 +14,22 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		public ContasController(UsuarioAppService usuarioAppService)
 		{
 			_usuarioAppService = usuarioAppService;
-		}        
+		}
 
         [HttpGet]
-		[Route("usuarios")]
-		public async Task<IActionResult> ObterTodos()
+        [Route("usuarios")]
+        public async Task<IActionResult> ObterTodos()
+        {
+            var response = await _usuarioAppService.ObterTodos();
+            if (response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
+
+        [HttpGet]
+		[Route("usuarios/todos")]
+		public async Task<IActionResult> ObterTodosConsultaProjetada()
 		{
-			var response = await _usuarioAppService.ObterTodos();
+			var response = await _usuarioAppService.BuscarTodosConsultaProjetada();
 			if(response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
 			return StatusCode(StatusCodes.Status200OK, response);
 		}
@@ -29,7 +38,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
         [Route("usuarios/filtro/{nome}")]
         public async Task<IActionResult> ObterTodosPorNome(string nome)
         {
-            var response = await _usuarioAppService.ObterTodosPorNome(nome);
+            var response = await _usuarioAppService.BuscarTodosPorNomeConsultaProjetada(nome);
             if (response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
             return StatusCode(StatusCodes.Status200OK, response);
         }

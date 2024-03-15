@@ -7,16 +7,11 @@ using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace AVS.SpotifyMusic.Infra.Data.Context
 {
     public class SpotifyMusicContext : DbContext, IUnitOfWork
     {
-        //private readonly IHostingEnvironment _env;
-        private const string DEFAULT_CONNECTION = "DefaultConnection";
-
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Assinatura> Assinaturas { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
@@ -32,8 +27,8 @@ namespace AVS.SpotifyMusic.Infra.Data.Context
 
         public SpotifyMusicContext(DbContextOptions<SpotifyMusicContext> options) : base(options)
         {
-            Database.Migrate();            
-            //_env = env;
+            Database.Migrate();    
+            ChangeTracker.LazyLoadingEnabled = false;            
         }       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,20 +40,6 @@ namespace AVS.SpotifyMusic.Infra.Data.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json", true, true)
-                .AddJsonFile($"appsettings.{EnvironmentName.Development}.json", true, true)
-                .AddJsonFile($"appsettings.{EnvironmentName.Production}.json", true, true)
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
-
-            optionsBuilder.UseLoggerFactory(LoggerFactory.Create(x => x.AddConsole()));
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString(DEFAULT_CONNECTION));
-            //optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\Desenv\\DataSources\\LocalDB\\spotifymusic.mdf;Initial Catalog=spotifymusic;Integrated Security=True;Connect Timeout=30;");
-            //optionsBuilder.UseSqlServer("Data Source=DESKTOP-GCGB03L\\SQLEXPRESS;Initial Catalog=spotifymusic;Integrated Security=True");
-
             base.OnConfiguring(optionsBuilder);
         }
 
@@ -89,8 +70,6 @@ namespace AVS.SpotifyMusic.Infra.Data.Context
         public SpotifyMusicContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<SpotifyMusicContext>();
-            //optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\Desenv\\DataSources\\LocalDB\\spotifymusic.mdf;Initial Catalog=spotifymusic;Integrated Security=True;Connect Timeout=30;");
-
             return new SpotifyMusicContext(optionsBuilder.Options);
         }
     }

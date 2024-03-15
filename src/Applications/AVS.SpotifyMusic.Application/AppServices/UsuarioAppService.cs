@@ -22,9 +22,16 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			_mapper = mapper;
 		}
 
-        public async Task<IEnumerable<UsuarioConsultaAnonima>> ObterTodosPorNome(string filtro)
+        public async Task<IEnumerable<UsuarioConsultaAnonima>> BuscarTodosPorNomeConsultaProjetada(string filtro)
         {
             var response = await _usuarioService.BuscarPorCriterioConsultaProjetada(x => x.Nome.ToLower().Contains(filtro.ToLower()));            
+            return response;
+        }
+
+        public async Task<IEnumerable<UsuarioConsultaAnonima>> BuscarTodosConsultaProjetada()
+        {
+            var response = await _usuarioService.BuscarTodosConsultaProjetada();
+            //var response = _mapper.Map<IEnumerable<UsuarioResponse>>(usuarios);
             return response;
         }
 

@@ -26,9 +26,9 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
             return result;
         }
 
-        public Task<IEnumerable<UsuarioConsultaAnonima>> BuscarPorCriterioConsultaProjetada(Expression<Func<Usuario, bool>> expression)
+        public async Task<IEnumerable<UsuarioConsultaAnonima>> BuscarPorCriterioConsultaProjetada(Expression<Func<Usuario, bool>> expression)
         {
-            var usuarios = _usuarioRepository.BuscarPorCriterioConsultaProjetada(expression);
+            var usuarios = await _usuarioRepository.BuscarPorCriterioConsultaProjetada(expression);
             return usuarios;
         }
 
@@ -36,6 +36,12 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
         {
             var usuario = await _usuarioRepository.BuscarPorCriterioDetalhado(expression);
             return usuario;
+        }
+
+        public async Task<IEnumerable<UsuarioConsultaAnonima>> BuscarTodosConsultaProjetada()
+        {
+            var result = await _usuarioRepository.BuscarTodosConsultaProjetada();           
+            return result;
         }
 
         public async Task<bool> Existe(Expression<Func<Usuario, bool>> expression)

@@ -16,9 +16,13 @@ namespace AVS.SpotifyMusic.Application.Extensions
             foreach (var property in sourceType.GetProperties())
             {
                 //Get the Property Name
+#pragma warning disable CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
                 PropertyDescriptor descriptor = TypeDescriptor.GetProperties(sourceType)[property.Name];
-                //Check if Property is Decorated with the NoMapAttribute
+#pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
+                              //Check if Property is Decorated with the NoMapAttribute
+#pragma warning disable CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
                 IgnoreMapperAttribute attribute = (IgnoreMapperAttribute)descriptor.Attributes[typeof(IgnoreMapperAttribute)];
+#pragma warning restore CS8600 // Conversão de literal nula ou possível valor nulo em tipo não anulável.
                 if (attribute != null)
                 {
                     //If Property is Decorated with NoMap Attribute, call the Ignore Method
