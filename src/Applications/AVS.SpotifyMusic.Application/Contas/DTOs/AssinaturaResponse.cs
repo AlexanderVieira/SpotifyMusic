@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace AVS.SpotifyMusic.Application.Contas.DTOs
 {
-	public class AssinaturaDto
+	public class AssinaturaResponse
 	{
-		public bool Ativo { get; set; }
-		public PlanoDto Plano { get; set; }
+        public Guid Id { get; set; }
+        public bool Ativo { get; set; }
+		public PlanoResponse Plano { get; set; }
+
+		public AssinaturaResponse() { }
 	}
 }

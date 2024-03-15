@@ -8,11 +8,11 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
         public string? Foto { get; private set; }
-        public bool Publica { get; private set; }
-        public Usuario Usuario { get; private set; }
-        public List<Musica> Musicas { get; private set; } = new List<Musica>();
+        public bool Publica { get; private set; }        
+        public virtual Usuario Usuario { get; private set; }        
+        public virtual ICollection<Musica> Musicas { get; private set; } = new List<Musica>();
 
-        protected Playlist()
+        public Playlist()
         {            
         }
 

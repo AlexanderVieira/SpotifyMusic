@@ -22,10 +22,10 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
         public string? Foto { get; private set; }
         public bool Ativo { get; set; }
         public DateTime DtNascimento { get; private set; }
-        public List<Cartao> Cartoes { get; private set; } = new List<Cartao>();
-        public List<Assinatura> Assinaturas { get; private set; } = new List<Assinatura>();
-        public List<Playlist> Playlists { get; private set; } = new List<Playlist>();
-        public List<Notificacao> Notificacoes { get; private set; } = new List<Notificacao>();
+        public virtual ICollection<Cartao> Cartoes { get; private set; } = new List<Cartao>();
+        public virtual ICollection<Assinatura> Assinaturas { get; private set; } = new List<Assinatura>();
+        public virtual ICollection<Playlist> Playlists { get; private set; } = new List<Playlist>();
+        public virtual ICollection<Notificacao> Notificacoes { get; private set; } = new List<Notificacao>();
 
         public Usuario()
         {            
@@ -43,11 +43,29 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
             
         }
 
+        public void Atualizar(string nome, string email, string cpf, string senha, bool ativo, DateTime dtNascimento, string? foto = null)
+        {
+            Nome = nome;
+            Email = new Email(email);
+            Cpf = new Cpf(cpf);
+            Senha = new Senha(senha);
+            Foto = foto;
+            Ativo = ativo;
+            DtNascimento = dtNascimento;
+        }
+
         public void CriarConta(Plano plano, Pagamento pagamento)
         {   
             AssinarPlano(plano, pagamento);
             AdicionarCartao(pagamento.Cartao);
             CriarPlaylist(titulo: $"{NOME_PLAYLIST} nº {++_numero}", descricao: "Preencha sua descrição", publico: false);
+        }
+
+        public void AtualizarConta(Plano plano, Pagamento pagamento)
+        {
+            pagamento.CriarTransacao(pagamento.Cartao, pagamento.Transacao);
+            AdicionarCartao(pagamento.Cartao);
+            AtualizarPlano(plano);
         }
 
         public void AssinarPlano(Plano plano, Pagamento pagamento) 
@@ -59,7 +77,7 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
 
         public void DesativarAssinaturaAtiva()
         {
-            if (Assinaturas.Any(x => x.Ativo)) Assinaturas.ForEach(a => { a.Inativar(); });           
+            if (Assinaturas.Any(x => x.Ativo)) Assinaturas.ToList().ForEach(a => { a.Inativar(); });           
         }       
 
         public void Ativar()
@@ -84,7 +102,7 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
 
         public void AtualizarPlaylist(List<Playlist> playlists)
         {
-            Playlists.AddRange(playlists);
+            Playlists.ToList().AddRange(playlists);
         }
 
         public void RemoverPlaylist(Playlist playlist)
@@ -106,10 +124,11 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
         public void AtualizarPlano(Plano plano)
         {
             if (Assinaturas.Any()) 
-            { 
+            {                
                 Assinatura? assinatura = Assinaturas.LastOrDefault(a => a.Ativo);
                 if (assinatura != null)
                 {
+                    Assinaturas.Remove(assinatura);
                     assinatura.AtualizarPlano(plano);
                     AdicionarAssinatura(assinatura);
                 }
@@ -121,9 +140,20 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
             Assinaturas.Add(assinatura);
         }
 
+        public void AtualizarAssinaturas(List<Assinatura> assinaturas)
+        {
+            Assinaturas.ToList().AddRange(assinaturas);
+        }
+
+
         public void AdicionarCartao(Cartao cartao)
         {
             Cartoes.Add(cartao);
+        }
+
+        public void AtualizarCartoes(List<Cartao> cartoes)
+        {
+            Cartoes.ToList().AddRange(cartoes);
         }
 
         public void AdicionarNotificacao(Notificacao notificacao)

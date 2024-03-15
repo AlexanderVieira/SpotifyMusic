@@ -21,7 +21,8 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
 
         public async Task<IEnumerable<TEntity>> BuscarTodosPorCriterio(Expression<Func<TEntity, bool>> predicado)
         {
-            return await Query.AsNoTracking().Where(predicado).ToListAsync();
+            return await Query//.AsNoTracking()
+                              .Where(predicado).ToListAsync();
         }
 
         public async Task<TEntity> BuscarPorCriterio(Expression<Func<TEntity, bool>> predicado)

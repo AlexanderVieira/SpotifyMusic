@@ -8,10 +8,10 @@ namespace AVS.SpotifyMusic.Application.Pagamentos.AutoMapper
 	{
         public PagamentosMappingProfile()
         {
-			CreateMap<PagamentoDto, Pagamento>()
+			CreateMap<PagamentoResponse, Pagamento>()
 				.ForPath(x => x.Situacao, m => m.MapFrom(p  => p.Situacao));
 
-			CreateMap<Pagamento, PagamentoDto>()
+			CreateMap<Pagamento, PagamentoResponse>()
 				.ForPath(x => x.Situacao, m => m.MapFrom(p => p.Situacao));
 
             CreateMap<CartaoRequest, Cartao>()
@@ -22,12 +22,12 @@ namespace AVS.SpotifyMusic.Application.Pagamentos.AutoMapper
             CreateMap<Cartao, CartaoRequest>()
                 .ForPath(x => x.Limite, m => m.MapFrom(p => p.Limite.Valor));
 
-            CreateMap<CartaoDto, Cartao>()
+            CreateMap<CartaoResponse, Cartao>()
                 .ConstructUsing(u =>
                 new Cartao(u.Numero, u.Nome, u.Expiracao, u.Cvv, u.Ativo, u.Limite))
                     .ForPath(x => x.Limite.Valor, m => m.MapFrom(p => p.Limite));
 
-            CreateMap<Cartao, CartaoDto>()
+            CreateMap<Cartao, CartaoResponse>()
                 .ForPath(x => x.Limite, m => m.MapFrom(p => p.Limite.Valor));
         }
     }

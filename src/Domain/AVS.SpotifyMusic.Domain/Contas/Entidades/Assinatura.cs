@@ -6,9 +6,9 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
     public class Assinatura : Entity
     {
         public bool Ativo { get; private set; }
-        public Plano Plano { get; private set; }        
+        public virtual Plano Plano { get; private set; }        
 
-        protected Assinatura()
+        public Assinatura()
         {            
         }
 

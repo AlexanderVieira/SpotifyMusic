@@ -14,24 +14,33 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		public ContasController(UsuarioAppService usuarioAppService)
 		{
 			_usuarioAppService = usuarioAppService;
-		}
+		}        
 
-		[HttpGet]
+        [HttpGet]
 		[Route("usuarios")]
 		public async Task<IActionResult> ObterTodos()
 		{
 			var response = await _usuarioAppService.ObterTodos();
 			if(response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
-			return StatusCode(StatusCodes.Status201Created, response);
+			return StatusCode(StatusCodes.Status200OK, response);
 		}
 
-		[HttpGet]
+        [HttpGet]
+        [Route("usuarios/filtro/{nome}")]
+        public async Task<IActionResult> ObterTodosPorNome(string nome)
+        {
+            var response = await _usuarioAppService.ObterTodosPorNome(nome);
+            if (response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
+
+        [HttpGet]
 		[Route("usuarios/{filtro}")]
 		public async Task<IActionResult> BuscarTodosPorNome(string filtro)
 		{			
 			var response = await _usuarioAppService.BuscarTodosPorNome(filtro);
 			if (response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
-			return StatusCode(StatusCodes.Status201Created, response);
+			return StatusCode(StatusCodes.Status200OK, response);
 		}
 
 
@@ -41,7 +50,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		{
 			var response = await _usuarioAppService.UsuarioDetalhe(id);
 			if (response == null) { return StatusCode(StatusCodes.Status404NotFound); }
-			return StatusCode(StatusCodes.Status201Created, response);
+			return StatusCode(StatusCodes.Status200OK, response);
 		}
 
 		[HttpPost]
@@ -56,7 +65,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
 
 		[HttpPut]
 		[Route("usuario-atualizar")]
-		public async Task<IActionResult> Atualizar(UsuarioDto request)
+		public async Task<IActionResult> Atualizar(UsuarioAtualizaRequest request)
 		{
 			var response = await _usuarioAppService.Atualizar(request);
 			if (response == false) return BadRequest();

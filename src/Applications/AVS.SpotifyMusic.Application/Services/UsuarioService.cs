@@ -1,6 +1,7 @@
 ﻿using AVS.SpotifyMusic.Application.Contas.Interfaces.Services;
 using AVS.SpotifyMusic.Domain.Contas.Entidades;
 using AVS.SpotifyMusic.Domain.Contas.Interfaces.Repositories;
+using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using System.Linq.Expressions;
 
 namespace AVS.SpotifyMusic.Application.Contas.Services
@@ -23,6 +24,18 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
             await _usuarioRepository.Atualizar(usuario);
             var result = await _usuarioRepository.UnitOfWork.Commit();
             return result;
+        }
+
+        public Task<IEnumerable<UsuarioConsultaAnonima>> BuscarPorCriterioConsultaProjetada(Expression<Func<Usuario, bool>> expression)
+        {
+            var usuarios = _usuarioRepository.BuscarPorCriterioConsultaProjetada(expression);
+            return usuarios;
+        }
+
+        public async Task<Usuario> BuscarPorCriterioDetalhado(Expression<Func<Usuario, bool>> expression)
+        {
+            var usuario = await _usuarioRepository.BuscarPorCriterioDetalhado(expression);
+            return usuario;
         }
 
         public async Task<bool> Existe(Expression<Func<Usuario, bool>> expression)

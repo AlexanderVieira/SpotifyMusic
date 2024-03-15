@@ -27,6 +27,7 @@ namespace AVS.SpotifyMusic.Api
 
 			builder.Services.AddDbContext<SpotifyMusicContext>(c =>
 			{
+				c.UseLazyLoadingProxies();
 				c.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
@@ -35,6 +36,16 @@ namespace AVS.SpotifyMusic.Api
 			builder.Services.AddAutoMapper(typeof(ContasMappingProfile).Assembly);
             builder.Services.AddAutoMapper(typeof(PagamentosMappingProfile).Assembly);
             builder.Services.AddAutoMapper(typeof(StreamingsMappingProfile).Assembly);
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Total",
+                    builder =>
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
 
             //Repositories
             builder.Services.AddScoped(typeof(BaseRepository<>));
@@ -55,8 +66,8 @@ namespace AVS.SpotifyMusic.Api
 			}
 
 			app.UseHttpsRedirection();
-
-			app.UseAuthorization();
+            app.UseCors("Total");
+            app.UseAuthorization();
 
 
 			app.MapControllers();

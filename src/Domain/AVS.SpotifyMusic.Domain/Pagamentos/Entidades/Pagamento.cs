@@ -14,8 +14,8 @@ namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
 
         public Monetario Valor { get; private set; }
         public StatusPagamento Situacao { get; private set; }
-        public Cartao Cartao { get; private set; }
-        public Transacao Transacao { get; private set; }        
+        public virtual Cartao Cartao { get; private set; }
+        public virtual Transacao Transacao { get; private set; }        
 
         protected Pagamento()
         {            

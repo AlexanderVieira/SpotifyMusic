@@ -22,17 +22,23 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			_mapper = mapper;
 		}
 
-		public async Task<IEnumerable<UsuarioDto>> ObterTodos()
+        public async Task<IEnumerable<UsuarioConsultaAnonima>> ObterTodosPorNome(string filtro)
+        {
+            var response = await _usuarioService.BuscarPorCriterioConsultaProjetada(x => x.Nome.ToLower().Contains(filtro.ToLower()));            
+            return response;
+        }
+
+        public async Task<IEnumerable<UsuarioResponse>> ObterTodos()
 		{
-			var usuario = await _usuarioService.ObterTodos();
-			var response = _mapper.Map<IEnumerable<UsuarioDto>>(usuario);
+			var usuarios = await _usuarioService.ObterTodos();
+			var response = _mapper.Map<IEnumerable<UsuarioResponse>>(usuarios);
 			return response;
 		}
 
-		public async Task<UsuarioDto> ObterPorId(Guid id)
+		public async Task<UsuarioDetalheResponse> ObterPorId(Guid id)
 		{
 			var usuario = await _usuarioService.ObterPorId(id);			
-			var response = _mapper.Map<UsuarioDto>(usuario);
+			var response = _mapper.Map<UsuarioDetalheResponse>(usuario);
 			return response;
 		}
 
@@ -48,17 +54,17 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			return response;
 		}
 
-		public async Task<IEnumerable<UsuarioDto>> BuscarTodosPorNome(string filtro)
+		public async Task<IEnumerable<UsuarioResponse>> BuscarTodosPorNome(string filtro)
 		{
 			var usuarios = await _usuarioService.BuscarTodosPorCriterio(u => u.Nome.ToLower().Contains(filtro.ToLower()));
-			var response = _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
+			var response = _mapper.Map<IEnumerable<UsuarioResponse>>(usuarios);
 			return response;
 		}
 
-		public async Task<UsuarioDto> UsuarioDetalhe(Guid id)
+		public async Task<UsuarioDetalheResponse> UsuarioDetalhe(Guid id)
 		{			
-			var usuario = await _usuarioService.BuscarPorCriterio(u => u.Id == id);
-			var response = _mapper.Map<UsuarioDto>(usuario);
+			var usuario = await _usuarioService.BuscarPorCriterioDetalhado(u => u.Id == id);
+			var response = _mapper.Map<UsuarioDetalheResponse>(usuario);
 			return response;
 		}
 
@@ -83,10 +89,23 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			return response;
 		}
 
-		public async Task<bool> Atualizar(UsuarioDto usuarioDto)
+		public async Task<bool> Atualizar(UsuarioAtualizaRequest request)
 		{
-			var usuario = _mapper.Map<Usuario>(usuarioDto);
-			var response = await _usuarioService.Atualizar(usuario);
+            if (!await UsuarioExiste(request.Id))
+                throw new DomainException("Usuário não existe na base de dados.");
+
+			var usuarioParaAtualizar = await _usuarioService.BuscarPorCriterio(u => 
+														   u.Email.Address.ToLower() == request.Email.ToLower());
+
+			usuarioParaAtualizar.Atualizar(request.Nome, 
+										   request.Email, 
+										   request.Cpf, 
+										   request.Senha, 
+										   request.Ativo, 
+										   request.DtNascimento, 
+										   request.Foto);
+
+			var response = await _usuarioService.Atualizar(usuarioParaAtualizar);
 			return response;
 		}
 
@@ -102,7 +121,13 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			return result;
         }
 
-		private Plano SelecionarPlano(int tipoPlano)
+        private async Task<bool> UsuarioExiste(Guid id)
+        {
+            var result = await _usuarioService.Existe(u => u.Id == id);
+            return result;
+        }
+
+        private Plano SelecionarPlano(int tipoPlano)
 		{
 
             return tipoPlano switch

@@ -8,8 +8,8 @@ namespace AVS.SpotifyMusic.Domain.Core.Notificacoes
     {
         public string Titulo { get; set; }
         public string Mensagem { get; set; }
-        public Usuario Destino { get; set; }
-        public Usuario? Remetente { get; set; }
+        public virtual Usuario Destino { get; set; }
+        public virtual Usuario? Remetente { get; set; }
         public TipoNotificacao TipoNotificacao { get; set; }
 
         protected Notificacao()
