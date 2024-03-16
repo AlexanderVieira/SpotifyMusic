@@ -24,5 +24,10 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
             Publica = publica;
             Usuario = usuario;
         }
+
+        public void LimparUsuario()
+        {
+            Usuario = null;
+        }
     }
 }

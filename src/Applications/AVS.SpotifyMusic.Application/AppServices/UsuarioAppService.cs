@@ -118,7 +118,15 @@ namespace AVS.SpotifyMusic.Application.AppServices
 
 		public async Task<bool> Remover(Guid id)
 		{
-			var response = await _usuarioService.Remover(id);
+			var usuario = await _usuarioService.BuscarPorCriterioDetalhado(x => x.Id == id);
+			if (usuario == null) return false;
+            
+			usuario.LimparCartoes();
+            usuario.LimparAssinaturas();
+            usuario.LimparPlaylists();
+            usuario.LimparNotificacao();            
+
+            var response = await _usuarioService.Remover(id);
 			return response;
 		}
 

@@ -1,20 +1,28 @@
-﻿using AVS.SpotifyMusic.Domain.Core.ObjDomain;
+﻿using AVS.SpotifyMusic.Domain.Core.Data;
+using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using FluentValidation;
 
 namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
 {
-    public class Banda : Entity
+    public class Banda : Entity, IAggregateRoot
     {
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
         public string? Foto { get; private set; }
         public virtual ICollection<Album> Albuns { get; private set; } = new List<Album>();
 
-        protected Banda()
+        public Banda()
         {            
         }
 
         public Banda(string nome, string descricao, string? foto = null)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Foto = foto;
+        }
+
+        public void Atualizar(string nome, string descricao, string? foto = null)
         {
             Nome = nome;
             Descricao = descricao;

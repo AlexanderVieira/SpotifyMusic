@@ -6,13 +6,14 @@ using AVS.SpotifyMusic.Application.Pagamentos.AutoMapper;
 using AVS.SpotifyMusic.Application.Streamings.AutoMapper;
 using AVS.SpotifyMusic.Domain.Contas.Interfaces.Repositories;
 using AVS.SpotifyMusic.Domain.Core.Data;
+using AVS.SpotifyMusic.Domain.Streaming.Interfaces.Repositories;
 using AVS.SpotifyMusic.Infra.Data.Context;
 using AVS.SpotifyMusic.Infra.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace AVS.SpotifyMusic.Api
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -29,7 +30,8 @@ namespace AVS.SpotifyMusic.Api
 			{
 				c.UseLazyLoadingProxies();
 				c.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-			});
+                c.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+            });
 
 			builder.Services.AddScoped<SpotifyMusicContext>();
 
@@ -50,13 +52,17 @@ namespace AVS.SpotifyMusic.Api
             //Repositories
             builder.Services.AddScoped(typeof(BaseRepository<>));
 			builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-			
-			//Services
-			builder.Services.AddScoped(typeof(BaseService<>));
+            builder.Services.AddScoped<IBandaRepository, BandaRepository>();
+
+            //Services
+            builder.Services.AddScoped(typeof(BaseService<>));
 			builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 			builder.Services.AddScoped<UsuarioAppService>();
 
-			var app = builder.Build();
+            builder.Services.AddScoped<IBandaService, BandaService>();
+            builder.Services.AddScoped<BandaAppService>();
+
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())

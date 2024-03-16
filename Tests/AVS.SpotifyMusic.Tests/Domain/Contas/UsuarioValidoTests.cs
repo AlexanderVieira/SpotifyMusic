@@ -160,7 +160,7 @@ namespace AVS.SpotifyMusic.Tests.Domain.Contas
             usuario.AtualizarPlaylist(playlists);
 
             //Act
-            usuario.RemoverPlaylists();
+            usuario.LimparPlaylists();
 
             //Assert            
             Assert.True(usuario.Playlists.Count == 0);

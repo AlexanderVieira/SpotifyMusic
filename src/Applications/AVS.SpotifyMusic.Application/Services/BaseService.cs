@@ -47,9 +47,8 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
 		}
 
         public async Task<bool> Remover(Guid id)
-        {
-            var usuario = await _repository.ObterPorId(id);
-            if(usuario == null) return false;
+        {   
+            _repository.DetachLocal(x => x.Id == id);
             await _repository.Remover(id);
             var result = await _repository.UnitOfWork.Commit();
             return result;

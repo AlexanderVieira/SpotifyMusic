@@ -102,7 +102,7 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
 
         public void AtualizarPlaylist(List<Playlist> playlists)
         {
-            Playlists.ToList().AddRange(playlists);
+            Playlists = playlists;
         }
 
         public void RemoverPlaylist(Playlist playlist)
@@ -110,9 +110,9 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
             Playlists.Remove(playlist);
         }
 
-        public void RemoverPlaylists()
+        public void LimparPlaylists()
         {
-            Playlists.Clear();
+            Playlists?.Clear();
         }
 
         public void CriarAssinatura(Plano plano, bool ativo = true)
@@ -142,9 +142,13 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
 
         public void AtualizarAssinaturas(List<Assinatura> assinaturas)
         {
-            Assinaturas.ToList().AddRange(assinaturas);
+            Assinaturas = assinaturas;
         }
 
+        public void LimparAssinaturas()
+        {
+            Assinaturas?.Clear();
+        }
 
         public void AdicionarCartao(Cartao cartao)
         {
@@ -153,7 +157,12 @@ namespace AVS.SpotifyMusic.Domain.Contas.Entidades
 
         public void AtualizarCartoes(List<Cartao> cartoes)
         {
-            Cartoes.ToList().AddRange(cartoes);
+            Cartoes = cartoes;
+        }
+
+        public void LimparCartoes()
+        {
+            Cartoes?.Clear();
         }
 
         public void AdicionarNotificacao(Notificacao notificacao)

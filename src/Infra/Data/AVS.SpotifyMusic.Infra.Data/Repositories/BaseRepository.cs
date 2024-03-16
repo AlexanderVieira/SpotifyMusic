@@ -52,7 +52,7 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
         }
 
         public async Task Remover(Guid id)
-        {
+        {            
             Query.Remove(new TEntity { Id = id });
             await Task.CompletedTask;
         }        
@@ -61,6 +61,14 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
         {
             _context.Dispose();           
         }
-       
+
+        public void DetachLocal(Func<TEntity, bool> predicado)
+        {
+            var local = _context.Set<TEntity>().Local.Where(predicado).FirstOrDefault();
+            if (local != null)
+            {
+                _context.Entry(local).State = EntityState.Detached;
+            }
+        }
     }
 }

@@ -35,6 +35,10 @@ namespace AVS.SpotifyMusic.Infra.Data.Context
         {
             modelBuilder.Ignore<ValidationResult>();
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpotifyMusicContext).Assembly);
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Cascade;
+            }
             base.OnModelCreating(modelBuilder);
         }
 

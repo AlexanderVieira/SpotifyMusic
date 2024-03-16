@@ -19,6 +19,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Repositories
         public async Task<Usuario> BuscarPorCriterioDetalhado(Expression<Func<Usuario, bool>> expression)
         {
             var result = await _context.Usuarios
+                .OrderBy (x => x.Nome)
                 .Include(u => u.Cartoes)
                 .ThenInclude(c => c.Pagamento)
                 .ThenInclude(p => p.Transacao)

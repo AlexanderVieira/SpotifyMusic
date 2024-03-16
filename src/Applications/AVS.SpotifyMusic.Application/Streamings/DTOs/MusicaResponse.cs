@@ -7,7 +7,7 @@ namespace AVS.SpotifyMusic.Application.Streamings.DTOs
         public Guid Id { get; set; }
         public string Nome { get; set; }
 		public int Duracao { get; set; }
-		public List<PlaylistResponse> Playlists { get; set; } = new List<PlaylistResponse>();
+		public ICollection<PlaylistResponse> Playlists { get; set; } = new List<PlaylistResponse>();
 
 		public MusicaResponse() { }
 	}
