@@ -55,13 +55,8 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
         {            
             Query.Remove(new TEntity { Id = id });
             await Task.CompletedTask;
-        }        
-
-        public void Dispose()
-        {
-            _context.Dispose();           
-        }
-
+        }       
+        
         public void DetachLocal(Func<TEntity, bool> predicado)
         {
             var local = _context.Set<TEntity>().Local.Where(predicado).FirstOrDefault();
@@ -69,6 +64,20 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
             {
                 _context.Entry(local).State = EntityState.Detached;
             }
+        }
+
+        public void ModifyLocal(Func<TEntity, bool> predicado)
+        {
+            var local = _context.Set<TEntity>().Local.Where(predicado).FirstOrDefault();
+            if (local != null)
+            {
+                _context.Entry(local).State = EntityState.Modified;
+            }
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
     }
 }

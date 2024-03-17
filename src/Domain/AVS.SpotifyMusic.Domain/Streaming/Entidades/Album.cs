@@ -21,6 +21,23 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
             Foto = foto;
         }
 
+        public void Atualizar(string titulo, string descricao, string? foto = null)
+        {
+            Titulo = titulo;
+            Descricao = descricao;
+            Foto = foto;
+        }
+
+        public void AdicionarMusica(Musica musica)
+        {
+            Musicas.Add(musica);
+        }
+
+        public void AtualizarMusicas(ICollection<Musica> musicas)
+        {
+            Musicas = musicas;
+        }
+
         public override bool EhValido()
         {
             ValidationResult = new AlbumValidator().Validate(this);

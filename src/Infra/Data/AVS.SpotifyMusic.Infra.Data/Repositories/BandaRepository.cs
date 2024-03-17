@@ -18,7 +18,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Repositories
 
         public async Task<Banda> BuscarPorCriterioDetalhado(Expression<Func<Banda, bool>> expression)
         {
-            var result = await _context.Bandas
+            var result = await Query
                 .Include(u => u.Albuns)
                 .ThenInclude(c => c.Musicas)                
                 .FirstOrDefaultAsync(expression);
@@ -27,7 +27,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Repositories
 
         public async Task<bool> Existe(Expression<Func<Banda, bool>> expression)
         {
-            var result = await _context.Bandas.Where(expression).AnyAsync();
+            var result = await Query.Where(expression).AnyAsync();
             return result;
         }
 
@@ -65,6 +65,24 @@ namespace AVS.SpotifyMusic.Infra.Data.Repositories
             return result;
 
 
+        }
+
+        public async Task<bool> CriarAlbum(Banda banda) 
+        {          
+                                   
+            _context.Entry(banda).State = EntityState.Modified;
+
+            foreach (var album in banda.Albuns.ToList()) 
+            {                
+                _context.Entry(album).State = !_context.Albuns.Any(x => x.Id == album.Id) ? EntityState.Added : EntityState.Modified;
+
+                foreach (var musica in album.Musicas.ToList())
+                {
+                    _context.Entry(musica).State = !_context.Musicas.Any(x => x.Id == musica.Id) ? EntityState.Added : EntityState.Modified;
+                }
+            }
+
+            return await UnitOfWork.Commit();
         }
     }
     

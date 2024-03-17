@@ -12,6 +12,7 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Interfaces.Repositories
         Task<Banda> BuscarPorCriterioDetalhado(Expression<Func<Banda, bool>> expression);
         Task<IEnumerable<BandaConsultaAnonima>> BuscarTodosConsultaProjetada();
         Task<IEnumerable<BandaConsultaAnonima>> BuscarPorCriterioConsultaProjetada(Expression<Func<Banda, bool>> expression);
+        Task<bool> CriarAlbum(Banda banda);
 
     }
 }

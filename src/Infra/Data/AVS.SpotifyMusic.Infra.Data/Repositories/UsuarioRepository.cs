@@ -10,15 +10,14 @@ namespace AVS.SpotifyMusic.Infra.Data.Repositories
 {
     public class UsuarioRepository : BaseRepository<Usuario>, IUsuarioRepository
     {
-        private readonly SpotifyMusicContext _context;
+        
         public UsuarioRepository(SpotifyMusicContext context) : base(context)
-        {
-            _context = context;
+        {           
         }
 
         public async Task<Usuario> BuscarPorCriterioDetalhado(Expression<Func<Usuario, bool>> expression)
         {
-            var result = await _context.Usuarios
+            var result = await Query
                 .OrderBy (x => x.Nome)
                 .Include(u => u.Cartoes)
                 .ThenInclude(c => c.Pagamento)
@@ -33,7 +32,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Repositories
 
         public async Task<bool> Existe(Expression<Func<Usuario, bool>> expression)
         {
-            var result = await _context.Usuarios.Where(expression).AnyAsync();
+            var result = await Query.Where(expression).AnyAsync();
             return result;
         }
 

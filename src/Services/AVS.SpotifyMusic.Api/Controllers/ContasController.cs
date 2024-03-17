@@ -66,7 +66,8 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		[Route("usuario-criar")]
 		public async Task<IActionResult> Criar(UsuarioRequest request)
 		{
-			var response = await _usuarioAppService.Criar(request);			
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _usuarioAppService.Criar(request);			
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status201Created, url);
@@ -76,7 +77,8 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		[Route("usuario-atualizar")]
 		public async Task<IActionResult> Atualizar(UsuarioAtualizaRequest request)
 		{
-			var response = await _usuarioAppService.Atualizar(request);
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _usuarioAppService.Atualizar(request);
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status200OK,url);
@@ -86,7 +88,8 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		[Route("usuario-remover/{id:Guid}")]
 		public async Task<IActionResult> Remover(Guid id)
 		{
-			var response = await _usuarioAppService.Remover(id);
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _usuarioAppService.Remover(id);
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status204NoContent, url);
@@ -96,7 +99,8 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		[Route("usuario-ativar/{id:Guid}")]
 		public async Task<IActionResult> Ativar(Guid id)
 		{
-			var response = await _usuarioAppService.Ativar(id);
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _usuarioAppService.Ativar(id);
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();			
 			return StatusCode(StatusCodes.Status200OK, url);
@@ -106,7 +110,8 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		[Route("usuario-inativar/{id:Guid}")]
 		public async Task<IActionResult> Inativar(Guid id)
 		{
-			var response = await _usuarioAppService.Inativar(id);
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _usuarioAppService.Inativar(id);
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status200OK, url);

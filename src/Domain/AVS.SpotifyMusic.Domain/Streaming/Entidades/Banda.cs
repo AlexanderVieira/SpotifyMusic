@@ -1,5 +1,6 @@
 ﻿using AVS.SpotifyMusic.Domain.Core.Data;
 using AVS.SpotifyMusic.Domain.Core.ObjDomain;
+using AVS.SpotifyMusic.Domain.Streaming.Factories;
 using FluentValidation;
 
 namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
@@ -28,6 +29,26 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
             Descricao = descricao;
             Foto = foto;
         }
+
+        public void CriarAlbum(string titulo, string descricao, string? foto, ICollection<Musica> musicas)
+        {
+            var album = AlbumFactory.Criar(titulo, descricao, foto, musicas);
+            AdicionarAlbum(album);
+        }       
+
+        public void AdicionarAlbum(Album album)
+        {
+            Albuns.Add(album);
+        }
+
+        public void AtualizarAlbuns(ICollection<Album> albuns)
+        {
+            Albuns = albuns;
+        }
+
+        public int QuantidadeAlbuns() => Albuns.Count;
+
+        public IEnumerable<Musica> ObterMusicas() => Albuns.SelectMany(x => x.Musicas).AsEnumerable();
 
         public override bool EhValido()
         {

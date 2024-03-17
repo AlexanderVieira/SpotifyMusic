@@ -14,6 +14,7 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
         Task Atualizar(TEntity entity);
         Task Remover(Guid id);
         void DetachLocal(Func<TEntity, bool> predicado);
-        
+        void ModifyLocal(Func<TEntity, bool> predicado);
+
     }
 }

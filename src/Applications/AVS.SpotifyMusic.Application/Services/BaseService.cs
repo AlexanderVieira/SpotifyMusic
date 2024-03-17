@@ -55,7 +55,7 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
         }
 
         public async Task<bool> Salvar(TEntity entity)
-        {
+        {            
             await _repository.Salvar(entity);
             var result = await _repository.UnitOfWork.Commit();
             return result;

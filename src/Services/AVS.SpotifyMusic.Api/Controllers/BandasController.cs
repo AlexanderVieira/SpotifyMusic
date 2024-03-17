@@ -19,7 +19,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
 
         [HttpGet]
         [Route("bandas")]
-        public async Task<IActionResult> ObterTodos()
+        public async Task<IActionResult> ObterTodasBandas()
         {
             var response = await _bandaAppService.ObterTodos();
             if (response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
@@ -28,7 +28,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
 
         [HttpGet]
 		[Route("bandas/todos")]
-		public async Task<IActionResult> ObterTodosConsultaProjetada()
+		public async Task<IActionResult> ObterTodasPorConsultaProjetada()
 		{
 			var response = await _bandaAppService.BuscarTodosConsultaProjetada();
 			if(response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
@@ -37,7 +37,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
 
         [HttpGet]
         [Route("bandas/filtro/{nome}")]
-        public async Task<IActionResult> ObterTodosPorNome(string nome)
+        public async Task<IActionResult> ObterTodasPorNomeConsultaProjetada(string nome)
         {
             var response = await _bandaAppService.BuscarTodosPorNomeConsultaProjetada(nome);
             if (response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
@@ -46,19 +46,27 @@ namespace AVS.SpotifyMusic.Api.Controllers
 
         [HttpGet]
 		[Route("bandas/{filtro}")]
-		public async Task<IActionResult> BuscarTodosPorNome(string filtro)
+		public async Task<IActionResult> ObterTodasPorNome(string filtro)
 		{			
 			var response = await _bandaAppService.BuscarTodosPorNome(filtro);
 			if (response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
 			return StatusCode(StatusCodes.Status200OK, response);
 		}
 
+        [HttpGet]
+        [Route("banda/{id:Guid}")]
+        public async Task<IActionResult> ObterPorId(Guid id)
+        {
+            var response = await _bandaAppService.ObterPorId(id);
+            if (response == null) { return StatusCode(StatusCodes.Status404NotFound); }
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
 
-		[HttpGet]
-		[Route("bandas-detalhe/{id:Guid}")]
-		public async Task<IActionResult> UsuarioDetalhe(Guid id)
+        [HttpGet]
+		[Route("banda-detalhe/{id:Guid}")]
+		public async Task<IActionResult> Detalhe(Guid id)
 		{
-			var response = await _bandaAppService.UsuarioDetalhe(id);
+			var response = await _bandaAppService.ObterDetalhe(id);
 			if (response == null) { return StatusCode(StatusCodes.Status404NotFound); }
 			return StatusCode(StatusCodes.Status200OK, response);
 		}
@@ -67,7 +75,8 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		[Route("banda-criar")]
 		public async Task<IActionResult> Criar(BandaRequest request)
 		{
-			var response = await _bandaAppService.Criar(request);			
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _bandaAppService.Criar(request);			
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status201Created, url);
@@ -76,18 +85,31 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		[HttpPut]
 		[Route("banda-atualizar")]
 		public async Task<IActionResult> Atualizar(BandaRequest request)
-		{			
-			var response = await _bandaAppService.Atualizar(request);
+		{
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _bandaAppService.Atualizar(request);
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status200OK,url);
 		}
 
-		[HttpDelete]
+        [HttpPut]
+        [Route("banda/criar-album")]
+        public async Task<IActionResult> CriarAlbum(AlbumRequest request)
+        {
+			if(!ModelState.IsValid) return BadRequest();
+            var response = await _bandaAppService.CriarAlbum(request);
+            if (response == false) return BadRequest();
+            var url = HttpContext.Request.GetUrl();
+            return StatusCode(StatusCodes.Status200OK, url);
+        }
+
+        [HttpDelete]
 		[Route("banda-remover/{id:Guid}")]
 		public async Task<IActionResult> Remover(Guid id)
 		{
-			var response = await _bandaAppService.Remover(id);
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _bandaAppService.Remover(id);
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status204NoContent, url);

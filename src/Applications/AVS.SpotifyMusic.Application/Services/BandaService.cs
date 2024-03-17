@@ -34,6 +34,12 @@ namespace AVS.SpotifyMusic.Application.Contas.Services
             return result;
         }
 
+        public async Task<bool> CriarAlbum(Banda banda)
+        {
+            var result = await _bandaRepository.CriarAlbum(banda);            
+            return result;
+        }
+
         public async Task<bool> Existe(Expression<Func<Banda, bool>> expression)
         {
             var result = await _bandaRepository.Existe(expression);

@@ -1,6 +1,7 @@
 ﻿using AVS.SpotifyMusic.Domain.Contas.Entidades;
 using AVS.SpotifyMusic.Domain.Core.Data;
 using AVS.SpotifyMusic.Domain.Core.Notificacoes;
+using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
 using AVS.SpotifyMusic.Domain.Streaming.Entidades;
 using FluentValidation.Results;
@@ -61,7 +62,8 @@ namespace AVS.SpotifyMusic.Infra.Data.Context
                     entry.Property("DataCriacao").IsModified = false;
                     entry.Property("DataAtualizacao").CurrentValue = DateTime.Now;
                 }
-            }
+                
+            }         
 
             var sucesso = await base.SaveChangesAsync() > 0;            
 

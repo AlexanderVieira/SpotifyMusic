@@ -64,6 +64,16 @@ namespace AVS.SpotifyMusic.Application.Streamings.AutoMapper
 
                 });
 
+            CreateMap<AlbumRequest, Album>()
+                .ForPath(x => x.Musicas, opt => opt.Ignore())
+                .AfterMap((s, d) => 
+                {
+                    var musicas = s.Musicas.Select(x => new Musica(x.Nome, x.Duracao)).ToList();
+                    d.AtualizarMusicas(musicas);
+                });
+
+
+
         }
     }
     

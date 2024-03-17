@@ -10,6 +10,7 @@ namespace AVS.SpotifyMusic.Application.Contas.Interfaces.Services
         Task<Banda> BuscarPorCriterioDetalhado(Expression<Func<Banda, bool>> expression);
         Task<IEnumerable<BandaConsultaAnonima>> BuscarTodosConsultaProjetada();
         Task<IEnumerable<BandaConsultaAnonima>> BuscarPorCriterioConsultaProjetada(Expression<Func<Banda, bool>> expression);
+        Task<bool> CriarAlbum(Banda banda);
 
     }
 }
