@@ -1,28 +1,35 @@
-import { Component } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatIconModule} from '@angular/material/icon';
+import { BandaService } from './../../services/banda/banda.service';
+import { Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { BandaResponse } from '../../models/banda';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatIconModule],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, HttpClientModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  bandas = [
-    { id: 1, nome: 'Kristiyan', descricao: 'descricao da banda', backdrop: 'imagem.jpg' },
-    { id: 2, nome: 'Emiliyan', descricao: 'descricao da banda', backdrop: 'imagem.jpg' },
-    { id: 3, nome: 'Denitsa', descricao: 'descricao da banda', backdrop: 'imagem.jpg' },
-    { id: 4, nome: 'Denitsa', descricao: 'descricao da banda', backdrop: 'imagem.jpg' },
-    { id: 5, nome: 'Denitsa', descricao: 'descricao da banda', backdrop: 'imagem.jpg' },
-  ];
+  bandas: BandaResponse[] = [];
 
-  goToDetail(_t4: any)
+  constructor(private bandaService: BandaService, private router: Router){}
+
+  ngOnInit(): void {
+    this.bandaService.getBandas().subscribe(response => {
+      console.log(response);
+      this.bandas = response;
+    })
+  }
+
+  goToDetalhe(banda: BandaResponse)
   {
-    throw new Error('Method not implemented.');
+    this.router.navigate(["banda-detalhe", banda.id])
   }
 
 }

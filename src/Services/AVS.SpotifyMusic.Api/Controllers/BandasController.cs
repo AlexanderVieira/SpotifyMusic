@@ -23,7 +23,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
         {
             var response = await _bandaAppService.ObterTodos();
             if (response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
-            return StatusCode(StatusCodes.Status200OK, response);
+            return StatusCode(StatusCodes.Status200OK, response.ToArray());
         }
 
         [HttpGet]
@@ -32,7 +32,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		{
 			var response = await _bandaAppService.BuscarTodosConsultaProjetada();
 			if(response == null || !response.Any()) { return StatusCode(StatusCodes.Status404NotFound); }
-			return StatusCode(StatusCodes.Status200OK, response);
+			return StatusCode(StatusCodes.Status200OK, response.ToArray());
 		}
 
         [HttpGet]
