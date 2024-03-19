@@ -37,11 +37,6 @@ export class BandaDetalheComponent implements OnInit {
     this.bandaService.getBandaDetalhe(this.bandaId).subscribe(response => {
       console.log(response);
       this.banda = response;
-      //this.albuns = this.banda.albuns;
-      //this.albuns.forEach((a, idx) => {
-        //a.bandaId = this.banda.id;
-        //this.aux.push(a);
-      //});
     });
   }
 

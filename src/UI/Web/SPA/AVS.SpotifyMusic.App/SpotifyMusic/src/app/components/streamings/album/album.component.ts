@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BandaDetalheResponse } from '../../../models/banda';
 import { BandaService } from '../../../services/banda/banda.service';
@@ -12,7 +12,7 @@ import { Album } from '../../../models/album';
 @Component({
   selector: 'app-album',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatIconModule, HttpClientModule],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, HttpClientModule, RouterModule],
   templateUrl: './album.component.html',
   styleUrl: './album.component.css'
 })

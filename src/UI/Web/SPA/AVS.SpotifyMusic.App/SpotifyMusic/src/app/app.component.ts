@@ -10,6 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PlaylistComponent } from "./components/contas/playlist/playlist.component";
 
 @Component({
     selector: 'app-root',
@@ -17,18 +18,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
     imports: [
-      RouterOutlet,
-      RouterModule,
-      NavbarMenuComponent,
-      FooterComponent,
-      MatToolbarModule,
-      MatButtonModule,
-      MatIconModule,
-      MatMenuModule,
-      MatSidenavModule,
-      MatListModule,
-      MatExpansionModule,
-      MatTooltipModule]
+        RouterOutlet,
+        RouterModule,
+        NavbarMenuComponent,
+        FooterComponent,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatSidenavModule,
+        MatListModule,
+        MatExpansionModule,
+        MatTooltipModule,
+        PlaylistComponent
+    ]
 })
 export class AppComponent {
   title = 'SpotifyMusic';

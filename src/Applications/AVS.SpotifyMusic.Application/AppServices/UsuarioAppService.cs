@@ -130,6 +130,17 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			return response;
 		}
 
+		public async Task<IEnumerable<PlaylistResponse>> ObterPlaylistsPorId(Guid id)
+		{	
+			if (!await UsuarioExiste(id))
+				throw new DomainException("Usuário não existe na base de dados.");
+		
+			var usuario = await _usuarioService.BuscarPorCriterioDetalhado(u => u.Id == id);
+			var usuarioResponse = _mapper.Map<UsuarioDetalheResponse>(usuario);
+			var response = usuarioResponse.Playlists;
+			return response;
+		}
+
 		private async Task<bool> UsuarioExiste(string filtro)
 		{
 			var result = await _usuarioService.Existe(u => u.Email.Address.ToLower().Equals(filtro.ToLower()));

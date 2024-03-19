@@ -1,0 +1,14 @@
+<mat-expansion-panel [class.mat-elevation-z0]="true">
+  <mat-expansion-panel-header>
+      Playlists
+  </mat-expansion-panel-header>
+  <mat-nav-list style="width: 300px;">
+    @for (playlist of playlists; track $index)
+    {
+      <a mat-list-item [routerLink]="['/playlist-detalhe', playlist.id]">
+        <!-- <img mat-card-image [src]="playlist.foto" alt="playlist" class="example-card-image"> -->
+        <mat-icon>apple</mat-icon><span>{{playlist.titulo}}</span>
+      </a>
+    }
+  </mat-nav-list>
+</mat-expansion-panel>

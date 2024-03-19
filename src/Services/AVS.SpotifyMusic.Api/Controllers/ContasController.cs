@@ -117,5 +117,14 @@ namespace AVS.SpotifyMusic.Api.Controllers
 			return StatusCode(StatusCodes.Status200OK, url);
 		}
 
+		[HttpGet]
+		[Route("usuario/playlists/{id:Guid}")]
+		public async Task<IActionResult> ObterPlaylistDoUsuario(Guid id)
+		{
+			var response = await _usuarioAppService.ObterPlaylistsPorId(id);
+			if (response == null) { return StatusCode(StatusCodes.Status404NotFound); }
+			return StatusCode(StatusCodes.Status200OK, response);
+		}
+
 	}
 }
