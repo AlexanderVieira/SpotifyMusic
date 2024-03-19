@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { NavbarMenuComponent } from "./components/commons/navbar-menu/navbar-menu.component";
 import { FooterComponent } from "./components/commons/footer/footer.component";
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     styleUrl: './app.component.css',
     imports: [
       RouterOutlet,
+      RouterModule,
       NavbarMenuComponent,
       FooterComponent,
       MatToolbarModule,

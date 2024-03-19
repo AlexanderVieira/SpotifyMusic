@@ -55,6 +55,7 @@ namespace AVS.SpotifyMusic.Application.AppServices
 		{			
 			var banda = await _bandaService.BuscarPorCriterioDetalhado(u => u.Id == id);
 			var response = _mapper.Map<BandaDetalheResponse>(banda);
+			response.Albuns.ToList().ForEach(x => x.BandaId = response.Id);
 			return response;
 		}
 
@@ -98,6 +99,21 @@ namespace AVS.SpotifyMusic.Application.AppServices
             var response = await _bandaService.CriarAlbum(banda);
             return response;
         }
+
+		public async Task<AlbumResponse> ObterAlbumDetalhe(Guid bandaId, Guid albumId)
+		{
+			if (!await BandaExiste(bandaId))
+				throw new DomainException("Banda não existe na base de dados.");
+
+			var banda = await _bandaService.BuscarPorCriterioDetalhado(x => x.Id == bandaId);
+			var album = banda.Albuns.Select(x => x).FirstOrDefault(x => x.Id == albumId);
+			if(album == null) 
+				throw new DomainException("Album não existe na base de dados.");
+			var response = _mapper.Map<AlbumResponse>(album);
+			response.BandaId = banda.Id;
+			return response;
+			
+		}
 
         private async Task<bool> BandaExiste(Guid id)
         {

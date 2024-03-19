@@ -104,6 +104,15 @@ namespace AVS.SpotifyMusic.Api.Controllers
             return StatusCode(StatusCodes.Status200OK, url);
         }
 
+		[HttpGet]
+		[Route("banda/{bandaId:Guid}/album-detalhe/{albumId:Guid}")]
+		public async Task<IActionResult> AlbumDetalhe(Guid bandaId, Guid albumId)
+		{
+			var response = await _bandaAppService.ObterAlbumDetalhe(bandaId, albumId);
+			if (response == null) { return StatusCode(StatusCodes.Status404NotFound); }
+			return StatusCode(StatusCodes.Status200OK, response);
+		}
+
         [HttpDelete]
 		[Route("banda-remover/{id:Guid}")]
 		public async Task<IActionResult> Remover(Guid id)

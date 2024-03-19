@@ -6,6 +6,7 @@
         public string Titulo { get; set; }
 		public string Descricao { get; set; }
 		public string? Foto { get; set; }
+		public Guid BandaId { get; set; }
 		public ICollection<MusicaResponse> Musicas { get; set; } = new List<MusicaResponse>();
 		public AlbumResponse() { }
 	}
