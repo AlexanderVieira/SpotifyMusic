@@ -6,13 +6,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { BandaService } from '../../../../services/banda/banda.service';
 import { BandaDetalheResponse } from '../../../../models/banda';
 import { Guid } from 'guid-typescript/dist/guid';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Album } from '../../../../models/album';
 
 @Component({
   selector: 'app-banda-detalhe',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, MatIconModule, HttpClientModule],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, RouterModule, HttpClientModule],
   templateUrl: './banda-detalhe.component.html',
   styleUrls: ['./banda-detalhe.component.css']
 })

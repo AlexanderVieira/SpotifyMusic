@@ -11,6 +11,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlaylistComponent } from "./components/contas/playlist/playlist.component";
+import { HomeComponent } from './components/home/home.component';
+import { SidebarComponent } from './components/commons/sidebar/sidebar.component';
 
 @Component({
     selector: 'app-root',
@@ -30,7 +32,9 @@ import { PlaylistComponent } from "./components/contas/playlist/playlist.compone
         MatListModule,
         MatExpansionModule,
         MatTooltipModule,
-        PlaylistComponent
+        PlaylistComponent,
+        HomeComponent,
+        SidebarComponent
     ]
 })
 export class AppComponent {

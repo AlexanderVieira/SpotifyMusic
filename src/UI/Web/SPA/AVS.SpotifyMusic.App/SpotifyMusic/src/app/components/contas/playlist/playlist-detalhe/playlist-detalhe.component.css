@@ -10,3 +10,18 @@
 .example-card-image{
   height: 480px !important;
 }
+
+mat-grid-tile {
+  background: lightblue;
+}
+
+table {
+  width: 100%;
+}
+
+.btn.btn-tertiary {
+  background-color: #e42c64;
+  color: #fff;
+  border-radius: 30px;
+  border: none;
+  padding: 10px 20px; }

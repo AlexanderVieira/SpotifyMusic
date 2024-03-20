@@ -1,21 +1,19 @@
+import { RouterModule } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 import { Guid } from 'guid-typescript/dist/guid';
 import { Component, OnInit } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { UsuarioService } from '../../../services/usuario/usuario.service';
-import { RouterModule } from '@angular/router';
 import { Playlist } from '../../../models/playlist';
+import { MatButtonModule } from '@angular/material/button';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-playlist',
   standalone: true,
-  imports: [
-    MatListModule,
-    MatExpansionModule,
-    MatIconModule,
-    RouterModule
-  ],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, HttpClientModule, RouterModule],
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.css']
 })

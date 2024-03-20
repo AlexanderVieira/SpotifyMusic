@@ -1,22 +1,23 @@
 <div class="container mb-4">
   <div class="col-md-12">
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      @for (playlist of playlists; track $index) {
+      @for (banda of bandas; track $index) {
       <div class="col-md-3" [class.mat-elevation-z8]="true">
         <mat-card class="example-card">
           <mat-card-header>
             <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>{{playlist.titulo}}</mat-card-title>
+            <mat-card-title>{{banda.nome}}</mat-card-title>
             <mat-card-subtitle></mat-card-subtitle>
           </mat-card-header>
-          <img style="height:280px;" mat-card-image [src]="'https://mdbcdn.b-cdn.net/wp-content/uploads/2020/06/vertical.webp'" alt="Playlist">
+          <img mat-card-image [src]="banda.foto" alt="Photo of a Shiba Inu">
           <mat-card-content class="mt-3 mb-3">
             <p>
-              {{playlist.descricao}}
+              {{banda.descricao}}
             </p>
           </mat-card-content>
           <mat-card-actions>
-            <button mat-fab extended color="primary" [routerLink]="['/playlist-detalhe', playlist.id]">
+            <!-- <button mat-button (click)="goToDetail(item);">VER DETALHES</button> -->
+            <button mat-fab extended color="primary" (click)="goToDetalhe(banda);">
               <mat-icon>info</mat-icon>
               Detalhes
             </button>
