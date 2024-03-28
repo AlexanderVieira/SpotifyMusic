@@ -13,7 +13,7 @@ export class UsuarioService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getPlaylistsDoUsuario(id:Guid): Observable<Playlist[]>{
+  public GetPlaylistsAssociadas(id:Guid): Observable<Playlist[]>{
     return this.httpClient.get<Playlist[]>(`${this.url}/usuario/playlists/${id}`);
   }
 

@@ -68,10 +68,10 @@ namespace AVS.SpotifyMusic.Application.AppServices
 
 		public async Task<bool> Atualizar(BandaRequest request)
 		{
-            if (!await BandaExiste(request.Id.Value))
+            if (!await BandaExiste(request.Id))
                 throw new DomainException("Banda não existe na base de dados.");
 
-			var bandaParaAtualizar = await _bandaService.ObterPorId(request.Id.Value);
+			var bandaParaAtualizar = await _bandaService.ObterPorId(request.Id);
 
             bandaParaAtualizar.Atualizar(request.Nome, 
 										 request.Descricao,										  

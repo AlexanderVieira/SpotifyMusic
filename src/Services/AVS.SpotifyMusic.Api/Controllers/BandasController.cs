@@ -54,10 +54,10 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		}
 
         [HttpGet]
-        [Route("banda/{id:Guid}")]
-        public async Task<IActionResult> ObterPorId(Guid id)
-        {
-            var response = await _bandaAppService.ObterPorId(id);
+        [Route("banda/{id}")]
+        public async Task<IActionResult> ObterPorId(string id)
+        {			
+            var response = await _bandaAppService.ObterPorId(Guid.Parse(id));
             if (response == null) { return StatusCode(StatusCodes.Status404NotFound); }
             return StatusCode(StatusCodes.Status200OK, response);
         }

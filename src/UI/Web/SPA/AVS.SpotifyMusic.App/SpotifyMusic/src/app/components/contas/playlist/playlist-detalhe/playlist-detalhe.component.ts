@@ -36,7 +36,7 @@ export class PlaylistDetalheComponent implements OnInit {
       console.log(this.playlistId);
     });
 
-    this.UsuarioService.getPlaylistsDoUsuario(this.usuarioId).subscribe(response =>
+    this.UsuarioService.GetPlaylistsAssociadas(this.usuarioId).subscribe(response =>
       {
         console.log(response);
         this.playlists = response;

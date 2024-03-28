@@ -21,7 +21,7 @@ namespace AVS.SpotifyMusic.Application.Streamings.AutoMapper
                 .ForPath(x => x.TipoPlano, m => m.MapFrom(p => p.TipoPlano));
 
             CreateMap<BandaRequest, Banda>()
-                .ConstructUsing(u => new Banda(u.Nome, u.Descricao, u.Foto));                    
+                .ConstructUsing(u => new Banda(u.Nome, u.Descricao, u.Foto));                                
 
             CreateMap<Banda, BandaResponse>();                
 

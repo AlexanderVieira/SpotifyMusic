@@ -21,7 +21,7 @@ export class BandaComponent {
   constructor(private bandaService: BandaService, private router: Router){}
 
   ngOnInit(): void {
-    this.bandaService.getBandas().subscribe(response => {
+    this.bandaService.GetBandas().subscribe(response => {
       console.log(response);
       this.bandas = response;
     })

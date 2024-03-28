@@ -26,7 +26,7 @@ export class PlaylistComponent implements OnInit {
 
   ngOnInit() {
 
-    this.usuarioService.getPlaylistsDoUsuario(this.usuarioId).subscribe(response => {
+    this.usuarioService.GetPlaylistsAssociadas(this.usuarioId).subscribe(response => {
 
       console.log(response);
       this.playlists = response;

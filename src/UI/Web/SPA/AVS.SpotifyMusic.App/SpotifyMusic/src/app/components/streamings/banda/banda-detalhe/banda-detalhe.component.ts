@@ -20,8 +20,6 @@ export class BandaDetalheComponent implements OnInit {
 
   banda: BandaDetalheResponse;
   bandaId: Guid = Guid.createEmpty();
-  //albuns: Album[] = [];
-  //aux: Album[] = [];
 
   constructor(private bandaService: BandaService, private activeRouter: ActivatedRoute, private router: Router){
     this.banda = new BandaDetalheResponse();
@@ -34,7 +32,7 @@ export class BandaDetalheComponent implements OnInit {
       console.log(this.bandaId);
     });
 
-    this.bandaService.getBandaDetalhe(this.bandaId).subscribe(response => {
+    this.bandaService.GetBandaDetalhe(this.bandaId).subscribe(response => {
       console.log(response);
       this.banda = response;
     });

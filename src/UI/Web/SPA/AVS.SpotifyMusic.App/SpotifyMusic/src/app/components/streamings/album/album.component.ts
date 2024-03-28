@@ -18,13 +18,12 @@ import { Album } from '../../../models/album';
 })
 export class AlbumComponent implements OnInit {
 
-  //banda: BandaDetalheResponse;
   albumId: Guid = Guid.createEmpty();
   bandaId: Guid = Guid.createEmpty();
   album = new Album()
 
   constructor(private bandaService: BandaService, private router: ActivatedRoute){
-    //this.banda = new BandaDetalheResponse();
+
   }
 
   ngOnInit() {
@@ -36,7 +35,7 @@ export class AlbumComponent implements OnInit {
       console.log(this.bandaId);
     });
 
-    this.bandaService.getAlbumDetalhe(this.bandaId, this.albumId).subscribe(response => {
+    this.bandaService.GetAlbumDetalhe(this.bandaId, this.albumId).subscribe(response => {
       console.log(response);
       this.album = response;
     });

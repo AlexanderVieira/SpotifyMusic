@@ -5,10 +5,11 @@ import { AlbumComponent } from './components/streamings/album/album.component';
 import { PlaylistDetalheComponent } from './components/contas/playlist/playlist-detalhe/playlist-detalhe.component';
 import { PlaylistComponent } from './components/contas/playlist/playlist.component';
 import { BandaComponent } from './components/streamings/banda/banda.component';
+import { AdminComponent } from './admin/admin/admin.component';
 
 export const routes: Routes = [
   {
-      path: "",
+      path: '',
       component: HomeComponent
   },
   {
@@ -31,5 +32,9 @@ export const routes: Routes = [
     path: 'playlist-detalhe/:id',
     component: PlaylistDetalheComponent
   },
+  {
+    path: 'admin',
+    component: AdminComponent
+  }
 
 ];

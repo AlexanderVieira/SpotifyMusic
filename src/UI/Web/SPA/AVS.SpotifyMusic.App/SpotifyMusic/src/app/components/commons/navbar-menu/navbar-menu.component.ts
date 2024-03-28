@@ -9,6 +9,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlaylistComponent } from "../../contas/playlist/playlist.component";
 import { SidebarComponent } from "../sidebar/sidebar.component";
+import { RouterModule } from '@angular/router';
 
 
 @Component({
@@ -25,10 +26,10 @@ import { SidebarComponent } from "../sidebar/sidebar.component";
         MatListModule,
         MatExpansionModule,
         MatTooltipModule,
+        RouterModule,
         PlaylistComponent,
         SidebarComponent
     ]
 })
 export class NavbarMenuComponent {
-
 }

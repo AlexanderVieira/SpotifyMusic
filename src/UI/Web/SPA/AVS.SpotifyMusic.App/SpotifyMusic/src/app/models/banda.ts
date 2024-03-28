@@ -3,16 +3,13 @@ import { Guid } from "guid-typescript/dist/guid";
 
 export class BandaRequest {
 
-  public id: any;
-  public nome: string;
-  public descricao: string;
-  public foto: string;
+  public id: string;
+  public nome: string = '';
+  public descricao: string = '';
+  public foto?: string = '';
 
-  constructor(nome: string, descricao: string, foto?: string, id?: any){
-    this.id = id;
-    this.nome = nome;
-    this.descricao = descricao;
-    this.foto = descricao;
+  constructor() {
+    this.id = Guid.createEmpty().toString();
   }
 
 }
@@ -23,10 +20,9 @@ export class BandaResponse {
   public nome: string = '';
   public descricao: string = '';
   public foto?: string = '';
-  //private albuns: Album[] = [];
 
   constructor() {
-    this.id = Guid.create(); // ==> b77d409a-10cd-4a47-8e94-b0cd0ab50aa1
+    this.id = Guid.createEmpty();
   }
 
 }
@@ -40,6 +36,6 @@ export class BandaDetalheResponse {
   public albuns: Album[] = [];
 
   constructor() {
-    this.id = Guid.create();
+    this.id = Guid.createEmpty();
   }
 }
