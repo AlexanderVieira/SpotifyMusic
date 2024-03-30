@@ -1,3 +1,4 @@
+using AVS.SpotifyMusic.Api.Configurations;
 using AVS.SpotifyMusic.Application.AppServices;
 using AVS.SpotifyMusic.Application.Contas.AutoMapper;
 using AVS.SpotifyMusic.Application.Contas.Interfaces.Services;
@@ -34,6 +35,8 @@ namespace AVS.SpotifyMusic.Api
             });
 
 			builder.Services.AddScoped<SpotifyMusicContext>();
+
+			builder.Services.AddIdentityConfiguration(builder.Configuration);
 
 			builder.Services.AddAutoMapper(typeof(ContasMappingProfile).Assembly);
             builder.Services.AddAutoMapper(typeof(PagamentosMappingProfile).Assembly);
@@ -72,10 +75,10 @@ namespace AVS.SpotifyMusic.Api
 			}
 
 			app.UseHttpsRedirection();
+			app.UseRouting();
             app.UseCors("Total");
-            app.UseAuthorization();
-
-
+            app.UseAuthConfiguration();
+			app.UseJwksDiscovery();
 			app.MapControllers();
 
 			app.Run();
