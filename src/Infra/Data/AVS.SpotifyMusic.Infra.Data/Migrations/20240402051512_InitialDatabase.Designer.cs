@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AVS.SpotifyMusic.Infra.Data.Migrations
 {
     [DbContext(typeof(SpotifyMusicContext))]
-    [Migration("20231220160459_DatabaseInicial")]
-    partial class DatabaseInicial
+    [Migration("20240402051512_InitialDatabase")]
+    partial class InitialDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Conta.Entidades.Assinatura", b =>
+            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Contas.Entidades.Assinatura", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,7 +52,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                     b.ToTable("Assinaturas", (string)null);
                 });
 
-            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Conta.Entidades.Playlist", b =>
+            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Contas.Entidades.Playlist", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,7 +97,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                     b.ToTable("Playlists", (string)null);
                 });
 
-            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Conta.Entidades.Usuario", b =>
+            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Contas.Entidades.Usuario", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -463,25 +463,26 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                     b.ToTable("MusicaPlaylist");
                 });
 
-            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Conta.Entidades.Assinatura", b =>
+            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Contas.Entidades.Assinatura", b =>
                 {
-                    b.HasOne("AVS.SpotifyMusic.Domain.Conta.Entidades.Usuario", null)
+                    b.HasOne("AVS.SpotifyMusic.Domain.Contas.Entidades.Usuario", null)
                         .WithMany("Assinaturas")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
-            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Conta.Entidades.Playlist", b =>
+            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Contas.Entidades.Playlist", b =>
                 {
-                    b.HasOne("AVS.SpotifyMusic.Domain.Conta.Entidades.Usuario", "Usuario")
+                    b.HasOne("AVS.SpotifyMusic.Domain.Contas.Entidades.Usuario", "Usuario")
                         .WithMany("Playlists")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Conta.Entidades.Usuario", b =>
+            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Contas.Entidades.Usuario", b =>
                 {
                     b.OwnsOne("AVS.SpotifyMusic.Domain.Core.ObjValor.Cpf", "Cpf", b1 =>
                         {
@@ -549,15 +550,16 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
 
             modelBuilder.Entity("AVS.SpotifyMusic.Domain.Core.Notificacoes.Notificacao", b =>
                 {
-                    b.HasOne("AVS.SpotifyMusic.Domain.Conta.Entidades.Usuario", "Destino")
+                    b.HasOne("AVS.SpotifyMusic.Domain.Contas.Entidades.Usuario", "Destino")
                         .WithMany("Notificacoes")
                         .HasForeignKey("DestinoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("AVS.SpotifyMusic.Domain.Conta.Entidades.Usuario", "Remetente")
+                    b.HasOne("AVS.SpotifyMusic.Domain.Contas.Entidades.Usuario", "Remetente")
                         .WithMany()
-                        .HasForeignKey("RemetenteId");
+                        .HasForeignKey("RemetenteId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Destino");
 
@@ -569,12 +571,13 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                     b.HasOne("AVS.SpotifyMusic.Domain.Pagamentos.Entidades.Pagamento", "Pagamento")
                         .WithOne("Cartao")
                         .HasForeignKey("AVS.SpotifyMusic.Domain.Pagamentos.Entidades.Cartao", "PagamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("AVS.SpotifyMusic.Domain.Conta.Entidades.Usuario", null)
+                    b.HasOne("AVS.SpotifyMusic.Domain.Contas.Entidades.Usuario", null)
                         .WithMany("Cartoes")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.OwnsOne("AVS.SpotifyMusic.Domain.Core.ObjValor.Monetario", "Limite", b1 =>
                         {
@@ -626,12 +629,13 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                 {
                     b.HasOne("AVS.SpotifyMusic.Domain.Pagamentos.Entidades.Cartao", null)
                         .WithMany("Transacoes")
-                        .HasForeignKey("CartaoId");
+                        .HasForeignKey("CartaoId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("AVS.SpotifyMusic.Domain.Pagamentos.Entidades.Pagamento", "Pagamento")
                         .WithOne("Transacao")
                         .HasForeignKey("AVS.SpotifyMusic.Domain.Pagamentos.Entidades.Transacao", "PagamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("AVS.SpotifyMusic.Domain.Core.ObjValor.Monetario", "Valor", b1 =>
@@ -683,7 +687,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                     b.HasOne("AVS.SpotifyMusic.Domain.Streaming.Entidades.Banda", null)
                         .WithMany("Albuns")
                         .HasForeignKey("BandaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("AVS.SpotifyMusic.Domain.Streaming.Entidades.Musica", b =>
@@ -691,7 +695,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                     b.HasOne("AVS.SpotifyMusic.Domain.Streaming.Entidades.Album", null)
                         .WithMany("Musicas")
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.OwnsOne("AVS.SpotifyMusic.Domain.Streaming.ObjValor.Duracao", "Duracao", b1 =>
                         {
@@ -716,10 +720,10 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
 
             modelBuilder.Entity("AVS.SpotifyMusic.Domain.Streaming.Entidades.Plano", b =>
                 {
-                    b.HasOne("AVS.SpotifyMusic.Domain.Conta.Entidades.Assinatura", "Assinatura")
+                    b.HasOne("AVS.SpotifyMusic.Domain.Contas.Entidades.Assinatura", "Assinatura")
                         .WithOne("Plano")
                         .HasForeignKey("AVS.SpotifyMusic.Domain.Streaming.Entidades.Plano", "AssinaturaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.OwnsOne("AVS.SpotifyMusic.Domain.Core.ObjValor.Monetario", "Valor", b1 =>
@@ -750,23 +754,23 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                     b.HasOne("AVS.SpotifyMusic.Domain.Streaming.Entidades.Musica", null)
                         .WithMany()
                         .HasForeignKey("MusicasId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("AVS.SpotifyMusic.Domain.Conta.Entidades.Playlist", null)
+                    b.HasOne("AVS.SpotifyMusic.Domain.Contas.Entidades.Playlist", null)
                         .WithMany()
                         .HasForeignKey("PlaylistsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Conta.Entidades.Assinatura", b =>
+            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Contas.Entidades.Assinatura", b =>
                 {
                     b.Navigation("Plano")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Conta.Entidades.Usuario", b =>
+            modelBuilder.Entity("AVS.SpotifyMusic.Domain.Contas.Entidades.Usuario", b =>
                 {
                     b.Navigation("Assinaturas");
 

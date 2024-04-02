@@ -5,9 +5,11 @@ using AVS.SpotifyMusic.Domain.Core.ObjDomain;
 using AVS.SpotifyMusic.Domain.Pagamentos.Entidades;
 using AVS.SpotifyMusic.Domain.Streaming.Entidades;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace AVS.SpotifyMusic.Infra.Data.Context
 {
@@ -26,6 +28,8 @@ namespace AVS.SpotifyMusic.Infra.Data.Context
         public DbSet<Plano> Planos { get; set; }
         public IConfigurationRoot Configuration { get; set; }
 
+        private const string DEFAULT_CONNECTION = "DefaultConnection";
+
         public SpotifyMusicContext(DbContextOptions<SpotifyMusicContext> options) : base(options)
         {
             Database.Migrate();    
@@ -38,14 +42,26 @@ namespace AVS.SpotifyMusic.Infra.Data.Context
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpotifyMusicContext).Assembly);
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
-                relationship.DeleteBehavior = DeleteBehavior.Cascade;
+                relationship.DeleteBehavior = DeleteBehavior.NoAction;
             }
             base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var builder = new ConfigurationBuilder()
+               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+               .AddJsonFile("appsettings.json", true, true)
+               .AddJsonFile($"appsettings.{EnvironmentName.Development}.json", true, true)
+               .AddJsonFile($"appsettings.{EnvironmentName.Production}.json", true, true)
+               .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+
+            optionsBuilder.UseLoggerFactory(LoggerFactory.Create(x => x.AddConsole()));
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString(DEFAULT_CONNECTION));
             base.OnConfiguring(optionsBuilder);
+            
         }
 
         public async Task<bool> Commit()

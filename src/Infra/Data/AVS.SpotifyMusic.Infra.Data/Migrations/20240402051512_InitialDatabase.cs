@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AVS.SpotifyMusic.Infra.Data.Migrations
 {
-    public partial class DatabaseInicial : Migration
+    public partial class InitialDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -79,8 +79,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                         name: "FK_Albuns_Bandas_BandaId",
                         column: x => x.BandaId,
                         principalTable: "Bandas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -126,8 +125,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                         name: "FK_Cartoes_Pagamentos_PagamentoId",
                         column: x => x.PagamentoId,
                         principalTable: "Pagamentos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Cartoes_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
@@ -155,8 +153,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                         name: "FK_Notificacoes_Usuarios_DestinoId",
                         column: x => x.DestinoId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Notificacoes_Usuarios_RemetenteId",
                         column: x => x.RemetenteId,
@@ -184,8 +181,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                         name: "FK_Playlists_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -206,8 +202,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                         name: "FK_Musicas_Albuns_AlbumId",
                         column: x => x.AlbumId,
                         principalTable: "Albuns",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -230,8 +225,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                         name: "FK_Planos_Assinaturas_AssinaturaId",
                         column: x => x.AssinaturaId,
                         principalTable: "Assinaturas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -260,8 +254,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                         name: "FK_Transacoes_Pagamentos_PagamentoId",
                         column: x => x.PagamentoId,
                         principalTable: "Pagamentos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -278,14 +271,12 @@ namespace AVS.SpotifyMusic.Infra.Data.Migrations
                         name: "FK_MusicaPlaylist_Musicas_MusicasId",
                         column: x => x.MusicasId,
                         principalTable: "Musicas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_MusicaPlaylist_Playlists_PlaylistsId",
                         column: x => x.PlaylistsId,
                         principalTable: "Playlists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
