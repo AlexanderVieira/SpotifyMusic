@@ -48,7 +48,7 @@ namespace AVS.SpotifyMusic.Api.Controllers
             return RespostaPersonalizada();
         }
 
-        [HttpPost("singin")]
+        [HttpPost("signin")]
         public async Task<ActionResult> Login(UserLogin userLogin)
         {
 
@@ -71,6 +71,24 @@ namespace AVS.SpotifyMusic.Api.Controllers
             return RespostaPersonalizada();
         }
 
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout()
+        {
+
+            if (!ModelState.IsValid) return RespostaPersonalizada(ModelState);
+
+            var loggedOut = await _authService.Logout();
+
+            if (loggedOut == true)
+            {
+                AdicionaMensagemSucesso("Usuário saiu do sistema");
+                return RespostaPersonalizada(StatusCodes.Status200OK);
+            }
+
+            AdicionarErroProcessamento("Ocorreu um erro ao tentar sair do sistema");
+            return RespostaPersonalizada();
+        }
+
         [HttpPost("refresh-token")]
         public async Task<ActionResult> RefreshToken([FromBody] string refreshToken)
         {
@@ -78,15 +96,15 @@ namespace AVS.SpotifyMusic.Api.Controllers
             {
                 AdicionarErroProcessamento("Refresh Token inválido");
                 return RespostaPersonalizada();
-            }
+            }            
 
-            var token = await _authService.GetRefreshToken(Guid.Parse(refreshToken));
-
-            if (token is null)
+            if (!await _authService.RefreshTokenValido(refreshToken))
             {
                 AdicionarErroProcessamento("Refresh Token expirado");
                 return RespostaPersonalizada();
             }
+
+            var token = await _authService.GetRefreshToken(Guid.Parse(refreshToken));
 
             return RespostaPersonalizada(await _authService.GenerateJwt(token.Username));
         }

@@ -9,23 +9,26 @@ namespace AVS.SpotifyMusic.Api.Models
     public class UserRegister
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public string FirstName { get; set; }
+        public string PrimeiroNome { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public string LastName { get; set; }
+        public string UltimoNome { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public string Cpf { get; set; }
+        public string UserName { get; set; }
+
+        //[Required(ErrorMessage = "O campo {0} é obrigatório")]
+        //public string Cpf { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [EmailAddress(ErrorMessage = "O campo {0} está em formato inválido")]
         public string Email { get; set; }
         // public string BirthDate { get; set; }
-        public string PhotoUrl { get; set; }
+        //public string Foto { get; set; }
         // public string GenderType { get; set; }
         // public string FunctionType { get; set; }
-        public bool Ativo { get; set; }
-        public string PhoneNumber { get; set; }
+        //public bool Ativo { get; set; }
+        //public string NumTelefone { get; set; }
         // public string PhoneType { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
@@ -33,7 +36,7 @@ namespace AVS.SpotifyMusic.Api.Models
         public string Password { get; set; }
 
         [Compare("Password", ErrorMessage = "As senhas não conferem.")]
-        public string PasswordConfirmation { get; set; }
+        public string ConfirmePassword { get; set; }
         
     }
 }

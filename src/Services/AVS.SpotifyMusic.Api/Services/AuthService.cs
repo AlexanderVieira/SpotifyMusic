@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using AVS.SpotifyMusic.Api.Data;
@@ -114,6 +115,40 @@ namespace AVS.SpotifyMusic.Api.Services
                                       .FirstOrDefaultAsync(u => u.Token == refreshToken);
 
             return token != null && token.ExpirationDate.ToLocalTime() > DateTime.Now ? token : null;
+        }
+
+        public async Task<bool> RefreshTokenValido(string refreshToken)
+        {
+            try
+            {                
+                var token = await GetRefreshToken(Guid.Parse(refreshToken));
+                if (token is null)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (ArgumentNullException ex)
+            {                
+                Debug.WriteLine(ex.Message); 
+                return false;               
+            }
+           
+        }        
+
+        public static JwtSecurityToken GetTokenFormated(string jwtToken)
+        {
+            return new JwtSecurityTokenHandler().ReadToken(jwtToken) as JwtSecurityToken;
+        }
+
+        public async Task<bool> Logout()
+        {
+            var task = SignInManager.SignOutAsync(); 
+            if (!task.IsCompletedSuccessfully)
+            {
+                return await Task.FromResult(false);
+            }
+            return await Task.FromResult(task.IsCompletedSuccessfully);           
         }
     }
 }

@@ -13,6 +13,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlaylistComponent } from "./components/contas/playlist/playlist.component";
 import { HomeComponent } from './components/home/home.component';
 import { SidebarComponent } from './components/commons/sidebar/sidebar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-root',
@@ -34,7 +36,10 @@ import { SidebarComponent } from './components/commons/sidebar/sidebar.component
         MatTooltipModule,
         PlaylistComponent,
         HomeComponent,
-        SidebarComponent
+        SidebarComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        CommonModule
     ]
 })
 export class AppComponent {
