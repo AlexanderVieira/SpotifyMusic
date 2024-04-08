@@ -1,5 +1,6 @@
 using AVS.SpotifyMusic.Api.Configurations;
 using AVS.SpotifyMusic.Api.Services;
+using AVS.SpotifyMusic.Api.Services.Interfaces;
 using AVS.SpotifyMusic.Application.AppServices;
 using AVS.SpotifyMusic.Application.Contas.AutoMapper;
 using AVS.SpotifyMusic.Application.Contas.Interfaces.Services;
@@ -115,6 +116,8 @@ namespace AVS.SpotifyMusic.Api
 
             builder.Services.AddScoped<IBandaService, BandaService>();
             builder.Services.AddScoped<BandaAppService>();
+
+			builder.Services.AddScoped<IUploadService, UploadService>();
 
 			//builder.Services.ScanDependencyInjection(Assembly.GetExecutingAssembly(), "Service");
 			

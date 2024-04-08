@@ -1,19 +1,20 @@
-<div class="row mt-4">
+<div class="container">
+<div class="row mt-4" style="background-color: rgb(151, 155, 158);">
 
-	<div class="col-md-6 d-none d-md-block" style="height: 450px;">
+	<div class="col-md-4 d-none d-md-block" style="height: 450px;">
 		<div class="text-center col-md-12 my-auto side-heder">
 			<h1>Cadastro de Usuário</h1>
-			<img src="../../../../assets/registerImage.png" class="my-4" alt="" width="400px">
+			<img src="assets/registerImage.png" class="my-4 rounded-circle border" alt="" width="400px">
 		</div>
 	</div>
 
-	<div class="col-md-6">
+	<div class="col-md-8">
 
     <form [formGroup]="form" class="p-1" (ngSubmit)="register()">
       <div class="pb-2 d-block d-md-none">
         <h3 class="border-bottom">Cadastro de Usuário</h3>
       </div>
-      <div class="form-row">
+      <div class="row">
         <div class="form-group col-sm-6">
           <label>Primeiro Nome</label>
           <input type="text" class="form-control" formControlName="primeiroNome"
@@ -31,7 +32,7 @@
           </div>
         </div>
       </div>
-      <div class="form-row">
+      <div class="row">
       <div class="form-group col-md-6">
         <label for="">Email:</label>
         <input class="form-control" type="text" formControlName="email"
@@ -52,7 +53,7 @@
         </div>
       </div>
     </div>
-      <div class="form-row">
+      <div class="row">
         <div class="form-group col-sm-6">
           <label for="">Senha:</label>
           <input class="form-control" type="password" formControlName="password"
@@ -80,22 +81,201 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="">CPF:</label>
+          <input class="form-control" type="text" formControlName="cpf"
+            [ngClass]="{'is-invalid': f.cpf.errors && f.cpf.touched}" placeholder="Insira o seu cpf " />
+          <div *ngIf="f.cpf.errors?.required && f.cpf.touched" class="invalid-feedback">
+            CPF é obrigatório.
+          </div>
+          <div *ngIf="f.cpf.errors?.cpf && f.cpf.touched" class="invalid-feedback">
+            Deve ser um CPF válido.
+          </div>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="">Data de Nascimento:</label>
+          <input class="form-control" type="date" formControlName="dtNascimento" />
+            <!-- [ngClass]="{'is-invalid': f.dtNascimento.errors && f.dtNascimento.touched}" placeholder="Insira sua data de nascimento " />
+             <div *ngIf="f.dtNascimento.errors?.required && f.dtNascimento.touched" class="invalid-feedback">
+            O Campo é obrigatório.
+          </div>
+          <div *ngIf="f.dtNascimento.errors?.cpf && f.dtNascimento.touched" class="invalid-feedback">
+            Deve ser uma data válida.
+          </div> -->
+        </div>
+
+          <div class="form-group col-md-3 mt-4">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="usuarioCheck" formControlName="ativo">
+              <label class="custom-control-label" style="margin-left: 10px;">Usuário Ativo</label>
+            </div>
+          </div>
+
+      </div>
+      <hr>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="">Nome no Cartão:</label>
+          <input class="form-control" type="text" formControlName="nomeCartao"
+            [ngClass]="{'is-invalid': f.nomeCartao.errors && f.nomeCartao.touched}" placeholder="Digite seu nome" />
+          <div *ngIf="f.nomeCartao.errors?.required && f.nomeCartao.touched"
+          class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.nomeCartao.errors?.minlength && f.nomeCartao.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 6 caracteres.
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="">Número do Cartão:</label>
+          <input class="form-control" type="text" formControlName="numeroCartao"
+            [ngClass]="{'is-invalid': f.numeroCartao.errors && f.numeroCartao.touched}" placeholder="Digite o número" />
+          <div *ngIf="f.numeroCartao.errors?.required"
+            class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.numeroCartao.errors?.minlength && f.numeroCartao.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 16 caracteres.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="">Data Expiração:</label>
+          <input class="form-control" type="text" formControlName="expiracao"
+            [ngClass]="{'is-invalid': f.expiracao.errors && f.expiracao.touched}" placeholder="Digite data de validade" />
+          <div *ngIf="f.expiracao.errors?.required && f.expiracao.touched"
+          class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.expiracao.errors?.minlength && f.expiracao.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 5 caracteres.
+          </div>
+        </div>
+        <div class="form-group col-sm-3">
+          <label for="">CVV:</label>
+          <input class="form-control" type="text" formControlName="cvv"
+            [ngClass]="{'is-invalid': f.cvv.errors && f.cvv.touched}" placeholder="Digite o código verificador" />
+          <div *ngIf="f.cvv.errors?.required"
+            class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.cvv.errors?.minlength && f.cvv.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 3 caracteres.
+          </div>
+        </div>
+        <div class="col-sm-3 mb-3 mt-4">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="ativoCartaCheck" formControlName="ativoCartao">
+            <label class="custom-control-label" style="margin-left: 10px;">Cartão Ativo</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="">Valor do Limite:</label>
+          <input class="form-control" type="text" formControlName="limite" currencyMask
+            [ngClass]="{'is-invalid': f.limite.errors && f.limite.touched}" placeholder="Digite o valor" />
+          <div *ngIf="f.limite.errors?.required && f.limite.touched"
+          class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.limite.errors?.minlength && f.limite.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 5 caracteres.
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="">Nome do Plano:</label>
+          <input class="form-control" type="text" formControlName="nomePlano"
+            [ngClass]="{'is-invalid': f.nomePlano.errors && f.nomePlano.touched}" placeholder="Digite seu nome do plano" />
+          <div *ngIf="f.nomePlano.errors?.required && f.nomePlano.touched"
+          class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.nomePlano.errors?.minlength && f.nomePlano.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 6 caracteres.
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="">Descrição do Plano:</label>
+          <input class="form-control" type="text" formControlName="descricaoPlano"
+            [ngClass]="{'is-invalid': f.descricaoPlano.errors && f.descricaoPlano.touched}" placeholder="Digite a descrição" />
+          <div *ngIf="f.descricaoPlano.errors?.required"
+            class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.descricaoPlano.errors?.minlength && f.descricaoPlano.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 6 caracteres.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="">Valor do Plano:</label>
+          <input class="form-control" type="text" formControlName="valorPlano" currencyMask
+            [ngClass]="{'is-invalid': f.valorPlano.errors && f.valorPlano.touched}" placeholder="Digite o valor" />
+          <div *ngIf="f.valorPlano.errors?.required && f.valorPlano.touched"
+          class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.valorPlano.errors?.minlength && f.valorPlano.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 5 caracteres.
+          </div>
+        </div>
+        <div class="form-group col-sm-3">
+          <label for="">Tipo de Plano</label>
+          <select class="form-select" aria-label="Default select example" formControlName="tipoPlano">
+            <option>Tipo do Plano</option>
+            <option selected value="{{tipoPlano.Basico}}">Básico</option>
+            <option value="{{tipoPlano.Familia}}">Familia</option>
+            <option value="{{tipoPlano.Premium}}">Premium</option>
+          </select>
+          <div *ngIf="f.tipoPlano.errors?.required"
+            class="invalid-feedback">
+            O campo é obrigatório.
+          </div>
+          <div *ngIf="f.tipoPlano.errors?.minlength && f.tipoPlano.touched"
+          class="invalid-feedback">
+            Deve conter no mínimo 3 caracteres.
+          </div>
+        </div>
+        <div class="col-sm-3 p-1 mb-3 mt-4">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="ativoAssinaturaCheck" formControlName="ativoAssinatura">
+            <label class="custom-control-label" style="margin-left: 10px;">Assinatura Ativa</label>
+          </div>
+        </div>
+      </div>
+
+      <hr>
       <div class="form-row p-1 mb-3">
         <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="customCheck1">
-          <label class="custom-control-label">Eu concordo com os <a href="#">Termos de Uso</a>.</label>
+          <input type="checkbox" class="custom-control-input" id="termoUsoCheck">
+          <label class="custom-control-label" style="margin-left: 10px;">Eu concordo com os <a href="#">Termos de Uso</a>.</label>
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group col-12">
-          <button [disabled]="!form.valid" class="btn btn-lg btn-success btn-block px-5" type="submit">
+        <div class="form-group">
+          <button [disabled]="!form.valid" class="btn btn-lg btn-success btn-block px-5 col-md-6" type="submit">
             Registar
           </button>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-12">
-          <a class="btn btn-link btn-block" routerLink="/login">
+          <a class="btn btn-link btn-block" [routerLink]="['/login']">
             Já sou Cadastrado
           </a>
         </div>
@@ -103,4 +283,5 @@
     </form>
 
 	</div>
+</div>
 </div>

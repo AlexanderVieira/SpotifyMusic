@@ -42,4 +42,10 @@ export class AlbumComponent implements OnInit {
 
   }
 
+  public MostraImagem(fotoURL?: string): string {
+    return fotoURL != '' && fotoURL != undefined
+      ? `https://localhost:7170/resources/images/banda/${fotoURL}`
+      : '../../../assets/img/semImagem.jpeg';
+  }
+
 }

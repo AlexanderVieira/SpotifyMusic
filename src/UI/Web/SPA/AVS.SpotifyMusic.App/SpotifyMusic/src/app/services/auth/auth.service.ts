@@ -15,7 +15,6 @@ export class AuthService {
   constructor(private httpClient: HttpClient) { }
 
   public login(model: any): Observable<void> {
-
     return this.httpClient.post<UserResponseLogin>(`${this.url}/signin`, model).pipe(
       take(1),
       map((response: UserResponseLogin) => {
@@ -25,11 +24,9 @@ export class AuthService {
         }
       })
     );
-
   }
 
   public register(model: any): Observable<void> {
-
     return this.httpClient.post<UserResponseLogin>(`${this.url}/signup`, model).pipe(
       take(1),
       map((response: UserResponseLogin) => {
@@ -39,23 +36,25 @@ export class AuthService {
         }
       })
     );
-
   }
 
   public logout(): void {
-
     localStorage.removeItem('user');
     const user: any = null;
     this.currentUserSource.next(user);
     this.currentUserSource.complete();
-
   }
 
   public setCurrentUser(user: UserResponseLogin): void {
-
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
-
   }
 
+  public getCurrentUser(): any {
+    let text = localStorage.getItem('user');
+    if(text != null) {
+      let model: UserResponseLogin = JSON.parse(text);
+      return model;
+    }
+  }
 }

@@ -9,6 +9,7 @@ import { AdminComponent } from './admin/admin/admin.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { BandasComponent } from './admin/banda/bandas/bandas.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +43,10 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent
+  },
+  {
+    path: 'admin/bandas',
+    component: BandasComponent
   },
   {
     path: 'register',

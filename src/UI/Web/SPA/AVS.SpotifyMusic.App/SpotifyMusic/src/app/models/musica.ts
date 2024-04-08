@@ -9,3 +9,10 @@ export class Musica {
   public playlists: Playlist[] = [];
 
 }
+
+export class MusicaRequest {
+  
+  public nome: string = '';
+  public duracao: number = 0;  
+
+}

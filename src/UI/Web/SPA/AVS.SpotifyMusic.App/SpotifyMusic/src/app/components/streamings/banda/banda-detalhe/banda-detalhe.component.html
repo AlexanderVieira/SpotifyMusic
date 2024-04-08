@@ -3,7 +3,7 @@
   <div class="row g-0">
     <div class="col-md-4 text-center d-flex align-items-center p-2">
       <img style="max-height: 250px; width: 100%;"
-        [src]="banda.foto"
+        [src]="'https://localhost:7170/resources/images/banda/'+banda.foto"
         alt="Banda"
         class="img-fluid rounded-start"
       />
@@ -44,7 +44,7 @@
 
         <tr>
           <th scope="row">{{++$index}}</th>
-          <td><img [src]="album.foto"
+          <td><img [src]="MostraImagem(album.foto)"
             alt=""
             style="width: 45px; height: 45px"
             class="rounded-circle"/>

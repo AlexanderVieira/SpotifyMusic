@@ -18,7 +18,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BandaDetalheResponse, BandaRequest, BandaResponse } from '../../../models/banda';
 import { BandaService } from '../../../services/banda/banda.service';
 import { UploadService } from '../../../services/upload/upload.service';
-import { NewGUID } from '../../../utils/NewGUID';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -41,6 +41,7 @@ import { NewGUID } from '../../../utils/NewGUID';
   styleUrls: ['./atualizar-banda.component.css']
 })
 export class AtualizarBandaComponent implements OnInit {
+[x: string]: any;
 
   //inputdata: any;
   bandaResquest: BandaRequest;
@@ -49,6 +50,7 @@ export class AtualizarBandaComponent implements OnInit {
   currentFile?: File;
   progress = 0;
   message = '';
+  fotoURL?: string;
 
   fileName = 'Selecione o arquivo';
   fileInfos?: Observable<any>;
@@ -66,6 +68,7 @@ export class AtualizarBandaComponent implements OnInit {
               private buildr: FormBuilder,
               private bandaService: BandaService,
               private uploadService: UploadService,
+              private toastr: ToastrService,
               private activeRouter: ActivatedRoute,
               private router: Router)
               {
@@ -73,115 +76,169 @@ export class AtualizarBandaComponent implements OnInit {
                 this.bandaResponse = new BandaResponse();
               }
 
-  ngOnInit(): void {
+  ngOnInit(): void {   
 
-    this.activeRouter.params.subscribe(params => {
-      this.bandaId = params['id'];
-      //console.log(this.bandaId);
-    });
+    this.CarregarBanda();
 
-    //this.bandaResquest = this.data;
-    //console.log(this.bandaResquest)
+  }
+
+  public CarregarBanda(): void {
+
     this.bandaResquest.id = this.data.id;
-    console.log(this.bandaResquest.id);
+    //console.log(this.bandaResquest.id);
+    //console.log(Guid.parse(Guid.EMPTY));
+    this.fotoURL = this.MostraImagem(this.data.foto);
 
-    if(!Guid.parse(this.bandaResquest.id).isEmpty()){
-      this.SetPopupData(this.bandaResquest.id);
-    }
-  }
+    if(!(this.bandaResquest.id ===  Guid.EMPTY)){
 
-  SetPopupData(id: string) {
-
-    this.bandaService.GetBandaPorId(id).subscribe(response => {
-      this.bandaResponse = response;
-      console.log(this.bandaResponse)
-      this.bandaform.setValue(
+      //this.spinner.show();
+      this.bandaService
+        .GetBandaPorId(Guid.parse(this.bandaResquest.id))
+        .subscribe((response: BandaResponse) =>
         {
-          id: this.bandaResponse.id,
-          nome: this.bandaResponse.nome,
-          descricao: this.bandaResponse.descricao,
-          foto: this.bandaResponse.foto
-        })
-    });
+          this.bandaResponse = response;
+          if (this.bandaResponse.foto !== '') {
+            this.fotoURL = this.MostraImagem(this.bandaResponse.foto);
+          }
+
+          this.bandaform.setValue(
+            {
+              id: this.bandaResponse.id,
+              nome: this.bandaResponse.nome,
+              descricao: this.bandaResponse.descricao,
+              foto: this.bandaResponse.foto
+            })
+        },
+        (error: any) => {
+          this.toastr.error('Erro ao tentar carregar banda.', 'Erro!');
+          console.error(error);
+        }
+      );//.add(() => this.spinner.hide());
+    }
+
   }
 
-  CriarBanda() {
+  public CriarBanda(): void {
 
     const bandaform = this.bandaform.value;
+    //this.bandaResquest.id = bandaform.id;
     this.bandaResquest.nome = bandaform.nome;
     this.bandaResquest.descricao = bandaform.descricao;
     this.bandaResquest.foto = bandaform.foto;
     console.log(this.bandaResquest)
 
-    this.bandaService.Criar(this.bandaResquest)
-    .subscribe(response =>
-    {
-      console.log(response)
-      this.ClosePopup();
-    });
+    //this.spinner.show();
+    this.bandaService
+      .Criar(this.bandaResquest)
+      .subscribe((response: any) =>
+      {
+        console.log(response)
+        this.toastr.success('Banda criada com sucesso.', 'Sucesso!');
+        this.ClosePopup();
+      },
+      (error: any) => {
+        this.toastr.error('Erro ao tentar criar banda.', 'Erro!');
+        console.error(error);
+      }
+    );//.add(() => this.spinner.hide());
+
   }
 
-  AtualizarBanda() {
+  public AtualizarBanda(): void {
 
     const bandaform = this.bandaform.value;
-    //const bandaRequest = new BandaRequest();
     this.bandaResquest.id = bandaform.id;
     this.bandaResquest.nome = bandaform.nome;
     this.bandaResquest.descricao = bandaform.descricao;
     this.bandaResquest.foto = bandaform.foto;
     console.log(this.bandaResquest)
 
-    this.bandaService.Atualizar(this.bandaResquest)
-    .subscribe(response =>
-    {
-      console.log(response)
-      this.ClosePopup();
-    });
+    //this.spinner.show();
+    this.bandaService
+      .Atualizar(this.bandaResquest)
+      .subscribe((response: any) =>
+      {
+        console.log(response)
+        this.toastr.success('Banda atualizada com sucesso.', 'Sucesso!');
+        this.ClosePopup();
+      },
+      (error: any) => {
+        this.toastr.error('Erro ao tentar atualizar banda.', 'Erro!');
+        console.error(error);
+      }
+    );//.add(() => this.spinner.hide());
+
   }
 
-  SelectFile(event: any): void {
+  public MostraImagem(fotoURL?: string): string {
+    return fotoURL !== ''
+      ? `https://localhost:7170/resources/images/banda/${fotoURL}`
+      : '../../../../assets/img/semImagem.jpeg';
+  }
+
+  public OnFileChange(event: any): void {
     this.progress = 0;
     this.message = "";
+    console.log(event);
 
     if (event.target.files && event.target.files[0]) {
+
       const file: File = event.target.files[0];
       this.currentFile = file;
       this.fileName = this.currentFile.name;
-    } else {
+      console.log(this.fileName);
+      this.bandaResquest.foto = this.fileName;
+
+      const reader = new FileReader();
+      reader.onload = (event: any) => this.fotoURL = event.target.result;
+      reader.readAsDataURL(file);
+
+      this.UploadImage();
+
+    }
+    else {
       this.fileName = 'Selecione o arquivo';
     }
   }
 
-  Upload(): void {
-    if (this.currentFile) {
-      this.uploadService.upload(this.currentFile).subscribe({
-        next: (event: any) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.progress = Math.round(100 * event.loaded / event.total);
-          } else if (event instanceof HttpResponse) {
-            this.message = event.body.message;
-            this.fileInfos = this.uploadService.getFiles();
-          }
-        },
-        error: (err: any) => {
-          console.log(err);
-          this.progress = 0;
+  public UploadImage(): void {
 
-          if (err.error && err.error.message) {
-            this.message = err.error.message;
-          } else {
-            this.message = 'Could not upload the file!';
+    if (this.currentFile) {
+      this.uploadService
+        .UploadImageBanda(Guid.parse(this.bandaResquest.id), this.currentFile)
+        .subscribe({
+          next: (event: any) => {
+            if (event.type === HttpEventType.UploadProgress) {
+              this.progress = Math.round(100 * event.loaded / event.total);
+            } else if (event instanceof HttpResponse) {
+              this.message = event.body.message;
+              this.fileInfos = this.uploadService.getFiles();
+            }
+
+            this.toastr.success('Upload realizado com sucesso.', 'Sucesso!');
+
+          },
+          error: (err: any) => {
+            console.log(err);
+            this.progress = 0;
+
+            if (err.error && err.error.message) {
+              this.message = err.error.message;
+
+            } else {
+              this.message = 'Erro ao tentar fazer upload do arquivo!';
+              this.toastr.error('Erro ao tentar fazer upload do arquivo.', 'Erro!');
+            }
+          },
+          complete: () => {
+            this.currentFile = undefined;
           }
-        },
-        complete: () => {
-          this.currentFile = undefined;
-        }
-      });
+        });
     }
   }
 
-  ClosePopup() {
-    this.ref.close('Fechando a popup.');
+  public ClosePopup(): void {
+    this.ref.close('Fechando o popup.');
   }
 
 }

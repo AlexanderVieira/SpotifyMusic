@@ -1,22 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AVS.SpotifyMusic.Api.Models;
 using AVS.SpotifyMusic.Api.Services;
+using AVS.SpotifyMusic.Application.AppServices;
+using AVS.SpotifyMusic.Application.Contas.DTOs;
+using AVS.SpotifyMusic.Application.Pagamentos.DTOs;
+using AVS.SpotifyMusic.Application.Streamings.DTOs;
 using AVS.SpotifyMusic.Domain.Core.Services.WebApi.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.SpotifyMusic.Api.Controllers
-{   
+{
     [Route("api/auth")]
     public class AuthController : MainController
     {
         private readonly AuthService _authService;        
+        private readonly UsuarioAppService _usuarioAppService;
 
-        public AuthController(AuthService authService)
+        public AuthController(AuthService authService, UsuarioAppService usuarioAppService)
         {
+            _usuarioAppService = usuarioAppService;
             _authService = authService;            
         }       
 
@@ -36,7 +38,37 @@ namespace AVS.SpotifyMusic.Api.Controllers
             var result = await _authService.UserManager.CreateAsync(user, userRegister.Password);
 
             if (result.Succeeded)
-            {               
+            {
+                var userRequest = new UsuarioRequest{
+                    Id = Guid.Parse(user.Id),
+                    Nome = $"{userRegister.PrimeiroNome} {userRegister.UltimoNome}",
+                    Email = userRegister.Email,
+                    Cpf = userRegister.Cpf,
+                    Senha = userRegister.Password,
+                    DtNascimento =  DateTime.Parse(userRegister.DtNascimento),
+                    Ativo = userRegister.Ativo,
+                    Cartao = new CartaoRequest{
+                        Nome = userRegister.Cartao.Nome,
+                        Numero = userRegister.Cartao.Numero,
+                        Expiracao = userRegister.Cartao.Expiracao,
+                        Cvv = userRegister.Cartao.Cvv,
+                        Limite = userRegister.Cartao.Limite,
+                    },
+                    Assinatura = new AssinaturaRequest{
+                        Ativo = userRegister.Assinatura.Ativo,
+                        Plano = new PlanoRequest{
+                            Nome = userRegister.Assinatura.Plano.Nome,
+                            Descricao = userRegister.Assinatura.Plano.Descricao,
+                            Valor = userRegister.Assinatura.Plano.Valor,
+                            TipoPlano = userRegister.Assinatura.Plano.TipoPlano
+                        }
+                    }
+                     
+                };   
+
+                var response = await _usuarioAppService.Criar(userRequest);
+                if(response == false) RespostaPersonalizada(StatusCodes.Status400BadRequest);
+
                 return RespostaPersonalizada(await _authService.GenerateJwt(userRegister.Email));
             }
 

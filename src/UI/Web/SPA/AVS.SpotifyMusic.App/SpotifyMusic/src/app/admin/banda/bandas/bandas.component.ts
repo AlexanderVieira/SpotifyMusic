@@ -41,7 +41,10 @@ export class BandasComponent implements OnInit {
   @ViewChild(MatPaginator) paginatior !: MatPaginator;
   @ViewChild(MatSort) sort !: MatSort;
 
-  constructor(private bandaService: BandaService, private dialog: MatDialog)
+  constructor(
+    private bandaService: BandaService,
+    private dialog: MatDialog
+  )
   {
     //this.getBandas();
   }
@@ -50,7 +53,7 @@ export class BandasComponent implements OnInit {
     this.GetBandas();
   }
 
-  GetBandas() {
+  public GetBandas(): void {
     this.bandaService.GetBandas().subscribe(response =>
       {
         this.bandas = response;
@@ -60,6 +63,12 @@ export class BandasComponent implements OnInit {
       });
   }
 
+  public MostraImagem(fotoURL: string): string {
+    return fotoURL !== ''
+      ? `https://localhost:7170/resources/images/banda/${fotoURL}`
+      : '../../../../assets/img/semImagem.jpeg';
+  }
+
   Filterchange(data: Event) {
     const value = (data.target as HTMLInputElement).value;
     this.dataSource.filter = value;
@@ -67,21 +76,21 @@ export class BandasComponent implements OnInit {
 
   AtualizarBanda(banda: any) {
     console.log(banda)
-    this.OpenPopupAtualizar(banda, 'Atualizar Banda', AtualizarBandaComponent);
+    this.OpenPopupAtualizar(banda, 'Atualizar', AtualizarBandaComponent);
   }
 
   VisualizarBanda(banda: any) {
     console.log(banda)
-    this.OpenPopupVisualizar(banda, 'Visualizar Banda', BandaDetalheComponent);
+    this.OpenPopupVisualizar(banda, 'Visualizar', BandaDetalheComponent);
   }
 
   AdicionarBanda(){
-    this.OpenPopupAtualizar(new BandaRequest(), 'Adicionar Banda', AtualizarBandaComponent);
+    this.OpenPopupAtualizar(new BandaRequest(), 'Adicionar', AtualizarBandaComponent);
   }
 
   RemoverBanda(banda: any) {
     console.log(banda)
-    this.OpenPopupVisualizar(banda, 'Remover Banda', RemoveBandaComponent);
+    this.OpenPopupVisualizar(banda, 'Remover', RemoveBandaComponent);
   }
 
 
@@ -106,7 +115,7 @@ export class BandasComponent implements OnInit {
 
   OpenPopupAtualizar(banda: any, title: any,component:any) {
     var _popup = this.dialog.open(component, {
-      width: '40%',
+      width: '25%',
       enterAnimationDuration: '1000ms',
       exitAnimationDuration: '1000ms',
       data: {
@@ -122,6 +131,5 @@ export class BandasComponent implements OnInit {
       this.GetBandas();
     })
   }
-
 
 }

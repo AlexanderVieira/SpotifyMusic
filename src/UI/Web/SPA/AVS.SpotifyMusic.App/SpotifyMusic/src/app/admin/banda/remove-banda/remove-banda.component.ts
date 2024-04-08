@@ -64,11 +64,11 @@ export class RemoveBandaComponent implements OnInit {
 
     if (this.bandaResponse.id != Guid.createEmpty())
     {
-      this.SetPopupData(this.bandaResponse.id.toString());
+      this.CarregarBanda(this.bandaResponse.id);
     }
   }
 
-  SetPopupData(id: string) {
+  public CarregarBanda(id: Guid): void {
 
     this.bandaService.GetBandaPorId(id).subscribe(response => {
       this.bandaResponse = response;
@@ -87,17 +87,17 @@ export class RemoveBandaComponent implements OnInit {
 
     const bandaform = this.bandaform.value;
     this.bandaRequest.id = bandaform.id;
-    const id = Guid.parse(this.bandaRequest.id);
+    //const id = Guid.parse(this.bandaRequest.id);
     console.log(this.bandaResponse.id)
-    console.log(id)
+    //console.log(id)
 
-    this.bandaService.Remover(id)
+    this.bandaService.Remover(Guid.parse(this.bandaRequest.id))
     .subscribe(response =>
     {
       console.log(response)
       this.ClosePopup();
     },error => {
-      
+
     });
   }
 

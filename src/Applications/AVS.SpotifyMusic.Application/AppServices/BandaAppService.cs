@@ -100,6 +100,29 @@ namespace AVS.SpotifyMusic.Application.AppServices
             return response;
         }
 
+		 public async Task<bool> AtualizarAlbum(AlbumRequest request)
+        {
+			if (!await BandaExiste(request.BandaId))
+				throw new DomainException("Banda não existe na base de dados.");
+
+			var banda = await _bandaService.BuscarPorCriterioDetalhado(x => x.Id == request.BandaId);
+			var album = _mapper.Map<Album>(request);
+			var albumParaAtualizar = banda.Albuns.Select(x => x).FirstOrDefault(x => x.Id == album.Id);
+			
+			if (albumParaAtualizar == null) 
+				throw new DomainException("Album não existe na base de dados.");			
+						
+			if(banda.Albuns.Select(x => x).ToList().Contains(albumParaAtualizar))
+				banda.Albuns.Remove(albumParaAtualizar);
+
+			albumParaAtualizar.Atualizar(album.Titulo, album.Descricao, album.Foto);		
+
+			banda.AdicionarAlbum(albumParaAtualizar);			 
+			
+            var response = await _bandaService.Atualizar(banda);
+            return response;
+        }
+
 		public async Task<AlbumResponse> ObterAlbumDetalhe(Guid bandaId, Guid albumId)
 		{
 			if (!await BandaExiste(bandaId))

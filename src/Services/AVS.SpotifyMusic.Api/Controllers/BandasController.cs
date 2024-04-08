@@ -1,24 +1,27 @@
 ﻿using AVS.SpotifyMusic.Api.Extensions;
+using AVS.SpotifyMusic.Api.Services.Interfaces;
 using AVS.SpotifyMusic.Application.AppServices;
-using AVS.SpotifyMusic.Application.Contas.DTOs;
 using AVS.SpotifyMusic.Application.Streamings.DTOs;
-using AVS.SpotifyMusic.Domain.Core.Services.WebApi.Auth;
 using AVS.SpotifyMusic.Domain.Core.Services.WebApi.Controllers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AVS.SpotifyMusic.Domain.Streaming.Entidades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.SpotifyMusic.Api.Controllers
 {
-	[Route("api/streaming")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("api/streaming")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BandasController : MainController
     {
 		private readonly BandaAppService _bandaAppService;
+        private readonly IUploadService _uploadService;
+		private readonly string _destino = "Banda";
+        
 
-		public BandasController(BandaAppService bandaAppService)
+		public BandasController(BandaAppService bandaAppService, IUploadService uploadService)
 		{
-            _bandaAppService = bandaAppService;
+            _uploadService = uploadService;
+            _bandaAppService = bandaAppService;         
 		}
 		
         [HttpGet]
@@ -114,6 +117,17 @@ namespace AVS.SpotifyMusic.Api.Controllers
             return StatusCode(StatusCodes.Status200OK, url);
         }
 
+        [HttpPut]
+        [Route("banda/atualizar-album")]
+        public async Task<IActionResult> AtualizarAlbum(AlbumRequest request)
+        {
+			if(!ModelState.IsValid) return BadRequest();
+            var response = await _bandaAppService.AtualizarAlbum(request);
+            if (response == false) return BadRequest();
+            var url = HttpContext.Request.GetUrl();
+            return StatusCode(StatusCodes.Status200OK, url);
+        }
+
 		[HttpGet]
 		[Route("banda/{bandaId:Guid}/album-detalhe/{albumId:Guid}")]
 		public async Task<IActionResult> AlbumDetalhe(Guid bandaId, Guid albumId)
@@ -133,7 +147,77 @@ namespace AVS.SpotifyMusic.Api.Controllers
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status204NoContent, url);
-		}		
+		}	
+
+        [HttpPost("upload-image/{bandaId:Guid}")]
+        public async Task<IActionResult> UploadImage(Guid bandaId)
+        {
+            try
+            {
+                 var banda = await _bandaAppService.ObterPorId(bandaId);
+                 if (banda == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    _uploadService.DeleteImage(file.FileName, _destino);
+                    banda.Foto = await _uploadService.SaveImage(file, _destino);
+                }
+				var bandaRequest = new BandaRequest
+				{
+                    Id = banda.Id,
+					Nome = banda.Nome,
+                    Descricao = banda.Descricao,
+                    Foto = banda.Foto                    
+				};
+                var response = await _bandaAppService.Atualizar(bandaRequest);
+                if(response == false) return BadRequest($"Erro ao tentar realizar upload de Foto do Usuário.");
+                var url = HttpContext.Request.GetUrl();
+				return StatusCode(StatusCodes.Status200OK, url);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar realizar upload da foto da banda. Erro: {ex.Message}");
+            }
+        }	
+
+
+        [ActionName("UploadImageAlbum")]  
+    
+        [HttpPost("upload-image/album/{albumId:Guid}/{bandaId:Guid}")]
+        public async Task<IActionResult> UploadImage(Guid albumId, Guid bandaId)
+        {
+            try
+            {
+                 var albumResponse = await _bandaAppService.ObterAlbumDetalhe(bandaId, albumId);
+                 if (albumResponse == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    _uploadService.DeleteImage(file.FileName, _destino);
+                    albumResponse.Foto = await _uploadService.SaveImage(file, _destino);
+                }
+				var albumResquest = new AlbumRequest
+				{        
+                    Id = albumResponse.Id,            
+					Titulo = albumResponse.Titulo,
+                    Descricao = albumResponse.Descricao,
+                    Foto = albumResponse.Foto,
+                    BandaId = albumResponse.BandaId                    
+				};
+                var response = await _bandaAppService.AtualizarAlbum(albumResquest);
+                if(response == false) return BadRequest($"Erro ao tentar realizar upload de Foto do Usuário.");
+                var url = HttpContext.Request.GetUrl();
+				return StatusCode(StatusCodes.Status200OK, url);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar realizar upload da foto da banda. Erro: {ex.Message}");
+            }
+        }	
 
 	}
 }

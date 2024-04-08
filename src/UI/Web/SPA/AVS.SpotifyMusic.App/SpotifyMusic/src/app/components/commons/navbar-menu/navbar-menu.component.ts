@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,7 +9,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlaylistComponent } from "../../contas/playlist/playlist.component";
 import { SidebarComponent } from "../sidebar/sidebar.component";
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../../services/auth/auth.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -26,10 +28,30 @@ import { RouterModule } from '@angular/router';
         MatListModule,
         MatExpansionModule,
         MatTooltipModule,
+        CommonModule,
         RouterModule,
         PlaylistComponent,
         SidebarComponent
     ]
 })
-export class NavbarMenuComponent {
+export class NavbarMenuComponent implements OnInit {
+
+  isCollapsed = true;
+
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {}
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigateByUrl('/');
+  }
+
+  showMenu(): boolean {
+    return this.router.url !== '/login';
+  }
+
 }

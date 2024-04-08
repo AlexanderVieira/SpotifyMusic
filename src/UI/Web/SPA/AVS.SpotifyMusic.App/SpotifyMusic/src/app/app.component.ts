@@ -15,6 +15,8 @@ import { HomeComponent } from './components/home/home.component';
 import { SidebarComponent } from './components/commons/sidebar/sidebar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from './services/auth/auth.service';
+import { UserResponseLogin } from './models/identity/userResponseLogin';
 
 @Component({
     selector: 'app-root',
@@ -44,4 +46,23 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'SpotifyMusic';
+
+  constructor(public authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.setCurrentUser();
+  }
+
+  setCurrentUser(): void {
+    let user: UserResponseLogin;
+
+    if ((localStorage.getItem('user') != '') && (localStorage.getItem('user') != undefined))
+      user = JSON.parse(localStorage.getItem('user') ?? '{}');
+    else
+      user = new UserResponseLogin();
+
+
+    if ((user.accessToken != '') && (user.accessToken != undefined))
+      this.authService.setCurrentUser(user);
+  }
 }

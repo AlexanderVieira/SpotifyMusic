@@ -85,9 +85,9 @@ namespace AVS.SpotifyMusic.Application.AppServices
 
 			var cartao = _mapper.Map<Cartao>(request.Cartao);
 			var pagamento = new Pagamento(plano.Valor, 
-										  StatusPagamento.Processando, 
+										  StatusPagamento.Pago, 
 										  cartao, 
-										  new Transacao(plano.Valor, "Merchant Teste", StatusTransacao.Pendente));
+										  new Transacao(plano.Valor, plano.Nome, StatusTransacao.Pago));
 			cartao.Pagamento = pagamento;
             var usuario = _mapper.Map<Usuario>(request);
 			usuario.CriarConta(plano, cartao.Pagamento);

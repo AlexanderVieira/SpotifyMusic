@@ -2,14 +2,11 @@
   <mat-card-content>
     <!-- <h1 mat-dialog-title>{{inputdata.title}}</h1> -->
 <div mat-dialog-content>
-  <!-- <h2>ID: <b>{{banda.id}}</b></h2>
-  <h2>Nome: <b>{{banda.nome}}</b></h2>
-  <h2>Descrição: <b>{{banda.descricao}}</b></h2> -->
   <div class="container">
     <div class="card lg-12" style="max-height: 180px; background-color: darkgrey;">
       <div class="row g-0">
         <div class="col-lg-4 d-flex align-items-center justify-content-center" style="max-height: 180px;">
-          <img [src]="bandaDetalheResponse.foto"
+          <img [src]="fotoURL"
             alt="Banda"
             class="rounded-circle"
             style="width: 150px; height: 150px" />
@@ -25,11 +22,30 @@
         </div>
       </div>
     </div>
-    <nav class="navbar navbar-light">
+    <!-- <nav class="navbar navbar-light">
       <div class="container-fluid">
         <div class="col-md-4"><button type="button" class="btn btn-tertiary" mdbRipple>Álbums</button></div>
       </div>
-    </nav>
+    </nav> -->
+
+    <div class="row">
+      <div class="col-6 d-flex">
+        <div class="col-auto">
+          <div class="col-md-4"><button type="button" class="btn btn-tertiary" mdbRipple>Álbums</button></div>
+        </div>
+      </div>
+      <div class="col-6 d-flex align-items-end justify-content-end">
+        <div class="col-auto">
+          <button type="button" class="btn btn-success" (click)="AdicionarAlbum()">Adicionar Album</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group m-0">
+        <input type="file" #file (change)="onFileChange($event)" class="form-control is-invalid" placeholder="" style="display: none">
+      </div>
+    </div>
 
       <table class="table table-hover table-dark table-striped">
         <thead>
@@ -49,9 +65,10 @@
 
             <tr>
               <th scope="row">{{++$index}}</th>
-              <td><img [src]="album.foto"
+              <td><img [src]="MostraImagem(album.foto)"
+                (click)="file.click()"
                 alt="Album"
-                style="width: 45px; height: 45px"
+                style="width: 40px; height: 40px"
                 class="rounded-circle"/>
               </td>
               <td>{{album.titulo}}</td>
@@ -69,30 +86,20 @@
         <tr><td colspan="5"><p class="fs-5 fw-bold text-center bg-primary p-2">Não existem dados para exibir.</p></td></tr>
       }
       </table>
-
-      <!-- <nav class="navbar navbar-light p-2 bg-write">
-        <div class="container-fluid">
-          <button mat-fab extended color="primary" [routerLink]="['/']">
-            Voltar
-          </button>
-        </div>
-      </nav> -->
     </div>
 
 
 </div>
 <div mat-dialog-actions>
-  <!-- <button (click)="closepopup()" mat-raised-button color="warn">Close</button> -->
-  <!-- <button mat-raised-button [mat-dialog-close]="closemessage" color="accent">Cancel</button> -->
   <div class="row">
     <div class="col-6 d-flex">
       <div class="col-auto">
-        <button type="button" [routerLink]="['/']" routerLinkActive="router-link-active" class="btn btn-primary">Voltar</button>
+        <button type="button" [routerLink]="['/admin/bandas']" routerLinkActive="router-link-active" class="btn btn-primary">Voltar</button>
       </div>
     </div>
     <div class="col-6 d-flex align-items-end justify-content-end">
       <div class="col-auto">
-        <button type="button" class="btn btn-danger" (click)="closepopup()">Fechar</button>
+        <button type="button" class="btn btn-danger" (click)="ClosePopup()">Fechar</button>
       </div>
     </div>
   </div>

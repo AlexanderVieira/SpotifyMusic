@@ -14,11 +14,12 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjValor
         public Senha(string valor)
         {
             Validation.ValidarSeNuloVazio(valor, "Ocorreu um erro genérico.");
-            var isMatch = ValidarFormato(valor); 
-            if (isMatch)
-            {
-                Valor = CriptografarSenha(valor);
-            }
+            Valor = valor;
+            // var isMatch = ValidarFormato(valor); 
+            // if (isMatch)
+            // {
+            //     Valor = CriptografarSenha(valor);
+            // }
         }
 
         public static string CriptografarSenha(string senhaTextoPlano)

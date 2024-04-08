@@ -1,7 +1,8 @@
+import { Guid } from 'guid-typescript';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserLogin } from './../../models/identity/userLogin';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../services/auth/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +14,7 @@ import { ValidatorField } from '../../helpers/ValidatorField';
   standalone: true,
   imports:[
     CommonModule,
+    RouterModule,
     FormsModule,
     ReactiveFormsModule
   ],
@@ -49,11 +51,10 @@ export class LoginComponent implements OnInit {
     });//,formOptions);
   }
 
-
   public login(): void {
 
     this.authService.login(this.model).subscribe(
-      () => {
+      (response: any) => {
         this.router.navigateByUrl('/perfil');
       },
       (error: any) => {

@@ -38,6 +38,12 @@ export class BandaDetalheComponent implements OnInit {
     });
   }
 
+  public MostraImagem(fotoURL?: string): string {
+    return fotoURL != '' && fotoURL != undefined
+      ? `https://localhost:7170/resources/images/banda/${fotoURL}`
+      : '../../../assets/img/semImagem.jpeg';
+  }
+
   goToDetalhe(album: Album)
   {
     this.router.navigate([`banda/${album.bandaId}/album/${album.id}`])

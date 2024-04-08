@@ -1,19 +1,27 @@
 ﻿using AVS.SpotifyMusic.Api.Extensions;
+using AVS.SpotifyMusic.Api.Services.Interfaces;
 using AVS.SpotifyMusic.Application.AppServices;
 using AVS.SpotifyMusic.Application.Contas.DTOs;
+using AVS.SpotifyMusic.Domain.Core.Services.WebApi.AspNetUser.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.SpotifyMusic.Api.Controllers
 {
-	[Route("api/contas")]
+    [Route("api/contas")]
 	[ApiController]
 	public class ContasController : ControllerBase
 	{
 		private readonly UsuarioAppService _usuarioAppService;
+		private readonly IAspNetUser _aspNetUser;
+		private readonly IUploadService _uploadService;
+		private readonly string _destino = "Perfil";
+        
 
-		public ContasController(UsuarioAppService usuarioAppService)
+		public ContasController(UsuarioAppService usuarioAppService, IAspNetUser aspNetUser, IUploadService uploadService)
 		{
+            _uploadService = uploadService;
 			_usuarioAppService = usuarioAppService;
+			_aspNetUser = aspNetUser;			
 		}
 
         [HttpGet]
@@ -125,6 +133,43 @@ namespace AVS.SpotifyMusic.Api.Controllers
 			if (response == null) { return StatusCode(StatusCodes.Status404NotFound); }
 			return StatusCode(StatusCodes.Status200OK, response);
 		}
+
+		[HttpPost("upload-image/{userId:Guid}")]
+        public async Task<IActionResult> UploadImage(Guid userId)
+        {
+            try
+            {
+                var user = await _usuarioAppService.ObterPorId(userId);
+                if (user == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    _uploadService.DeleteImage(file.FileName, _destino);
+                    user.Foto = await _uploadService.SaveImage(file, _destino);
+                }
+				var userRequest = new UsuarioAtualizaRequest
+				{
+					Id = user.Id,
+					Nome = user.Nome,
+					Email = user.Email,
+					Cpf = user.Cpf,
+					Foto = user.Foto,
+					DtNascimento = user.DtNascimento,
+					Ativo = user.Ativo,
+					Senha = user.Senha
+				};
+                var response = await _usuarioAppService.Atualizar(userRequest);
+				if(response == false) return BadRequest($"Erro ao tentar realizar upload de Foto do Usuário.");
+                var url = HttpContext.Request.GetUrl();
+				return StatusCode(StatusCodes.Status200OK, url);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar realizar upload de Foto do Usuário. Erro: {ex.Message}");
+            }
+        }
 
 	}
 }

@@ -18,7 +18,10 @@ export class BandaComponent {
 
   bandas: BandaResponse[] = [];
 
-  constructor(private bandaService: BandaService, private router: Router){}
+  constructor(
+    private bandaService: BandaService,
+    private router: Router
+  ){}
 
   ngOnInit(): void {
     this.bandaService.GetBandas().subscribe(response => {

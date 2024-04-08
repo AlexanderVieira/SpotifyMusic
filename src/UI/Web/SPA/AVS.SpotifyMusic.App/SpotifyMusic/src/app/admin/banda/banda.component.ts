@@ -66,7 +66,7 @@ export class BandaComponent implements OnInit {
     });
   }
 
-  selectFile(event: any): void {
+  OnFileChange(event: any): void {
     this.progress = 0;
     this.message = "";
 
@@ -74,6 +74,7 @@ export class BandaComponent implements OnInit {
       const file: File = event.target.files[0];
       this.currentFile = file;
       this.fileName = this.currentFile.name;
+      this.banda.foto = this.fileName;
     } else {
       this.fileName = 'Select File';
     }
@@ -81,7 +82,7 @@ export class BandaComponent implements OnInit {
 
   upload(): void {
     if (this.currentFile) {
-      this.uploadService.upload(this.currentFile).subscribe({
+      this.uploadService.UploadFotoBanda(this.currentFile).subscribe({
         next: (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             this.progress = Math.round(100 * event.loaded / event.total);
