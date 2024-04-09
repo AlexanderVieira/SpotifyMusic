@@ -12,7 +12,7 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
         public string Descricao { get; private set; }
         public Monetario Valor { get; private set; }
         public TipoPlano TipoPlano { get; private set; }
-        public Assinatura Assinatura { get; set; }
+        public virtual Assinatura Assinatura { get; set; }
         public Guid AssinaturaId { get; set; }
 
         protected Plano()

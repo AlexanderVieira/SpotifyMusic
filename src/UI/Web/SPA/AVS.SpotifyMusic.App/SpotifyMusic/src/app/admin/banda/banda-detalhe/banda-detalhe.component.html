@@ -1,0 +1,108 @@
+<mat-card>
+  <mat-card-content>
+    <!-- <h1 mat-dialog-title>{{inputdata.title}}</h1> -->
+<div mat-dialog-content>
+  <div class="container">
+    <div class="card lg-12" style="max-height: 180px; background-color: darkgrey;">
+      <div class="row g-0">
+        <div class="col-lg-4 d-flex align-items-center justify-content-center" style="max-height: 180px;">
+          <img [src]="fotoURL"
+            alt="Banda"
+            class="rounded-circle"
+            style="width: 150px; height: 150px" />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body d-flex align-items-center">
+            <div class="d-flex flex-column mb-3">
+              <div class="p-1 text-md-start"><h2>Banda</h2></div>
+              <div class="p-1 text-md-start"><p class="fs-5 fw-bold">{{bandaDetalheResponse.nome}}</p></div>
+              <div class="p-1 text-md-start">{{bandaDetalheResponse.descricao}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <nav class="navbar navbar-light">
+      <div class="container-fluid">
+        <div class="col-md-4"><button type="button" class="btn btn-tertiary" mdbRipple>Álbums</button></div>
+      </div>
+    </nav> -->
+
+    <div class="row">
+      <div class="col-6 d-flex">
+        <div class="col-auto">
+          <div class="col-md-4"><button type="button" class="btn btn-tertiary" mdbRipple>Álbums</button></div>
+        </div>
+      </div>
+      <div class="col-6 d-flex align-items-end justify-content-end">
+        <div class="col-auto">
+          <button type="button" class="btn btn-success" (click)="AdicionarAlbum()">Adicionar Album</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group m-0">
+        <input type="file" #file (change)="onFileChange($event)" class="form-control is-invalid" placeholder="" style="display: none">
+      </div>
+    </div>
+
+      <table class="table table-hover table-dark table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Titulo</th>
+            <th scope="col">Descrição</th>
+            <!-- <th></th> -->
+          </tr>
+        </thead>
+    @if (bandaDetalheResponse.albuns != null)
+    {
+        <tbody>
+          @for (album of bandaDetalheResponse.albuns; track $index)
+          {
+
+            <tr>
+              <th scope="row">{{++$index}}</th>
+              <td><img [src]="MostraImagem(album.foto)"
+                (click)="file.click()"
+                alt="Album"
+                style="width: 40px; height: 40px"
+                class="rounded-circle"/>
+              </td>
+              <td>{{album.titulo}}</td>
+              <td>{{album.descricao}}</td>
+              <!-- <td><button mat-fab extended (click)="goToDetalhe(album);">
+                  <mat-icon class="mat-18">info</mat-icon>Detalhes
+              </button></td> -->
+            </tr>
+
+          }
+
+        </tbody>
+      }@else{
+
+        <tr><td colspan="5"><p class="fs-5 fw-bold text-center bg-primary p-2">Não existem dados para exibir.</p></td></tr>
+      }
+      </table>
+    </div>
+
+
+</div>
+<div mat-dialog-actions>
+  <div class="row">
+    <div class="col-6 d-flex">
+      <div class="col-auto">
+        <button type="button" [routerLink]="['/admin/bandas']" routerLinkActive="router-link-active" class="btn btn-primary">Voltar</button>
+      </div>
+    </div>
+    <div class="col-6 d-flex align-items-end justify-content-end">
+      <div class="col-auto">
+        <button type="button" class="btn btn-danger" (click)="ClosePopup()">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </mat-card-content>
+</mat-card>

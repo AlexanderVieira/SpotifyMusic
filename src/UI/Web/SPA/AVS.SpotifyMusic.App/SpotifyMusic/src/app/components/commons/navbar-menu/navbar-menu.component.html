@@ -1,0 +1,62 @@
+<div class="main-container">
+  <div class="topbar">
+  <nav class="navbar navbar-expand-lg" style="width: 94%;">
+    <div class="container-fluid">
+      <!-- <a class="navbar-brand" href="#">Navbar scroll</a> -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse p-2" id="navbarScroll">
+        <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/">Premium</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/">Support</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/">Download</a>
+          </li>
+          <li class="nav-item dropdown" *ngIf="(authService.currentUser$ | async) as user">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user.userToken.email | titlecase }}
+            </a>
+            <ul class="dropdown-menu" style="background-color:  #827d7d;">
+              <li style="width: 90%;"><a class="dropdown-item" routerLink="/perfil">Perfil</a></li>
+              <li style="width: 90%;"><a class="dropdown-item" routerLink="/admin">Dashboard</a></li>
+              <li style="width: 90%;"><hr class="dropdown-divider"></li>
+              <li style="width: 90%;"><a class="dropdown-item" (click)="logout()">Sair</a></li>
+            </ul>
+          </li>
+        </ul>
+        <!-- <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form> -->
+      </div>
+      <div
+          *ngIf="(authService.currentUser$ | async) === null"
+          class="navbar navbar-nav mr-3 d-xs-none d-none d-md-block"
+        >
+          <button
+            type="button"
+            [routerLink]="['/login']"
+            routerLinkActive="router-link-active"
+          >
+            Entrar
+          </button>
+          <button
+            type="button"
+            [routerLink]="['/register']"
+            routerLinkActive="router-link-active"
+          >
+            Nova Conta
+          </button>
+        </div>
+    </div>
+  </nav>
+</div>
+</div>

@@ -1,0 +1,61 @@
+<mat-card>
+  <mat-card-header>
+    <div class="col d-flex justify-content-start">
+      <mat-form-field>
+        <!-- <input matInput (keyup)="Filterchange($event)" placeholder="Pesquisar" /> -->
+        <mat-label>Pesquisar</mat-label>
+        <input class="toolbar-search" type="text" matInput placeholder="Ex. Pesquisar" (keyup)="Filterchange($event)">
+        <mat-icon matSuffix style="font-size: 1.2em">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div class="col d-flex justify-content-end">
+      <button style="margin-left: 60%;" (click)="AdicionarBanda()" mat-fab color="primary"><mat-icon class="mat-18">control_point</mat-icon></button>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+<table matSort mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="foto">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef> Foto</th>
+    <td mat-cell *matCellDef="let banda">
+      <img style="width: 45px; height: 45px"
+      [src]="MostraImagem(banda.foto)"
+      alt="Banda"
+      class="rounded-circle"/>
+  </td>
+  </ng-container>
+
+  <ng-container matColumnDef="id">
+      <th mat-sort-header mat-header-cell *matHeaderCellDef> #ID</th>
+      <td mat-cell *matCellDef="let banda">{{banda.id}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="nome">
+    <th mat-sort-header mat-header-cell *matHeaderCellDef> Nome</th>
+    <td mat-cell *matCellDef="let banda">{{banda.nome}}</td>
+</ng-container>
+
+    <ng-container matColumnDef="descricao">
+      <th mat-sort-header mat-header-cell *matHeaderCellDef> Descrição</th>
+      <td mat-cell *matCellDef="let banda">{{banda.descricao}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="operacao">
+      <th mat-header-cell *matHeaderCellDef> Operação</th>
+      <td mat-cell *matCellDef="let banda">
+          <button (click)="AtualizarBanda(banda)" mat-mini-fab color="primary"><mat-icon class="mat-18">edit</mat-icon></button>
+          <button (click)="VisualizarBanda(banda)" mat-mini-fab color="accent"><mat-icon class="mat-18">info</mat-icon></button>
+          <button (click)="RemoverBanda(banda)" mat-mini-fab color="warn"><mat-icon class="mat-18">delete_sweep</mat-icon></button>
+      </td>
+    </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row;columns:displayedColumns"></tr>
+
+</table>
+</mat-card-content>
+<br>
+<mat-card-footer>
+  <mat-paginator [pageSizeOptions]="[5,10,20]" showFirstLastButtons></mat-paginator>
+</mat-card-footer>
+</mat-card>

@@ -12,9 +12,9 @@ namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
         public string Cvv { get; private set; }
         public bool Ativo { get; private set; }
         public Monetario Limite { get; private set; }
-        public Pagamento Pagamento { get; set; }
+        public virtual Pagamento Pagamento { get; set; }
         public Guid PagamentoId { get; set; }
-        public List<Transacao> Transacoes { get; private set; } = new List<Transacao>();
+        public virtual ICollection<Transacao> Transacoes { get; private set; } = new List<Transacao>();
 
         protected Cartao()
         {            

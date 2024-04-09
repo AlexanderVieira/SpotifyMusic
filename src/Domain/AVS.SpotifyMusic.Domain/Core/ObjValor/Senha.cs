@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using AVS.SpotifyMusic.Domain.Core.Utils;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -11,9 +12,14 @@ namespace AVS.SpotifyMusic.Domain.Core.ObjValor
         public string Valor { get; private set; }
 
         public Senha(string valor)
-        {            
+        {
+            Validation.ValidarSeNuloVazio(valor, "Ocorreu um erro genérico.");
             Valor = valor;
-            var isMatch = ValidarFormato(Valor);            
+            // var isMatch = ValidarFormato(valor); 
+            // if (isMatch)
+            // {
+            //     Valor = CriptografarSenha(valor);
+            // }
         }
 
         public static string CriptografarSenha(string senhaTextoPlano)

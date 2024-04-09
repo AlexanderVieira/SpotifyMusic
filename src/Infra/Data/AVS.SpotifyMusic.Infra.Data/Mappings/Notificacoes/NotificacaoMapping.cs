@@ -22,7 +22,7 @@ namespace AVS.SpotifyMusic.Infra.Data.Mappings.Notificacoes
 
             builder.Property(x => x.TipoNotificacao).IsRequired().HasColumnName("TipoNotificacao").HasColumnType("int");
 
-            builder.HasOne(x => x.Destino).WithMany(x => x.Notificacoes).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.Destino).WithMany(x => x.Notificacoes).IsRequired().OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.Remetente).WithMany().IsRequired(false);
         }

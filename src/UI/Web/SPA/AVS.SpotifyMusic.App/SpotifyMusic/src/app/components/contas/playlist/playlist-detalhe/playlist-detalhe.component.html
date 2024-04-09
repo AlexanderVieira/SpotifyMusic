@@ -1,0 +1,61 @@
+<div class="container p-5">
+<div class="card mb-3" style="max-height: 280px; background-color: darkgrey;">
+  <div class="row g-0">
+    <div class="col-md-4 text-center d-flex align-items-center p-2">
+      <img style="max-height: 250px; width: 100%;"
+        src="https://mdbcdn.b-cdn.net/wp-content/uploads/2020/06/vertical.webp"
+        alt="Playlist"
+        class="img-fluid rounded-start"
+      />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body d-flex align-items-center" style="height: 280px;">
+        <div class="d-flex flex-column mb-3">
+          <div class="p-2 text-md-start"><h1>Playlist</h1></div>
+          <div class="p-2 text-md-start"><p class="fs-1 fw-bold">{{playlist.titulo}}</p></div>
+          <div class="p-2 text-md-start">{{playlist.descricao}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<nav class="navbar navbar-light bg-black p-2 text-dark bg-opacity-10">
+  <div class="container-fluid">
+    <div class="col-md-4"><button type="button" class="btn btn-tertiary" mdbRipple>Músicas</button></div>
+  </div>
+</nav>
+
+
+  <table class="table table-hover table-dark table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Duração</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+@if (playlist.musicas.length > 0)
+{
+    <tbody>
+      @for (musica of playlist.musicas; track $index)
+      {
+
+        <tr>
+          <th scope="row">{{++$index}}</th>
+          <td>{{musica.nome}}</td>
+          <td>{{musica.duracao}}</td>
+          <td></td>
+        </tr>
+
+      }
+
+    </tbody>
+  }@else{
+
+    <tr><td colspan="5" class=""><p class="fs-5 fw-bold text-center bg-primary p-2">Não existem dados para exibir.</p></td></tr>
+  }
+  </table>
+
+</div>
+

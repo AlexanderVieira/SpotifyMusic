@@ -8,7 +8,7 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
     public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot, new()
     {
         private readonly SpotifyMusicContext _context;
-        private bool _disposedValue;
+        
 
         public IUnitOfWork UnitOfWork => _context;
         public DbSet<TEntity> Query { get; set; }
@@ -21,17 +21,18 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
 
         public async Task<IEnumerable<TEntity>> BuscarTodosPorCriterio(Expression<Func<TEntity, bool>> predicado)
         {
-            return await Query.AsNoTracking().Where(predicado).ToListAsync();
+            return await Query.Where(predicado).ToListAsync();
         }
 
         public async Task<TEntity> BuscarPorCriterio(Expression<Func<TEntity, bool>> predicado)
         {
-            return await Query.FirstOrDefaultAsync(predicado);
+            var result = await Query.Where(predicado).FirstOrDefaultAsync();
+            return result;
         }
 
         public async Task<IEnumerable<TEntity>> ObterTodos()
         {
-            return await Query.AsNoTracking().ToListAsync();
+            return await Query.AsQueryable().ToListAsync();
         }
 
         public async Task<TEntity> ObterPorId(Guid id)
@@ -51,33 +52,32 @@ namespace AVS.SpotifyMusic.Domain.Core.Data
         }
 
         public async Task Remover(Guid id)
-        {
+        {            
             Query.Remove(new TEntity { Id = id });
             await Task.CompletedTask;
-        }        
-
-        public void Dispose()
+        }       
+        
+        public void DetachLocal(Func<TEntity, bool> predicado)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
+            var local = _context.Set<TEntity>().Local.Where(predicado).FirstOrDefault();
+            if (local != null)
             {
-                if (disposing)
-                {
-                    Query = null;
-                    _context.Dispose();
-                }
-                _disposedValue = true;
+                _context.Entry(local).State = EntityState.Detached;
             }
         }
 
-        ~BaseRepository()
+        public void ModifyLocal(Func<TEntity, bool> predicado)
         {
-            Dispose(false);
+            var local = _context.Set<TEntity>().Local.Where(predicado).FirstOrDefault();
+            if (local != null)
+            {
+                _context.Entry(local).State = EntityState.Modified;
+            }
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
     }
 }

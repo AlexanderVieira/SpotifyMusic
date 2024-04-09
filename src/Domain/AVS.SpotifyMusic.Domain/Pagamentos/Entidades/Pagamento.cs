@@ -14,8 +14,8 @@ namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
 
         public Monetario Valor { get; private set; }
         public StatusPagamento Situacao { get; private set; }
-        public Cartao Cartao { get; private set; }
-        public Transacao Transacao { get; private set; }        
+        public virtual Cartao Cartao { get; private set; }
+        public virtual Transacao Transacao { get; private set; }        
 
         protected Pagamento()
         {            
@@ -93,7 +93,7 @@ namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
                          
         }
 
-        public void ValidarTransacaoRepetidaPorMerchant(List<Transacao> ultimasTransacoes, Transacao transacao)
+        public void ValidarTransacaoRepetidaPorMerchant(ICollection<Transacao> ultimasTransacoes, Transacao transacao)
         {
             var resultado = ultimasTransacoes.Where(x => 
                             x.Merchant.Nome.ToUpper() == transacao.Merchant.Nome.ToUpper() && 

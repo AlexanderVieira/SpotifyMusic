@@ -40,9 +40,9 @@ namespace AVS.SpotifyMusic.Infra.Data.Mappings.Contas
                 tf.Property(x => x.Valor).IsRequired().HasColumnName("Senha").HasColumnType("varchar(150)");
             });
 
-            builder.HasMany(x => x.Cartoes).WithOne();
-            builder.HasMany(x => x.Assinaturas).WithOne();
-            builder.HasMany(x => x.Playlists).WithOne(x => x.Usuario);
+            builder.HasMany(x => x.Cartoes).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Assinaturas).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Playlists).WithOne(x => x.Usuario).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace AVS.SpotifyMusic.Domain.Pagamentos.Entidades
         public Merchant Merchant { get; private set; }
         public string? Descricao { get; private set; }
         public StatusTransacao Situacao { get; private set; }
-        public Pagamento Pagamento { get; set; }
+        public virtual Pagamento Pagamento { get; set; }
         public Guid PagamentoId { get; set; }
 
         protected Transacao()

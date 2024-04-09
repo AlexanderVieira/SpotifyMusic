@@ -8,7 +8,7 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
         public string? Foto { get; private set; }
-        public List<Musica> Musicas { get; private set; } = new List<Musica>();
+        public virtual ICollection<Musica> Musicas { get; private set; } = new List<Musica>();
 
         protected Album()
         {            
@@ -19,6 +19,23 @@ namespace AVS.SpotifyMusic.Domain.Streaming.Entidades
             Titulo = titulo;
             Descricao = descricao;
             Foto = foto;
+        }
+
+        public void Atualizar(string titulo, string descricao, string? foto = null)
+        {
+            Titulo = titulo;
+            Descricao = descricao;
+            Foto = foto;
+        }
+
+        public void AdicionarMusica(Musica musica)
+        {
+            Musicas.Add(musica);
+        }
+
+        public void AtualizarMusicas(ICollection<Musica> musicas)
+        {
+            Musicas = musicas;
         }
 
         public override bool EhValido()
