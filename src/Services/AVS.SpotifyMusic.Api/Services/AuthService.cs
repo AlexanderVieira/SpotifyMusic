@@ -15,11 +15,11 @@ namespace AVS.SpotifyMusic.Api.Services
     public class AuthService
     {
         public readonly SignInManager<IdentityUser> SignInManager;
-        public readonly UserManager<IdentityUser> UserManager;        
+        public readonly UserManager<IdentityUser> UserManager;  
+        public readonly IAspNetUser _aspNetUser;      
         private readonly AppTokenSettings _appTokenSettings;
         private readonly AuthDbContext _context;
-        private readonly IJsonWebKeySetService _jwksService;
-        private readonly IAspNetUser _aspNetUser;
+        private readonly IJsonWebKeySetService _jwksService;        
 
         public AuthService(SignInManager<IdentityUser> signInManager, 
                                      UserManager<IdentityUser> userManager,

@@ -131,11 +131,9 @@ export class AtualizarAlbumComponent implements OnInit {
     const musica = new MusicaRequest();
     musica.nome = albumform.nomeMusica;
     musica.duracao = albumform.duracaoMusica;
+    this.albumRequest.musicas = new Array<MusicaRequest>();
     this.albumRequest.musicas.push(musica);
 
-    //this.albumRequest.musica = new MusicaRequest();
-    //this.albumRequest.musica.nome = albumform.nomeMusica;
-    //this.albumRequest.musica.duracao = albumform.duracaoMusica;
     console.log(this.albumRequest)
 
     //this.spinner.show();
@@ -166,6 +164,7 @@ export class AtualizarAlbumComponent implements OnInit {
     const musica = new MusicaRequest();
     musica.nome = albumform.nomeMusica;
     musica.duracao = albumform.duracaoMusica;
+    this.albumRequest.musicas = new Array<MusicaRequest>();
     this.albumRequest.musicas.push(musica);
 
     //this.spinner.show();

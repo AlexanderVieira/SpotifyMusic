@@ -42,7 +42,6 @@ export class BandaService {
     return this.httpClient.get<AlbumResponse>(`${this.url}/banda/${bandaId}/album-detalhe/${albumId}`);
   }
 
-
   public CriarAlbum(data:AlbumRequest):Observable<any>{
     return this.httpClient.put<any>(`${this.url}/banda/criar-album`,data);
   }

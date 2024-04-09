@@ -126,26 +126,25 @@ namespace AVS.SpotifyMusic.Application.AppServices
 			return response;
 		}
 
-		public async Task<bool> AdicionarMusicaPlaylist(Guid bandaId, Guid musicaId)
+		public async Task<bool> AdicionarMusicaPlaylist(Guid userId, Guid bandaId, Guid musicaId)
 		{
-			if(!_aspNetUser.IsAuthenticated()) return false;
-			var email = _aspNetUser.GetUserEmail();
-            // if (!await UsuarioExiste(userId)
-            //     throw new DomainException("Usuário não existe na base de dados.");			
-
-			var usuario = await _usuarioService.BuscarPorCriterioDetalhado(u => 
-										u.Email.Address.ToLower() == email.ToLower());
-
+			var usuario = await _usuarioService.BuscarPorCriterioDetalhado(u => u.Id == userId);
+			
 			var banda = await _bandaService.BuscarPorCriterioDetalhado(b => b.Id == bandaId);
 			if(banda == null) return false;
+			
 			var musica = banda.Albuns.SelectMany(a => a.Musicas).FirstOrDefault(m => m.Id == musicaId);
 			if (musica == null) return false;
-			var playlist = usuario.Playlists.Select(p => p).FirstOrDefault(p => p.Titulo.ToLower().Equals("Playlist N.1"));
+			
+			var playlist = usuario.Playlists.Select(p => p).FirstOrDefault(p => p.Titulo.ToLower().Equals("Minha Playlist Nº 1".ToLower()));
 			if (playlist == null) return false;
 			
 			if(usuario.Playlists.Select(x => x).ToList().Contains(playlist))
 				usuario.Playlists.Remove(playlist);
 			
+			if(playlist.Musicas.Any(m => m.Id == musicaId))
+				return false;
+
 			playlist.Musicas.Add(musica);
 			usuario.AdicionarPlaylist(playlist);
 
