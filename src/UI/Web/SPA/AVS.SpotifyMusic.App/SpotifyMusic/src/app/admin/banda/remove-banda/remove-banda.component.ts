@@ -34,6 +34,7 @@ export class RemoveBandaComponent implements OnInit {
   bandaRequest: BandaRequest;
   bandaResponse: BandaResponse
   bandaId: Guid = Guid.createEmpty();
+  fotoURL?: string;
 
   bandaform = this.buildr.group({
     id: new FormControl(),
@@ -61,6 +62,8 @@ export class RemoveBandaComponent implements OnInit {
 
     this.bandaResponse = this.data;
     console.log(this.bandaResponse.id)
+
+    this.fotoURL = this.MostraImagem(this.data.foto);
 
     if (this.bandaResponse.id != Guid.createEmpty())
     {
@@ -99,6 +102,12 @@ export class RemoveBandaComponent implements OnInit {
     },error => {
 
     });
+  }
+
+  public MostraImagem(fotoURL?: string): string {
+    return fotoURL != '' && fotoURL != undefined
+      ? `https://localhost:7170/resources/images/banda/${fotoURL}`
+      : '../../../assets/img/semImagem.jpeg';
   }
 
   ClosePopup(){

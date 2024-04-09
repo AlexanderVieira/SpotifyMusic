@@ -137,9 +137,9 @@ export class BandaDetalheComponent implements OnInit {
   }
 
   public MostraImagem(fotoAlbumURL?: string): string {
-    return fotoAlbumURL !== null
+    return fotoAlbumURL != '' && fotoAlbumURL != undefined
       ? `https://localhost:7170/resources/images/banda/${fotoAlbumURL}`
-      : '../../../../assets/img/semImagem.jpeg';
+      : '../../../assets/img/semImagem.jpeg';
   }
 
 }

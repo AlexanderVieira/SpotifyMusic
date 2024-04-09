@@ -63,10 +63,10 @@ export class BandasComponent implements OnInit {
       });
   }
 
-  public MostraImagem(fotoURL: string): string {
-    return fotoURL !== ''
+  public MostraImagem(fotoURL?: string): string {
+    return fotoURL != '' && fotoURL != undefined
       ? `https://localhost:7170/resources/images/banda/${fotoURL}`
-      : '../../../../assets/img/semImagem.jpeg';
+      : '../../../assets/img/semImagem.jpeg';
   }
 
   Filterchange(data: Event) {

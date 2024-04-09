@@ -50,6 +50,15 @@ export class AuthService {
     this.currentUserSource.next(user);
   }
 
+  public getCurrentUserv2(): any {
+    let user: UserResponseLogin;
+    if ((localStorage.getItem('user') != '') && (localStorage.getItem('user') != undefined))
+      user = JSON.parse(localStorage.getItem('user') ?? '{}');
+    else
+      user = new UserResponseLogin();
+    return user;
+  }
+
   public getCurrentUser(): any {
     let text = localStorage.getItem('user');
     if(text != null) {
@@ -57,4 +66,5 @@ export class AuthService {
       return model;
     }
   }
+
 }

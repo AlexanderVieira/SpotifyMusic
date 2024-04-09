@@ -76,7 +76,7 @@ export class AtualizarBandaComponent implements OnInit {
                 this.bandaResponse = new BandaResponse();
               }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
 
     this.CarregarBanda();
 
@@ -171,9 +171,9 @@ export class AtualizarBandaComponent implements OnInit {
   }
 
   public MostraImagem(fotoURL?: string): string {
-    return fotoURL !== ''
+    return fotoURL != '' && fotoURL != undefined
       ? `https://localhost:7170/resources/images/banda/${fotoURL}`
-      : '../../../../assets/img/semImagem.jpeg';
+      : '../../../assets/img/semImagem.jpeg';
   }
 
   public OnFileChange(event: any): void {

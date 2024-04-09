@@ -1,3 +1,5 @@
+import { UserResponseLogin } from './../../../../models/identity/userResponseLogin';
+import { AuthService } from './../../../../services/auth/auth.service';
 import { Guid } from 'guid-typescript/dist/guid';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -6,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { UsuarioService } from './../../../../services/usuario/usuario.service';
 import { Playlist } from '../../../../models/playlist';
 
@@ -19,12 +21,17 @@ import { Playlist } from '../../../../models/playlist';
 })
 export class PlaylistDetalheComponent implements OnInit {
 
-  usuarioId = Guid.parse("353f1295-53d0-4b55-bbb5-8aa3c4f789ba");
+  usuario!: UserResponseLogin;
+  usuarioId = Guid.createEmpty(); //Guid.parse("353f1295-53d0-4b55-bbb5-8aa3c4f789ba");
   playlistId =  Guid.createEmpty();
   playlists: Playlist[] = [];
   playlist: Playlist;
 
-  constructor(private UsuarioService: UsuarioService, private activeRouter: ActivatedRoute, private router: Router)
+  constructor(
+    private usuarioService: UsuarioService,
+    private authService: AuthService,
+    private activeRouter: ActivatedRoute,
+    private router: Router)
   {
     this.playlist = new Playlist();
   }
@@ -36,7 +43,15 @@ export class PlaylistDetalheComponent implements OnInit {
       console.log(this.playlistId);
     });
 
-    this.UsuarioService.GetPlaylistsAssociadas(this.usuarioId).subscribe(response =>
+    this.usuario = this.authService.getCurrentUserv2();
+
+    if((this.usuario.userToken.id != '') && (this.usuario.userToken.id != undefined)){
+      console.log(this.usuario.userToken.id)
+      this.usuarioId = Guid.parse(this.usuario.userToken.id);
+      console.log(this.usuarioId)
+    }
+
+    this.usuarioService.GetPlaylistsAssociadas(this.usuarioId).subscribe(response =>
       {
         console.log(response);
         this.playlists = response;
@@ -49,6 +64,7 @@ export class PlaylistDetalheComponent implements OnInit {
 
         }
       });
+
   }
 
 }

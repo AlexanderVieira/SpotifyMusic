@@ -2,6 +2,7 @@
 using AVS.SpotifyMusic.Api.Services.Interfaces;
 using AVS.SpotifyMusic.Application.AppServices;
 using AVS.SpotifyMusic.Application.Contas.DTOs;
+using AVS.SpotifyMusic.Application.Streamings.DTOs;
 using AVS.SpotifyMusic.Domain.Core.Services.WebApi.AspNetUser.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -132,6 +133,17 @@ namespace AVS.SpotifyMusic.Api.Controllers
 			var response = await _usuarioAppService.ObterPlaylistsPorId(id);
 			if (response == null) { return StatusCode(StatusCodes.Status404NotFound); }
 			return StatusCode(StatusCodes.Status200OK, response);
+		}
+
+		[HttpPut]
+		[Route("usuario-adicionar-musica/{bandaId:Guid}/{musicaId:Guid}")]
+		public async Task<IActionResult> AdicionarMusicaPlaylistUsuario(Guid bandaId, Guid musicaId)
+		{
+            if (!ModelState.IsValid) return BadRequest();
+            var response = await _usuarioAppService.AdicionarMusicaPlaylist(bandaId, musicaId);
+			if (response == false) return BadRequest();
+			var url = HttpContext.Request.GetUrl();
+			return StatusCode(StatusCodes.Status200OK,url);
 		}
 
 		[HttpPost("upload-image/{userId:Guid}")]

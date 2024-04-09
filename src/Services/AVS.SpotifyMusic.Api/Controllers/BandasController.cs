@@ -180,11 +180,8 @@ namespace AVS.SpotifyMusic.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"Erro ao tentar realizar upload da foto da banda. Erro: {ex.Message}");
             }
-        }	
-
-
-        [ActionName("UploadImageAlbum")]  
-    
+        }
+          
         [HttpPost("upload-image/album/{albumId:Guid}/{bandaId:Guid}")]
         public async Task<IActionResult> UploadImage(Guid albumId, Guid bandaId)
         {
