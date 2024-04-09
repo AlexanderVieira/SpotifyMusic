@@ -45,7 +45,10 @@
           <th scope="row">{{++$index}}</th>
           <td>{{musica.nome}}</td>
           <td>{{musica.duracao}}</td>
-          <td></td>
+          <td><button type="button" class="btn btn-tertiary" mdbRipple (click)="AdicionarMusicaPlaylist(musica)">
+            <i class="fa fas fa-plus-square"></i> Playlist
+          </button>
+        </td>
         </tr>
 
       }

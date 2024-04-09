@@ -54,4 +54,8 @@ export class UsuarioService {
     return this.httpClient.get<Playlist[]>(`${this.url}/usuario/playlists/${id}`);
   }
 
+  public AdicionarMusicaPlaylist(bandaId:Guid, musicaId: Guid): Observable<any>{
+    return this.httpClient.put<any>(`${this.url}/usuario-adicionar-musica/${bandaId}/${musicaId}`, null);
+  }
+
 }

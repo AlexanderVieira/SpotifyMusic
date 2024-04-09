@@ -1,28 +1,30 @@
 ﻿using AVS.SpotifyMusic.Api.Extensions;
+using AVS.SpotifyMusic.Api.Services;
 using AVS.SpotifyMusic.Api.Services.Interfaces;
 using AVS.SpotifyMusic.Application.AppServices;
 using AVS.SpotifyMusic.Application.Contas.DTOs;
-using AVS.SpotifyMusic.Application.Streamings.DTOs;
-using AVS.SpotifyMusic.Domain.Core.Services.WebApi.AspNetUser.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AVS.SpotifyMusic.Api.Controllers
 {
     [Route("api/contas")]
 	[ApiController]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public class ContasController : ControllerBase
 	{
 		private readonly UsuarioAppService _usuarioAppService;
-		private readonly IAspNetUser _aspNetUser;
+		private readonly AuthService _authService;
 		private readonly IUploadService _uploadService;
 		private readonly string _destino = "Perfil";
         
 
-		public ContasController(UsuarioAppService usuarioAppService, IAspNetUser aspNetUser, IUploadService uploadService)
+		public ContasController(UsuarioAppService usuarioAppService, AuthService authService, IUploadService uploadService)
 		{
             _uploadService = uploadService;
 			_usuarioAppService = usuarioAppService;
-			_aspNetUser = aspNetUser;			
+			_authService = authService;			
 		}
 
         [HttpGet]
@@ -140,7 +142,9 @@ namespace AVS.SpotifyMusic.Api.Controllers
 		public async Task<IActionResult> AdicionarMusicaPlaylistUsuario(Guid bandaId, Guid musicaId)
 		{
             if (!ModelState.IsValid) return BadRequest();
-            var response = await _usuarioAppService.AdicionarMusicaPlaylist(bandaId, musicaId);
+			var userClaim =_authService._aspNetUser.GetHttpContext().User;
+			var userId = Guid.Parse( _authService.UserManager.GetUserId(userClaim));
+            var response = await _usuarioAppService.AdicionarMusicaPlaylist(userId, bandaId, musicaId);
 			if (response == false) return BadRequest();
 			var url = HttpContext.Request.GetUrl();
 			return StatusCode(StatusCodes.Status200OK,url);
